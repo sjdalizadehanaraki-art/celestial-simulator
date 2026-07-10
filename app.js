@@ -1,5 +1,6 @@
 import * as THREE from "three";
 
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { createCamera } from "./camera.js";
@@ -8,50 +9,37 @@ import { createEarth } from "./earth.js";
 import { createEarthEquator } from "./earthEquator.js";
 import { createCelestialSphere } from "./celestialSphere.js";
 
-export function createApp() {
-
-    alert("APP START");
+export function createApp(){
 
     const scene = new THREE.Scene();
 
     scene.background = new THREE.Color(0x000000);
 
-    // دوربین
-    const { camera, controls } = createCamera();
-
-    alert("CAMERA OK");
-
-    // ---------- Renderer ----------
-
-    alert("BEFORE RENDERER");
+    const camera = createCamera();
 
     const renderer = new THREE.WebGLRenderer({
-        antialias: true
+        antialias:true
     });
-
-    alert("AFTER RENDERER");
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
-    alert("AFTER SETSIZE");
-
     renderer.setPixelRatio(
         window.devicePixelRatio
     );
-
-    renderer.outputColorSpace =
-        THREE.SRGBColorSpace;
 
     document.body.appendChild(
         renderer.domElement
     );
 
-    alert("AFTER APPEND");
+    const controls = new OrbitControls(
+        camera,
+        renderer.domElement
+    );
 
-    // ---------- Label Renderer ----------
+    controls.enableDamping = true;
 
     const labelRenderer = new CSS2DRenderer();
 
@@ -60,18 +48,14 @@ export function createApp() {
         window.innerHeight
     );
 
-    labelRenderer.domElement.style.position = "absolute";
-    labelRenderer.domElement.style.top = "0";
-    labelRenderer.domElement.style.left = "0";
-    labelRenderer.domElement.style.pointerEvents = "none";
+    labelRenderer.domElement.style.position="absolute";
+    labelRenderer.domElement.style.top="0";
+    labelRenderer.domElement.style.left="0";
+    labelRenderer.domElement.style.pointerEvents="none";
 
     document.body.appendChild(
         labelRenderer.domElement
     );
-
-    alert("LABEL OK");
-
-    // ---------- نور ----------
 
     scene.add(
         new THREE.AmbientLight(
@@ -80,25 +64,12 @@ export function createApp() {
         )
     );
 
-    alert("LIGHT OK");
-
-    // ---------- اجسام ----------
-
     createAxes(scene);
-    alert("AXES OK");
-
     createEarth(scene);
-    alert("EARTH OK");
-
     createEarthEquator(scene);
-    alert("EQUATOR OK");
-
     createCelestialSphere(scene);
-    alert("CELESTIAL OK");
 
-    // ---------- Animation ----------
-
-    function animate() {
+    function animate(){
 
         requestAnimationFrame(animate);
 
@@ -113,17 +84,16 @@ export function createApp() {
             scene,
             camera
         );
+
     }
 
     animate();
 
-    // ---------- Resize ----------
-
-    window.addEventListener("resize", () => {
+    window.addEventListener("resize",()=>{
 
         camera.aspect =
-            window.innerWidth /
-            window.innerHeight;
+        window.innerWidth /
+        window.innerHeight;
 
         camera.updateProjectionMatrix();
 
