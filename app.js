@@ -1,3 +1,4 @@
+import { createTimeControls } from "./timeControls.js";
 import { createTimeController } from "./timeController.js";
 import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
@@ -19,6 +20,8 @@ export function createApp(){
 
     const time =
     createTimeController();
+
+    createTimeControls(time);
 
     const camera = createCamera();
 
