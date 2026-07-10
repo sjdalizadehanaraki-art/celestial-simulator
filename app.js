@@ -6,7 +6,6 @@ import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import { createCamera } from "./camera.js";
 import { createAxes } from "./axes.js";
@@ -23,7 +22,6 @@ export function createApp(){
     const time =
     createTimeController();
 
-    const camera = createCamera();
 const {camera, controls} =
 createCamera();
 
