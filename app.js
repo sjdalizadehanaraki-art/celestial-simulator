@@ -102,6 +102,8 @@ export function createApp(){
 
     createEarth(scene);
 
+    createCelestialSphere(scene);
+
 
 
 
