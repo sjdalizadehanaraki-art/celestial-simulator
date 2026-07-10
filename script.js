@@ -1,3 +1,4 @@
+alert("NEW VERSION");
 import * as THREE from "three";
 
 const scene = new THREE.Scene();
