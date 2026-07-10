@@ -4,7 +4,7 @@ alert("VERSION 3");
 
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0fe000);
+scene.background = new THREE.Color(0x000000);
 
 
 //  دوربین
@@ -16,8 +16,9 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 // نگاه از سمت Y به مرکز تا Z بالا دیده شود
-camera.position.set(0, -10, 5);
-
+camera.position.set(-8, -8, 8);
+camera.up.set(0, 0, 1);
+camera.lookAt(0, 0, 0);
 
 
 // رندر
