@@ -27,6 +27,7 @@ export function createApp(){
 
     const {camera,controls} =
     createCamera();
+    console.log("CAMERA OK");
 
 
 
@@ -55,6 +56,7 @@ export function createApp(){
 
     document.body.appendChild(
         renderer.domElement
+        console.log("RENDERER OK");
     );
 
 
@@ -83,6 +85,7 @@ export function createApp(){
 
     document.body.appendChild(
         labelRenderer.domElement
+        console.log("LABEL OK");
     );
 
 
