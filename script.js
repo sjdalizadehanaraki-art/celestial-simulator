@@ -3,6 +3,7 @@ import * as THREE from "three";
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
+
 const camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -10,65 +11,120 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
-camera.position.set(0, 0, 6);
+camera.position.set(0, 0, 4);
 
+
+// رندر
 const renderer = new THREE.WebGLRenderer({
     antialias: true
 });
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+renderer.setPixelRatio(
+    window.devicePixelRatio
+);
 
 document.body.appendChild(renderer.domElement);
 
 
-// نورها
-const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+
+// نور
+const ambient = new THREE.AmbientLight(
+    0xffffff,
+    0.4
+);
+
 scene.add(ambient);
 
-const sun = new THREE.DirectionalLight(0xffffff, 2);
-sun.position.set(5, 3, 5);
-scene.add(sun);
+
+const sunLight = new THREE.DirectionalLight(
+    0xffffff,
+    2
+);
+
+sunLight.position.set(
+    5,
+    3,
+    5
+);
+
+scene.add(sunLight);
+
+
+
+// بارگذاری تصویر زمین
+const loader = new THREE.TextureLoader();
+
+
+const earthTexture = loader.load(
+    "earth.jpg"
+);
 
 
 // کره زمین
 const earth = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 64, 64),
+    new THREE.SphereGeometry(
+        1,
+        64,
+        64
+    ),
+
     new THREE.MeshStandardMaterial({
-        color: 0x2c82ff,
-        roughness: 0.8,
-        metalness: 0
+        map: earthTexture,
+        roughness: 1
     })
 );
+
 
 scene.add(earth);
 
 
-// محورهای مختصات
-scene.add(new THREE.AxesHelper(2.5));
+
+// محور مختصات
+const axes = new THREE.AxesHelper(2.5);
+
+scene.add(axes);
 
 
-function animate() {
+
+// چرخش
+function animate(){
 
     requestAnimationFrame(animate);
 
     earth.rotation.y += 0.003;
 
-    renderer.render(scene, camera);
+    renderer.render(
+        scene,
+        camera
+    );
 
 }
+
 
 animate();
 
 
-window.addEventListener("resize", () => {
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+// تنظیم صفحه
+window.addEventListener(
+"resize",
+()=>{
 
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-    );
+camera.aspect =
+window.innerWidth /
+window.innerHeight;
+
+camera.updateProjectionMatrix();
+
+
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
 
 });
