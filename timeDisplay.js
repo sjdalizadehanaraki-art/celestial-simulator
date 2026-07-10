@@ -42,15 +42,63 @@ export function createTimeDisplay(time){
         time.getYearFraction();
 
 
+
+        const totalDays =
+        year * 365;
+
+
+
         const day =
+        Math.floor(totalDays) + 1;
+
+
+
+        const dayProgress =
+        totalDays -
+        Math.floor(totalDays);
+
+
+
+        const totalHours =
+        dayProgress * 24;
+
+
+
+        const hour =
+        Math.floor(totalHours);
+
+
+
+        const minute =
         Math.floor(
-            year * 365
-        ) + 1;
+            (totalHours - hour) * 60
+        );
+
+
+
+        const second =
+        Math.floor(
+            (
+                (
+                (totalHours - hour) * 60
+                ) - minute
+            ) * 60
+        );
 
 
 
         display.textContent =
-        "Day " + day + " / 365";
+        "Day " +
+        day +
+        " / 365    " +
+
+        hour.toString().padStart(2,"0") +
+        ":" +
+
+        minute.toString().padStart(2,"0") +
+        ":" +
+
+        second.toString().padStart(2,"0");
 
 
     }
