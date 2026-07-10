@@ -4,6 +4,16 @@ import * as THREE from "three";
 export function createEarth(scene){
 
 
+    const textureLoader =
+    new THREE.TextureLoader();
+
+
+    const earthTexture =
+    textureLoader.load(
+        "./earth.png"
+    );
+
+
     const earth =
     new THREE.Mesh(
 
@@ -15,9 +25,9 @@ export function createEarth(scene){
 
 
         new THREE.MeshBasicMaterial({
-            color:0x777777,
-            transparent:true,
-            opacity:0.8
+
+            map: earthTexture
+
         })
 
     );
@@ -72,7 +82,6 @@ function createPoint(
             16,
             16
         ),
-
 
         new THREE.MeshBasicMaterial({
             color:color
