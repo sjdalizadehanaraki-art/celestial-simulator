@@ -2,44 +2,23 @@ import * as THREE from "three";
 
 export function createEarthEquator(scene){
 
-    const radius = 1;
-
-    const points = [];
-
-    for(let i = 0; i <= 360; i++){
-
-        const a = THREE.MathUtils.degToRad(i);
-
-        points.push(
-
-            new THREE.Vector3(
-
-                radius * Math.cos(a),
-                radius * Math.sin(a),
-                0
-
-            )
-
-        );
-
-    }
-
-    const geometry =
-    new THREE.BufferGeometry().setFromPoints(points);
-
-    const material =
-    new THREE.LineBasicMaterial({
-
-        color:0x00ff00
-
+    const material = new THREE.LineBasicMaterial({
+        color: 0x00ff00
     });
 
-    const equator =
-    new THREE.LineLoop(
+    const points = [
+        new THREE.Vector3(-1,0,0),
+        new THREE.Vector3(1,0,0)
+    ];
+
+    const geometry =
+        new THREE.BufferGeometry().setFromPoints(points);
+
+    const line = new THREE.Line(
         geometry,
         material
     );
 
-    scene.add(equator);
+    scene.add(line);
 
 }
