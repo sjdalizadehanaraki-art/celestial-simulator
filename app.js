@@ -1,187 +1,142 @@
-//import { createEarthEquator } from "./earthEquator.js";
-
-//import { createCelestialSphere } from "./celestialSphere.js";
-
 import * as THREE from "three";
 
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { createCamera } from "./camera.js";
-//import { createAxes } from "./axes.js";
-//import { createEarth } from "./earth.js";
+import { createAxes } from "./axes.js";
+import { createEarth } from "./earth.js";
+import { createEarthEquator } from "./earthEquator.js";
+import { createCelestialSphere } from "./celestialSphere.js";
 
-
-
-export function createApp(){
+export function createApp() {
 
     alert("APP START");
 
     const scene = new THREE.Scene();
 
-    scene.background =
-    new THREE.Color(0x000000);
-
-
+    scene.background = new THREE.Color(0x000000);
 
     // دوربین
+    const { camera, controls } = createCamera();
 
-    const {camera,controls} =
-    createCamera();
-    console.log("CAMERA OK");
+    alert("CAMERA OK");
 
+    // ---------- Renderer ----------
 
+    alert("BEFORE RENDERER");
 
-
-    // WebGL Renderer
-
-    const renderer =
-    new THREE.WebGLRenderer({
-
-        antialias:true
-
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true
     });
 
+    alert("AFTER RENDERER");
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
+    alert("AFTER SETSIZE");
+
     renderer.setPixelRatio(
         window.devicePixelRatio
     );
 
     renderer.outputColorSpace =
-    THREE.SRGBColorSpace;
+        THREE.SRGBColorSpace;
 
     document.body.appendChild(
         renderer.domElement
-        
     );
-    console.log("RENDERER OK");
 
+    alert("AFTER APPEND");
 
+    // ---------- Label Renderer ----------
 
-    // CSS2D Renderer
-
-    const labelRenderer =
-    new CSS2DRenderer();
+    const labelRenderer = new CSS2DRenderer();
 
     labelRenderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
-    labelRenderer.domElement.style.position =
-    "absolute";
-
-    labelRenderer.domElement.style.top =
-    "0px";
-
-    labelRenderer.domElement.style.left =
-    "0px";
-
-    labelRenderer.domElement.style.pointerEvents =
-    "none";
+    labelRenderer.domElement.style.position = "absolute";
+    labelRenderer.domElement.style.top = "0";
+    labelRenderer.domElement.style.left = "0";
+    labelRenderer.domElement.style.pointerEvents = "none";
 
     document.body.appendChild(
         labelRenderer.domElement
-
     );
-    console.log("LABEL OK");
 
+    alert("LABEL OK");
 
-
-    // نور
+    // ---------- نور ----------
 
     scene.add(
-
         new THREE.AmbientLight(
             0xffffff,
             0.8
         )
-
     );
 
+    alert("LIGHT OK");
 
+    // ---------- اجسام ----------
 
-    // اجسام
-    //createAxes(scene);
-console.log("AXES OK");
+    createAxes(scene);
+    alert("AXES OK");
 
+    createEarth(scene);
+    alert("EARTH OK");
 
-//createEarth(scene);
-console.log("EARTH OK");
+    createEarthEquator(scene);
+    alert("EQUATOR OK");
 
+    createCelestialSphere(scene);
+    alert("CELESTIAL OK");
 
-//createEarthEquator(scene);
-console.log("EQUATOR OK");
+    // ---------- Animation ----------
 
+    function animate() {
 
-//createCelestialSphere(scene);
-console.log("CELESTIAL OK");
-
-
-
-    // انیمیشن
-
-    function animate(){
-
-        requestAnimationFrame(
-            animate
-        );
-
+        requestAnimationFrame(animate);
 
         controls.update();
-
 
         renderer.render(
             scene,
             camera
         );
 
-
         labelRenderer.render(
             scene,
             camera
         );
-
     }
-
 
     animate();
 
+    // ---------- Resize ----------
 
+    window.addEventListener("resize", () => {
 
-
-    // Resize
-
-    window.addEventListener(
-
-        "resize",
-
-        ()=>{
-
-            camera.aspect =
+        camera.aspect =
             window.innerWidth /
             window.innerHeight;
 
-            camera.updateProjectionMatrix();
+        camera.updateProjectionMatrix();
 
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
 
-            renderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
+        labelRenderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
 
-
-            labelRenderer.setSize(
-                window.innerWidth,
-                window.innerHeight
-            );
-
-        }
-
-    );
+    });
 
 }
