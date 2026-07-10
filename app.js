@@ -1,8 +1,7 @@
+import { createCelestialPlanes } from "./celestialPlanes.js";
 import * as THREE from "three";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
-
 import { createCamera } from "./camera.js";
 import { createAxes } from "./axes.js";
 import { createEarth } from "./earth.js";
@@ -68,6 +67,7 @@ export function createApp(){
     createEarth(scene);
     createEarthEquator(scene);
     createCelestialSphere(scene);
+    createCelestialPlanes(scene);
 
     function animate(){
 
