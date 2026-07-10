@@ -19,6 +19,12 @@ export function createApp(){
     new THREE.Scene();
 
 
+    const time =
+createTimeController();
+
+console.log("TIME CREATED");
+
+
     scene.background =
     new THREE.Color(0x000000);
 
@@ -120,16 +126,6 @@ scene.add(
     const sun =
 createSun(scene);
 
-    const time =
-createTimeController();
-
-
-const sunMotion =
-createSunMotion(
-    sun,
-    time
-);
-
 
     function animate(){
 
@@ -137,12 +133,6 @@ createSunMotion(
         requestAnimationFrame(
             animate
         );
-
-
-        time.update();
-
-        sunMotion.update();
-
 
         controls.update();
 
