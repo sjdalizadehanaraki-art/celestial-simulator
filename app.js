@@ -28,8 +28,6 @@ export function createApp() {
 
     const localSky = createLocalSky();
 
-    const localSky = createLocalSky();
-
     const { camera, controls } = createCamera();
 
     const renderer = new THREE.WebGLRenderer({
