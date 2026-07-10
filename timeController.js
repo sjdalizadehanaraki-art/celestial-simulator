@@ -1,34 +1,57 @@
 export function createTimeController(){
 
+
     const DAY_SECONDS = 5;
     const YEAR_DAYS = 365;
 
+
     let playing = true;
+
     let speed = 1;
 
-    let lastRealTime = performance.now();
+
+    let lastRealTime =
+    performance.now();
+
+
 
     let dayOfYear = 0;
-    let timeOfDay = 0;
+
+
+    // شروع از ساعت 18:16 اعتدال بهاری
+    let timeOfDay =
+    DAY_SECONDS * (18.266 / 24);
+
 
 
     function update(){
 
-        const now = performance.now();
+
+        const now =
+        performance.now();
+
+
 
         const delta =
-        (now-lastRealTime)/1000;
+        (now - lastRealTime) / 1000;
+
 
         lastRealTime = now;
 
+
+
         if(!playing) return;
+
 
 
         timeOfDay +=
         delta * speed;
 
 
-        while(timeOfDay >= DAY_SECONDS){
+
+        while(
+            timeOfDay >= DAY_SECONDS
+        ){
 
             timeOfDay -= DAY_SECONDS;
 
@@ -37,10 +60,14 @@ export function createTimeController(){
         }
 
 
+
         dayOfYear =
         dayOfYear % YEAR_DAYS;
 
+
+
     }
+
 
 
     function play(){
@@ -50,11 +77,13 @@ export function createTimeController(){
     }
 
 
+
     function pause(){
 
         playing = false;
 
     }
+
 
 
     function setSpeed(value){
@@ -64,6 +93,7 @@ export function createTimeController(){
     }
 
 
+
     function getDay(){
 
         return dayOfYear;
@@ -71,11 +101,16 @@ export function createTimeController(){
     }
 
 
+
     function getDayFraction(){
 
-        return timeOfDay / DAY_SECONDS;
+        return (
+            timeOfDay /
+            DAY_SECONDS
+        );
 
     }
+
 
 
     function getYearFraction(){
@@ -83,12 +118,16 @@ export function createTimeController(){
         return (
             dayOfYear +
             getDayFraction()
-        ) / YEAR_DAYS;
+        )
+        /
+        YEAR_DAYS;
 
     }
 
 
-    return{
+
+    return {
+
 
         update,
 
@@ -104,6 +143,8 @@ export function createTimeController(){
 
         getYearFraction
 
+
     };
+
 
 }
