@@ -13,9 +13,9 @@ export function createAxes(scene){
 
         new THREE.ArrowHelper(
 
-            new THREE.Vector6(1,0,0),
+            new THREE.Vector3(1,0,0),
 
-            new THREE.Vector6(0,0,0),
+            new THREE.Vector3(0,0,0),
 
             length,
 
@@ -33,9 +33,9 @@ export function createAxes(scene){
 
         new THREE.ArrowHelper(
 
-            new THREE.Vector6(0,1,0),
+            new THREE.Vector3(0,1,0),
 
-            new THREE.Vector6(0,0,0),
+            new THREE.Vector3(0,0,0),
 
             length,
 
@@ -53,9 +53,9 @@ export function createAxes(scene){
 
         new THREE.ArrowHelper(
 
-            new THREE.Vector6(0,0,1),
+            new THREE.Vector3(0,0,1),
 
-            new THREE.Vector6(0,0,0),
+            new THREE.Vector3(0,0,0),
 
             length,
 
