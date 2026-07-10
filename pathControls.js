@@ -1,34 +1,40 @@
 export function createPathControls(trail){
 
 
-    const button =
-    document.createElement("button");
+    const container =
+    document.createElement("div");
 
 
-    button.textContent =
-    "☑ Show Sun Path";
-
-
-    button.style.marginTop =
+    container.style.marginTop =
     "10px";
 
 
-    button.onclick = ()=>{
+
+    const toggleButton =
+    document.createElement("button");
+
+
+    toggleButton.textContent =
+    "☑ Show Sun Path";
+
+
+
+    toggleButton.onclick = ()=>{
 
 
         trail.toggle();
 
 
+
         if(trail.isVisible()){
 
-            button.textContent =
+            toggleButton.textContent =
             "☑ Show Sun Path";
 
         }
-
         else{
 
-            button.textContent =
+            toggleButton.textContent =
             "☐ Show Sun Path";
 
         }
@@ -38,8 +44,39 @@ export function createPathControls(trail){
 
 
 
+
+    const clearButton =
+    document.createElement("button");
+
+
+    clearButton.textContent =
+    "🗑 Clear Path";
+
+
+
+    clearButton.onclick = ()=>{
+
+
+        trail.clear();
+
+
+    };
+
+
+
+    container.appendChild(
+        toggleButton
+    );
+
+
+    container.appendChild(
+        clearButton
+    );
+
+
+
     document.body.appendChild(
-        button
+        container
     );
 
 
