@@ -1,18 +1,31 @@
 import { createSeasonPoints } from "./seasonPoints.js";
+alert("APP IMPORTS OK1");
 import { createSunTrail } from "./sunTrail.js";
+alert("APP IMPORTS OK2");
 import { createTimeControls } from "./timeControls.js";
+alert("APP IMPORTS OK3");
 import { createTimeController } from "./timeController.js";
+alert("APP IMPORTS OK4");
 import { createSun } from "./sun.js";
+alert("APP IMPORTS OK5");
 import { createSunMotion } from "./sunApparentMotion.js";
+alert("APP IMPORTS OK6");
 import { createCelestialPlanes } from "./celestialPlanes.js";
+alert("APP IMPORTS OK7");
 import * as THREE from "three";
+alert("APP IMPORTS OK8");
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
+alert("APP IMPORTS OK9");
 import { createCamera } from "./camera.js";
+alert("APP IMPORTS OK10");
 import { createAxes } from "./axes.js";
+alert("APP IMPORTS OK11");
 import { createEarth } from "./earth.js";
+alert("APP IMPORTS OK12");
 import { createEarthEquator } from "./earthEquator.js";
+alert("APP IMPORTS OK13");
 import { createCelestialSphere } from "./celestialSphere.js";
-
+alert("APP IMPORTS OK14");
 export function createApp(){
 
     const scene = new THREE.Scene();
