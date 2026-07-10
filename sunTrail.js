@@ -31,25 +31,33 @@ export function createSunTrail(){
     );
 
 
-    line.visible = true;
-
-
 
     let lastSampleTime = -1;
+
+
+
+    function rebuild(){
+
+
+        geometry.setFromPoints(
+            points
+        );
+
+
+    }
 
 
 
     return {
 
 
+
         line,
+
 
 
         addPoint(position, simTime){
 
-
-
-            // هر یک دقیقه شبیه سازی یک نقطه
 
             const minute =
             Math.floor(
@@ -58,7 +66,9 @@ export function createSunTrail(){
 
 
 
-            if(minute === lastSampleTime){
+            if(
+                minute === lastSampleTime
+            ){
 
                 return;
 
@@ -76,10 +86,8 @@ export function createSunTrail(){
             );
 
 
+            rebuild();
 
-            geometry.setFromPoints(
-                points
-            );
 
         },
 
@@ -88,6 +96,9 @@ export function createSunTrail(){
         show(){
 
             line.visible = true;
+
+
+            rebuild();
 
         },
 
@@ -106,6 +117,13 @@ export function createSunTrail(){
             line.visible =
             !line.visible;
 
+
+            if(line.visible){
+
+                rebuild();
+
+            }
+
         },
 
 
@@ -117,17 +135,17 @@ export function createSunTrail(){
         },
 
 
+
         clear(){
 
             points.length = 0;
 
             lastSampleTime = -1;
 
-            geometry.setFromPoints(
-                points
-            );
+            rebuild();
 
         }
+
 
 
     };
