@@ -21,7 +21,24 @@ export function createTimeControls(
     panel.style.fontFamily = "Arial";
     panel.style.display = "flex";
     panel.style.flexDirection = "column";
-    panel.style.gap = "5px";
+    panel.style.gap = "8px";
+
+
+
+    const row1 =
+    document.createElement("div");
+
+    row1.style.display = "flex";
+    row1.style.flexWrap = "wrap";
+    row1.style.gap = "5px";
+
+
+
+    const row2 =
+    document.createElement("div");
+
+    row2.style.display = "flex";
+    row2.style.gap = "5px";
 
 
 
@@ -41,6 +58,9 @@ export function createTimeControls(
     };
 
 
+    row1.appendChild(play);
+
+
 
     // Pause
 
@@ -58,23 +78,23 @@ export function createTimeControls(
     };
 
 
+    row1.appendChild(pause);
 
-    panel.appendChild(play);
-
-    panel.appendChild(pause);
 
 
 
     // Speed
 
     const label =
-    document.createElement("div");
+    document.createElement("span");
 
     label.textContent =
-    "Speed";
+    "Speed:";
+
+    label.style.alignSelf = "center";
 
 
-    panel.appendChild(label);
+    row1.appendChild(label);
 
 
 
@@ -107,10 +127,11 @@ export function createTimeControls(
         };
 
 
-        panel.appendChild(button);
+        row1.appendChild(button);
 
 
     });
+
 
 
 
@@ -136,6 +157,7 @@ export function createTimeControls(
             "☑ Show Sun Path";
 
         }
+
         else{
 
             pathButton.textContent =
@@ -147,7 +169,7 @@ export function createTimeControls(
     };
 
 
-    panel.appendChild(pathButton);
+    row2.appendChild(pathButton);
 
 
 
@@ -164,14 +186,18 @@ export function createTimeControls(
 
     clearButton.onclick = ()=>{
 
-
         trail.clear();
-
 
     };
 
 
-    panel.appendChild(clearButton);
+    row2.appendChild(clearButton);
+
+
+
+    panel.appendChild(row1);
+
+    panel.appendChild(row2);
 
 
 
