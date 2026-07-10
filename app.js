@@ -1,3 +1,5 @@
+import { createSun } from "./sun.js";
+import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -68,6 +70,8 @@ export function createApp(){
     createEarthEquator(scene);
     createCelestialSphere(scene);
     createCelestialPlanes(scene);
+    const sun = createSun(scene);
+    createSunMotion(sun);
 
     function animate(){
 
