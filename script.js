@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-alert("VERSION 6.1");
+alert("VERSION 6.2");
 
 
 const scene = new THREE.Scene();
