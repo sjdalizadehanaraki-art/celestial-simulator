@@ -23,33 +23,30 @@ export function createApp(){
     const time =
     createTimeController();
 
-    createTimeControls(time,sunTrail);
-
     const camera = createCamera();
+const {camera, controls} =
+createCamera();
 
-    const renderer = new THREE.WebGLRenderer({
-        antialias:true
-    });
 
-    renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-    );
+const renderer = new THREE.WebGLRenderer({
+    antialias:true
+});
 
-    renderer.setPixelRatio(
-        window.devicePixelRatio
-    );
 
-    document.body.appendChild(
-        renderer.domElement
-    );
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
 
-    const controls = new OrbitControls(
-        camera,
-        renderer.domElement
-    );
 
-    controls.enableDamping = true;
+renderer.setPixelRatio(
+    window.devicePixelRatio
+);
+
+
+document.body.appendChild(
+    renderer.domElement
+);
 
     const labelRenderer = new CSS2DRenderer();
 
@@ -83,12 +80,23 @@ export function createApp(){
     createSun(scene);
     const sunMotion =
     createSunMotion(sun,time);
-    const sunTrail = createSunTrail();
-    createPathControls(sunTrail);
+    const sunTrail =
+createSunTrail();
 
 
 scene.add(
     sunTrail.line
+);
+
+
+createTimeControls(
+    time,
+    sunTrail
+);
+
+
+createPathControls(
+    sunTrail
 );
 
     function animate(){
