@@ -6,7 +6,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
 
-// دوربین
+//  دوربین
 const camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
