@@ -1,14 +1,14 @@
-import { createEarthEquator } from "./earthEquator.js";
+//import { createEarthEquator } from "./earthEquator.js";
 
-import { createCelestialSphere } from "./celestialSphere.js";
+//import { createCelestialSphere } from "./celestialSphere.js";
 
 import * as THREE from "three";
 
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { createCamera } from "./camera.js";
-import { createAxes } from "./axes.js";
-import { createEarth } from "./earth.js";
+//import { createAxes } from "./axes.js";
+//import { createEarth } from "./earth.js";
 
 
 
@@ -106,20 +106,19 @@ export function createApp(){
 
 
     // اجسام
-
-    createAxes(scene);
+    //createAxes(scene);
 console.log("AXES OK");
 
 
-createEarth(scene);
+//createEarth(scene);
 console.log("EARTH OK");
 
 
-createEarthEquator(scene);
+//createEarthEquator(scene);
 console.log("EQUATOR OK");
 
 
-createCelestialSphere(scene);
+//createCelestialSphere(scene);
 console.log("CELESTIAL OK");
 
 
