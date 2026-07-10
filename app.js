@@ -117,9 +117,40 @@ export function createApp() {
 solarPosition.update();
 
 
-console.log(
-    sunData.altitude * 180 / Math.PI
+const altitude =
+sunData.altitude;
+
+
+const azimuth =
+sunData.azimuth;
+
+
+
+const x =
+0.5 +
+Math.sin(azimuth)
+*
+0.4;
+
+
+
+const y =
+0.75 -
+(
+Math.sin(altitude)
+*
+0.6
 );
+
+
+
+localSky.setSunPosition(
+    x,
+    y
+);
+
+
+localSky.draw();
 
 localSky.draw();
 
