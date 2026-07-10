@@ -1,196 +1,234 @@
 export function createLocalSky(){
 
 
-    const canvas =
-    document.createElement("canvas");
+const canvas =
+document.createElement("canvas");
 
 
-    canvas.width =
-    window.innerWidth;
+canvas.width =
+window.innerWidth;
 
-    canvas.height =
-    window.innerHeight;
+canvas.height =
+window.innerHeight;
 
 
-    canvas.style.position =
-    "absolute";
+canvas.style.position="absolute";
+canvas.style.top="0";
+canvas.style.left="0";
+canvas.style.display="none";
+canvas.style.zIndex="5";
 
 
-    canvas.style.top =
-    "0";
+document.body.appendChild(canvas);
 
 
-    canvas.style.left =
-    "0";
 
+const ctx =
+canvas.getContext("2d");
 
-    canvas.style.display =
-    "none";
 
 
-    canvas.style.zIndex =
-    "5";
+let altitude = 0;
 
+let azimuth = 180;
 
-    document.body.appendChild(
-        canvas
-    );
 
 
+let visible = false;
 
-    const ctx =
-    canvas.getContext("2d");
 
 
+function setSunPosition(
+    alt,
+    azi
+){
 
-    let sunX = 0.5;
+    altitude = alt;
 
-    let sunY = 0.3;
+    azimuth = azi;
 
+}
 
 
-    let visible = false;
 
 
+function draw(){
 
-    function setSunPosition(
-        x,
-        y
-    ){
 
-        sunX = x;
+if(!visible)
+return;
 
-        sunY = y;
 
-    }
 
+const w =
+canvas.width;
 
 
-    function draw(){
+const h =
+canvas.height;
 
 
-        if(!visible)
-        return;
 
+ctx.clearRect(
+0,
+0,
+w,
+h
+);
 
 
-        const w =
-        canvas.width;
 
+ctx.fillStyle="black";
 
-        const h =
-        canvas.height;
+ctx.fillRect(
+0,
+0,
+w,
+h
+);
 
 
 
-        ctx.clearRect(
-            0,
-            0,
-            w,
-            h
-        );
+// خط افق
 
+const horizon =
+h*0.75;
 
 
-        ctx.fillStyle =
-        "black";
 
+ctx.strokeStyle="white";
 
-        ctx.fillRect(
-            0,
-            0,
-            w,
-            h
-        );
 
+ctx.beginPath();
 
+ctx.moveTo(
+0,
+horizon
+);
 
-        // خط افق
+ctx.lineTo(
+w,
+horizon
+);
 
-        ctx.strokeStyle =
-        "white";
+ctx.stroke();
 
 
-        ctx.beginPath();
 
+// نوشته ها
 
-        ctx.moveTo(
-            0,
-            h*0.75
-        );
+ctx.fillStyle="white";
+ctx.font="20px Arial";
 
 
-        ctx.lineTo(
-            w,
-            h*0.75
-        );
+ctx.fillText(
+"شرق",
+50,
+horizon+40
+);
 
 
-        ctx.stroke();
+ctx.fillText(
+"جنوب",
+w/2-30,
+horizon+40
+);
 
 
+ctx.fillText(
+"غرب",
+w-80,
+horizon+40
+);
 
-        // خورشید
 
 
-        ctx.fillStyle =
-        "yellow";
+// تبدیل سمت به X
 
+const x =
+w/2
++
+(
+(azimuth-180)
+/90
+)
+*
+(w/2-80);
 
-        ctx.beginPath();
 
 
-        ctx.arc(
-            sunX*w,
-            sunY*h,
-            20,
-            0,
-            Math.PI*2
-        );
+// تبدیل ارتفاع به Y
 
+const y =
+horizon
+-
+(
+altitude /
+(Math.PI/2)
+)
+*
+(horizon-50);
 
-        ctx.fill();
 
 
-    }
 
+// خورشید
 
+ctx.fillStyle="yellow";
 
-    function show(){
+ctx.beginPath();
 
-        visible = true;
+ctx.arc(
+x,
+y,
+20,
+0,
+Math.PI*2
+);
 
-        canvas.style.display =
-        "block";
+ctx.fill();
 
-        draw();
 
-    }
 
+}
 
 
-    function hide(){
 
-        visible = false;
 
-        canvas.style.display =
-        "none";
+function show(){
 
-    }
+visible=true;
 
+canvas.style.display="block";
 
+draw();
 
-    return {
+}
 
-        show,
 
-        hide,
 
-        draw,
+function hide(){
 
-        setSunPosition
+visible=false;
 
-    };
+canvas.style.display="none";
+
+}
+
+
+
+return{
+
+show,
+
+hide,
+
+draw,
+
+setSunPosition
+
+};
+
 
 
 }
