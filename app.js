@@ -1,4 +1,4 @@
-import { createEarthEquator } from "./earthEquator.js";
+import { createearthEquator } from "./earthEquator.js";
 
 import { createCelestialSphere } from "./celestialSphere.js";
 
