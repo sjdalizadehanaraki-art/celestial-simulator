@@ -19,55 +19,112 @@ import { createEarth } from "./earth.js";
 import { createEarthEquator } from "./earthEquator.js";
 import { createCelestialSphere } from "./celestialSphere.js";
 
+
 export function createApp() {
 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
 
-    const time = createTimeController();
+    const scene =
+    new THREE.Scene();
 
-    const timeDisplay = createTimeDisplay(time);
 
-    const localSky = createLocalSky();
+    scene.background =
+    new THREE.Color(0x000000);
 
-    const observer = createObserver();
 
-    const solarPosition = createSolarPosition(time,observer);
 
-    const { camera, controls } = createCamera();
+    const time =
+    createTimeController();
 
-    const renderer = new THREE.WebGLRenderer({
-        antialias: true
+
+
+    const timeDisplay =
+    createTimeDisplay(
+        time
+    );
+
+
+
+    const localSky =
+    createLocalSky();
+
+
+
+    const observer =
+    createObserver();
+
+
+
+    const solarPosition =
+    createSolarPosition(
+        time,
+        observer
+    );
+
+
+
+    const { camera, controls } =
+    createCamera();
+
+
+
+    const renderer =
+    new THREE.WebGLRenderer({
+
+        antialias:true
+
     });
+
+
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
+
     renderer.setPixelRatio(
         window.devicePixelRatio
     );
+
 
     document.body.appendChild(
         renderer.domElement
     );
 
-    const labelRenderer = new CSS2DRenderer();
+
+
+    const labelRenderer =
+    new CSS2DRenderer();
+
+
 
     labelRenderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
-    labelRenderer.domElement.style.position = "absolute";
-    labelRenderer.domElement.style.top = "0";
-    labelRenderer.domElement.style.left = "0";
-    labelRenderer.domElement.style.pointerEvents = "none";
+
+    labelRenderer.domElement.style.position =
+    "absolute";
+
+
+    labelRenderer.domElement.style.top =
+    "0";
+
+
+    labelRenderer.domElement.style.left =
+    "0";
+
+
+    labelRenderer.domElement.style.pointerEvents =
+    "none";
+
 
     document.body.appendChild(
         labelRenderer.domElement
     );
+
+
 
     scene.add(
         new THREE.AmbientLight(
@@ -76,123 +133,156 @@ export function createApp() {
         )
     );
 
+
+
     createAxes(scene);
+
     createEarth(scene);
+
     createEarthEquator(scene);
+
     createCelestialSphere(scene);
+
     createCelestialPlanes(scene);
+
     createSeasonPoints(scene);
 
-    const sun = createSun(scene);
 
-    const sunMotion = createSunMotion(
+
+    const sun =
+    createSun(scene);
+
+
+
+    const sunMotion =
+    createSunMotion(
         sun,
         time
     );
 
-    const sunTrail = createSunTrail();
+
+
+    const sunTrail =
+    createSunTrail();
+
+
 
     scene.add(
         sunTrail.line
     );
 
-    createTimeControls(
-    time,
-    sunTrail,
-    localSky
-);
 
-    function animate() {
+
+    createTimeControls(
+        time,
+        sunTrail,
+        localSky
+    );
+
+
+
+
+    function animate(){
+
 
         requestAnimationFrame(
             animate
         );
 
+
+
         time.update();
+
+
 
         timeDisplay.update();
 
+
+
         sunMotion.update();
+
+
+
+
+        // محاسبه موقعیت واقعی خورشید در آسمان ناظر
+
         const sunData =
-solarPosition.update();
-
-
-const altitude =
-sunData.altitude;
-
-
-const azimuth =
-sunData.azimuth;
+        solarPosition.update();
 
 
 
-const x =
-0.5 +
-Math.sin(azimuth)
-*
-0.4;
+        localSky.setSunPosition(
+            sunData.altitude,
+            sunData.azimuth
+        );
 
 
 
-const y =
-0.75 -
-(
-Math.sin(altitude)
-*
-0.6
-);
+        localSky.draw();
 
 
 
-localSky.setSunPosition(
-    x,
-    y
-);
-
-
-localSky.draw();
-
-localSky.draw();
 
         sunTrail.addPoint(
-    sun.position
-);
+            sun.position
+        );
+
+
 
         controls.update();
+
+
 
         renderer.render(
             scene,
             camera
         );
 
+
+
         labelRenderer.render(
             scene,
             camera
         );
 
+
     }
+
+
+
 
     animate();
 
+
+
+
     window.addEventListener(
         "resize",
-        () => {
+        ()=>{
+
 
             camera.aspect =
-                window.innerWidth /
-                window.innerHeight;
+            window.innerWidth /
+            window.innerHeight;
+
+
 
             camera.updateProjectionMatrix();
+
+
 
             renderer.setSize(
                 window.innerWidth,
                 window.innerHeight
             );
 
+
+
             labelRenderer.setSize(
                 window.innerWidth,
                 window.innerHeight
             );
+
 
         }
     );
