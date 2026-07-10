@@ -107,10 +107,20 @@ export function createApp() {
         timeDisplay.update();
 
         sunMotion.update();
-        const x = (sun.position.x + 5) / 10;
-        const y = 1 - ((sun.position.z + 5) / 10);
-        localSky.setSunPosition(x,y);
-        localSky.draw();
+        const x =
+0.5 + sun.position.x / 12;
+
+
+const y =
+0.5 - sun.position.y / 12;
+
+
+localSky.setSunPosition(
+    x,
+    y
+);
+
+localSky.draw();
 
         sunTrail.addPoint(
     sun.position
