@@ -14,12 +14,12 @@ const camera = new THREE.PerspectiveCamera(
     100
 );
 
-camera.position.set(0, 0, 9);
+camera.position.set(7, 5, 7);
 
 
 // رندر
 const renderer = new THREE.WebGLRenderer({
-    antialias:true
+    antialias: true
 });
 
 renderer.setSize(
@@ -36,21 +36,28 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 document.body.appendChild(renderer.domElement);
 
 
-// کنترل
+
+// کنترل‌ها
 const controls = new OrbitControls(
     camera,
     renderer.domElement
 );
 
 controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+
 controls.enablePan = false;
 
 controls.minDistance = 3;
 controls.maxDistance = 30;
 
+controls.target.set(0,0,0);
+controls.update();
+
 
 
 // نور
+
 scene.add(
     new THREE.AmbientLight(
         0xffffff,
@@ -70,9 +77,8 @@ scene.add(sunLight);
 
 
 
-// ----------------------
+
 // زمین
-// ----------------------
 
 const earthTexture =
 new THREE.TextureLoader().load(
@@ -90,7 +96,10 @@ new THREE.Mesh(
     ),
 
     new THREE.MeshStandardMaterial({
-        map:earthTexture
+
+        map: earthTexture,
+        roughness: 1
+
     })
 
 );
@@ -101,11 +110,9 @@ scene.add(earth);
 
 
 
-// ----------------------
 // کره سماوی
-// ----------------------
 
-const skySphere =
+const celestialSphere =
 new THREE.Mesh(
 
     new THREE.SphereGeometry(
@@ -116,7 +123,7 @@ new THREE.Mesh(
 
     new THREE.MeshBasicMaterial({
 
-        color:0x2244ff,
+        color:0x3366ff,
         transparent:true,
         opacity:0.12,
         side:THREE.BackSide
@@ -126,15 +133,13 @@ new THREE.Mesh(
 );
 
 
-scene.add(skySphere);
+scene.add(celestialSphere);
 
 
 
 
 
-// ----------------------
-// صفحه استوای سماوی
-// ----------------------
+// استوای سماوی (صفحه XY)
 
 const equator =
 new THREE.Mesh(
@@ -149,7 +154,7 @@ new THREE.Mesh(
 
         color:0x00ffff,
         transparent:true,
-        opacity:0.5,
+        opacity:0.6,
         side:THREE.DoubleSide
 
     })
@@ -163,9 +168,7 @@ scene.add(equator);
 
 
 
-// ----------------------
-// صفحه دایره البروج
-// ----------------------
+// دایره البروج
 
 const ecliptic =
 new THREE.Mesh(
@@ -180,7 +183,7 @@ new THREE.Mesh(
 
         color:0xffff00,
         transparent:true,
-        opacity:0.5,
+        opacity:0.6,
         side:THREE.DoubleSide
 
     })
@@ -188,7 +191,6 @@ new THREE.Mesh(
 );
 
 
-// میل دایره البروج
 ecliptic.rotation.x =
 THREE.MathUtils.degToRad(23.44);
 
@@ -199,55 +201,54 @@ scene.add(ecliptic);
 
 
 
-// ----------------------
-// محورهای مختصات با فلش
-// ----------------------
 
-const axesLength = 7;
+// محورهای مختصات
+
+const axisLength = 7;
 
 
-const xArrow =
+scene.add(
+
 new THREE.ArrowHelper(
-
     new THREE.Vector3(1,0,0),
     new THREE.Vector3(0,0,0),
-    axesLength,
+    axisLength,
     0xff0000
+)
 
 );
 
 
-const yArrow =
-new THREE.ArrowHelper(
 
+scene.add(
+
+new THREE.ArrowHelper(
     new THREE.Vector3(0,1,0),
     new THREE.Vector3(0,0,0),
-    axesLength,
+    axisLength,
     0x00ff00
+)
 
 );
 
 
 
-const zArrow =
-new THREE.ArrowHelper(
+scene.add(
 
+new THREE.ArrowHelper(
     new THREE.Vector3(0,0,1),
     new THREE.Vector3(0,0,0),
-    axesLength,
-    0x0000ff
+    axisLength,
+    0x0088ff
+)
 
 );
 
 
-scene.add(xArrow);
-scene.add(yArrow);
-scene.add(zArrow);
 
 
 
-
-// نوشته محور ها
+// برچسب محور ها
 
 function createLabel(text,color){
 
@@ -257,9 +258,17 @@ function createLabel(text,color){
     const ctx =
     canvas.getContext("2d");
 
-    ctx.font="60px Arial";
+
+    ctx.font =
+    "70px Arial";
+
     ctx.fillStyle=color;
-    ctx.fillText(text,10,60);
+
+    ctx.fillText(
+        text,
+        10,
+        70
+    );
 
 
     const texture =
@@ -275,9 +284,9 @@ function createLabel(text,color){
 
 
     sprite.scale.set(
-        0.5,
-        0.5,
-        0.5
+        0.6,
+        0.6,
+        0.6
     );
 
 
@@ -286,31 +295,60 @@ function createLabel(text,color){
 }
 
 
-const xLabel=createLabel("X","red");
-xLabel.position.set(7.2,0,0);
 
-const yLabel=createLabel("Y","lime");
-yLabel.position.set(0,7.2,0);
+const xLabel =
+createLabel("X","red");
 
-const zLabel=createLabel("Z","blue");
-zLabel.position.set(0,0,7.2);
-
-
-scene.add(xLabel);
-scene.add(yLabel);
-scene.add(zLabel);
+xLabel.position.set(
+    7.3,
+    0,
+    0
+);
 
 
 
+const yLabel =
+createLabel("Y","lime");
+
+yLabel.position.set(
+    0,
+    7.3,
+    0
+);
 
 
-// انیمیشن
+
+const zLabel =
+createLabel("Z","cyan");
+
+zLabel.position.set(
+    0,
+    0,
+    7.3
+);
+
+
+
+scene.add(
+    xLabel,
+    yLabel,
+    zLabel
+);
+
+
+
+
+
 
 function animate(){
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(
+        animate
+    );
+
 
     controls.update();
+
 
     renderer.render(
         scene,
@@ -320,20 +358,22 @@ function animate(){
 }
 
 
+
 animate();
 
 
 
 
-// تغییر اندازه
 
 window.addEventListener(
 "resize",
 ()=>{
 
+
 camera.aspect =
 window.innerWidth /
 window.innerHeight;
+
 
 camera.updateProjectionMatrix();
 
