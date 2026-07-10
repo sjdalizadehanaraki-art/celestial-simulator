@@ -1,3 +1,4 @@
+import { createTimeController } from "./timeController.js";
 import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
@@ -15,6 +16,9 @@ export function createApp(){
     const scene = new THREE.Scene();
 
     scene.background = new THREE.Color(0x000000);
+
+    const time =
+    createTimeController();
 
     const camera = createCamera();
 
@@ -76,6 +80,8 @@ export function createApp(){
     function animate(){
 
         requestAnimationFrame(animate);
+
+        time.update();
 
         controls.update();
 
