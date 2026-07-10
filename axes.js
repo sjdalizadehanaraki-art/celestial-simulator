@@ -50,7 +50,7 @@ export function createAxes(scene){
     // برچسب ها
 
     const xLabel =
-    createLabel("+X", "red");
+    createLabel("X", "red");
 
     xLabel.position.set(
         5.4,
@@ -60,7 +60,7 @@ export function createAxes(scene){
 
 
     const yLabel =
-    createLabel("+Y", "lime");
+    createLabel("Y", "lime");
 
     yLabel.position.set(
         0,
@@ -70,7 +70,7 @@ export function createAxes(scene){
 
 
     const zLabel =
-    createLabel("+Z", "cyan");
+    createLabel("Z", "cyan");
 
     zLabel.position.set(
         0,
