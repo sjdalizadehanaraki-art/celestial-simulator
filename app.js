@@ -88,10 +88,10 @@ scene.add(
 );
 
 
-createTimeControls(
-    time,
-    sunTrail
-);
+//createTimeControls(
+//    time,
+ //   sunTrail
+//);
 
 
 
