@@ -29,68 +29,28 @@ export function createTimeDisplay(time){
     "16px";
 
 
-
     document.body.appendChild(
         display
     );
-
-    alert("TIME DISPLAY OK");
 
 
 
     function update(){
 
 
-        const yearFraction =
+        const year =
         time.getYearFraction();
 
 
-
-        const totalDays =
-        yearFraction * 365;
-
-
-
         const day =
-        Math.floor(totalDays) + 1;
-
-
-
-        const dayFraction =
-        totalDays -
-        Math.floor(totalDays);
-
-
-
-        const totalSeconds =
-        dayFraction * 24 * 60 * 60;
-
-
-
-        const hour =
         Math.floor(
-            totalSeconds / 3600
-        );
-
-
-        const minute =
-        Math.floor(
-            (totalSeconds % 3600) / 60
-        );
-
-
-        const second =
-        Math.floor(
-            totalSeconds % 60
-        );
+            year * 365
+        ) + 1;
 
 
 
         display.textContent =
-        `Day ${day} / 365   ` +
-        `${hour.toString().padStart(2,"0")}:` +
-        `${minute.toString().padStart(2,"0")}:` +
-        `${second.toString().padStart(2,"0")}`;
+        "Day " + day + " / 365";
 
 
     }
