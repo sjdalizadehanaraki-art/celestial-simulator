@@ -1,5 +1,8 @@
 alert("TIME CONTROLS OK");
-export function createTimeControls(time){
+export function createTimeControls(
+    time,
+    trail
+){
 
 
     const panel =
