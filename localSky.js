@@ -163,31 +163,34 @@ export function createLocalSky(){
         ctx.fillText(
             "شرق",
             50,
-            horizon+40
+            horizon + 40
         );
 
 
         ctx.fillText(
             "جنوب",
-            w/2-30,
-            horizon+40
+            w/2 - 30,
+            horizon + 40
         );
 
 
         ctx.fillText(
             "غرب",
-            w-80,
-            horizon+40
+            w - 80,
+            horizon + 40
         );
 
 
 
 
 
-        // رسم مسیر خورشید
+        // مسیر حرکت خورشید
 
         ctx.strokeStyle =
         "rgba(255,255,0,0.8)";
+
+
+        ctx.lineWidth = 2;
 
 
         ctx.beginPath();
@@ -207,7 +210,7 @@ export function createLocalSky(){
                     Math.PI
                 )
                 *
-                (w/2-80);
+                (w/2 - 20);
 
 
 
@@ -219,11 +222,11 @@ export function createLocalSky(){
                     (Math.PI/2)
                 )
                 *
-                (horizon-50);
+                (horizon - 120);
 
 
 
-                if(index===0){
+                if(index === 0){
 
                     ctx.moveTo(
                         px,
@@ -263,7 +266,7 @@ export function createLocalSky(){
             Math.PI
         )
         *
-        (w/2-80);
+        (w/2 - 20);
 
 
 
@@ -275,12 +278,13 @@ export function createLocalSky(){
             (Math.PI/2)
         )
         *
-        (horizon-50);
+        (horizon - 120);
 
 
 
 
-        // خود خورشید (نقطه کوچک)
+
+        // خورشید
 
         ctx.fillStyle =
         "yellow";
@@ -290,16 +294,11 @@ export function createLocalSky(){
 
 
         ctx.arc(
-
             x,
             y,
-
             4,
-
             0,
-
             Math.PI*2
-
         );
 
 
@@ -312,11 +311,13 @@ export function createLocalSky(){
 
 
 
+
     function clearPath(){
 
         pathPoints.length = 0;
 
     }
+
 
 
 
@@ -331,6 +332,7 @@ export function createLocalSky(){
         draw();
 
     }
+
 
 
 
