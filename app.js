@@ -103,10 +103,10 @@ scene.add(
 
         sunMotion.update();
 
-        sunTrail.addPoint(
-    sun.position,
-    0
-);
+     //   sunTrail.addPoint(
+   // sun.position,
+  //  0
+//);
 
         controls.update();
 
