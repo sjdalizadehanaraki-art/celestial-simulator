@@ -1,3 +1,4 @@
+alert("TIME CONTROLS OK");
 export function createTimeControls(time){
 
 
