@@ -75,10 +75,10 @@ document.body.appendChild(
     createCelestialSphere(scene);
     createCelestialPlanes(scene);
   //  createSeasonPoints(scene);
-    const sun =
-    createSun(scene);
-    const sunMotion =
-    createSunMotion(sun,time);
+    //const sun =
+   // createSun(scene);
+   // const sunMotion =
+   // createSunMotion(sun,time);
     const sunTrail =
 createSunTrail();
 
@@ -101,7 +101,7 @@ scene.add(
 
         time.update();
 
-        sunMotion.update();
+      //  sunMotion.update();
 
      //   sunTrail.addPoint(
    // sun.position,
