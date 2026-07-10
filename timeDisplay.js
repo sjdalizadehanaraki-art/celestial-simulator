@@ -34,6 +34,8 @@ export function createTimeDisplay(time){
         display
     );
 
+    alert("TIME DISPLAY OK");
+
 
 
     function update(){
