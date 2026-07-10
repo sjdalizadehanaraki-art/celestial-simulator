@@ -103,13 +103,19 @@ export function createApp(){
     // اجسام
 
     createAxes(scene);
+console.log("AXES OK");
 
-    createEarth(scene);
 
-   // createEarthEquator(scene);
+createEarth(scene);
+console.log("EARTH OK");
 
-    createCelestialSphere(scene);
 
+createEarthEquator(scene);
+console.log("EQUATOR OK");
+
+
+createCelestialSphere(scene);
+console.log("CELESTIAL OK");
 
 
 
