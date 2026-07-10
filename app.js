@@ -1,5 +1,4 @@
 import { createSeasonPoints } from "./seasonPoints.js";
-import { createPathControls } from "./pathControls.js";
 import { createSunTrail } from "./sunTrail.js";
 import { createTimeControls } from "./timeControls.js";
 import { createTimeController } from "./timeController.js";
@@ -95,9 +94,6 @@ createTimeControls(
 );
 
 
-createPathControls(
-    sunTrail
-);
 
     function animate(){
 
