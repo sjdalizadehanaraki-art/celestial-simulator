@@ -1,234 +1,259 @@
 export function createLocalSky(){
 
 
-const canvas =
-document.createElement("canvas");
+    const canvas =
+    document.createElement("canvas");
 
 
-canvas.width =
-window.innerWidth;
+    canvas.width =
+    window.innerWidth;
 
-canvas.height =
-window.innerHeight;
+    canvas.height =
+    window.innerHeight;
 
 
-canvas.style.position="absolute";
-canvas.style.top="0";
-canvas.style.left="0";
-canvas.style.display="none";
-canvas.style.zIndex="5";
 
+    canvas.style.position =
+    "absolute";
 
-document.body.appendChild(canvas);
+    canvas.style.top =
+    "0";
 
+    canvas.style.left =
+    "0";
 
+    canvas.style.display =
+    "none";
 
-const ctx =
-canvas.getContext("2d");
+    canvas.style.zIndex =
+    "5";
 
 
+    document.body.appendChild(
+        canvas
+    );
 
-let altitude = 0;
 
-let azimuth = 180;
 
+    const ctx =
+    canvas.getContext("2d");
 
 
-let visible = false;
 
+    let altitude = 0;
 
+    let azimuth = Math.PI;
 
-function setSunPosition(
-    alt,
-    azi
-){
 
-    altitude = alt;
 
-    azimuth = azi;
+    let visible = false;
 
-}
 
 
+    function setSunPosition(
+        alt,
+        azi
+    ){
 
+        altitude = alt;
 
-function draw(){
+        azimuth = azi;
 
+    }
 
-if(!visible)
-return;
 
 
+    function draw(){
 
-const w =
-canvas.width;
 
+        if(!visible)
+        return;
 
-const h =
-canvas.height;
 
 
+        const w =
+        canvas.width;
 
-ctx.clearRect(
-0,
-0,
-w,
-h
-);
 
+        const h =
+        canvas.height;
 
 
-ctx.fillStyle="black";
 
-ctx.fillRect(
-0,
-0,
-w,
-h
-);
+        ctx.clearRect(
+            0,
+            0,
+            w,
+            h
+        );
 
 
 
-// خط افق
+        ctx.fillStyle =
+        "black";
 
-const horizon =
-h*0.75;
 
+        ctx.fillRect(
+            0,
+            0,
+            w,
+            h
+        );
 
 
-ctx.strokeStyle="white";
 
+        const horizon =
+        h * 0.75;
 
-ctx.beginPath();
 
-ctx.moveTo(
-0,
-horizon
-);
 
-ctx.lineTo(
-w,
-horizon
-);
+        // افق
 
-ctx.stroke();
+        ctx.strokeStyle =
+        "white";
 
 
+        ctx.beginPath();
 
-// نوشته ها
 
-ctx.fillStyle="white";
-ctx.font="20px Arial";
+        ctx.moveTo(
+            0,
+            horizon
+        );
 
 
-ctx.fillText(
-"شرق",
-50,
-horizon+40
-);
+        ctx.lineTo(
+            w,
+            horizon
+        );
 
 
-ctx.fillText(
-"جنوب",
-w/2-30,
-horizon+40
-);
+        ctx.stroke();
 
 
-ctx.fillText(
-"غرب",
-w-80,
-horizon+40
-);
 
+        ctx.fillStyle =
+        "white";
 
 
-// تبدیل سمت به X
+        ctx.font =
+        "20px Arial";
 
-const x =
-w/2
-+
-(
-(azimuth-180)
-/90
-)
-*
-(w/2-80);
 
 
+        ctx.fillText(
+            "شرق",
+            50,
+            horizon+40
+        );
 
-// تبدیل ارتفاع به Y
 
-const y =
-horizon
--
-(
-altitude /
-(Math.PI/2)
-)
-*
-(horizon-50);
+        ctx.fillText(
+            "جنوب",
+            w/2-30,
+            horizon+40
+        );
 
 
+        ctx.fillText(
+            "غرب",
+            w-80,
+            horizon+40
+        );
 
 
-// خورشید
 
-ctx.fillStyle="yellow";
+        // تبدیل آزیموت به موقعیت افقی
 
-ctx.beginPath();
+        const x =
+        w/2
+        +
+        (
+            (azimuth - Math.PI)
+            /
+            (Math.PI/2)
+        )
+        *
+        (w/2-80);
 
-ctx.arc(
-x,
-y,
-20,
-0,
-Math.PI*2
-);
 
-ctx.fill();
 
+        // تبدیل ارتفاع به عمودی
 
+        const y =
+        horizon
+        -
+        (
+            altitude /
+            (Math.PI/2)
+        )
+        *
+        (horizon-50);
 
-}
 
 
+        // خورشید
 
+        ctx.fillStyle =
+        "yellow";
 
-function show(){
 
-visible=true;
+        ctx.beginPath();
 
-canvas.style.display="block";
 
-draw();
+        ctx.arc(
+            x,
+            y,
+            20,
+            0,
+            Math.PI*2
+        );
 
-}
 
+        ctx.fill();
 
 
-function hide(){
 
-visible=false;
+    }
 
-canvas.style.display="none";
 
-}
 
+    function show(){
 
+        visible = true;
 
-return{
+        canvas.style.display =
+        "block";
 
-show,
 
-hide,
+        draw();
 
-draw,
+    }
 
-setSunPosition
 
-};
 
+    function hide(){
+
+        visible = false;
+
+        canvas.style.display =
+        "none";
+
+    }
+
+
+
+    return {
+
+        show,
+
+        hide,
+
+        draw,
+
+        setSunPosition
+
+    };
 
 
 }
