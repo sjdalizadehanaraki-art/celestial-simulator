@@ -11,7 +11,6 @@ export function createSunTrail(){
     new THREE.BufferGeometry();
 
 
-
     const material =
     new THREE.LineBasicMaterial({
 
@@ -35,6 +34,7 @@ export function createSunTrail(){
     line.visible = true;
 
 
+
     return {
 
 
@@ -42,7 +42,6 @@ export function createSunTrail(){
 
 
         addPoint(position){
-
 
             points.push(
                 position.clone()
@@ -52,7 +51,6 @@ export function createSunTrail(){
             geometry.setFromPoints(
                 points
             );
-
 
         },
 
@@ -67,6 +65,21 @@ export function createSunTrail(){
         hide(){
 
             line.visible = false;
+
+        },
+
+
+        toggle(){
+
+            line.visible =
+            !line.visible;
+
+        },
+
+
+        isVisible(){
+
+            return line.visible;
 
         },
 
