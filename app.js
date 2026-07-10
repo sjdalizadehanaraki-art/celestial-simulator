@@ -100,8 +100,7 @@ export function createApp() {
         sunMotion.update();
 
         sunTrail.addPoint(
-    sun.position,
-    time.getYearFraction()
+    sun.position
 );
 
         controls.update();
