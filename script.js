@@ -6,7 +6,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
 
-//  دوربین
+// دوربین
 const camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -14,12 +14,14 @@ const camera = new THREE.PerspectiveCamera(
     100
 );
 
-camera.position.set(7, 5, 7);
+// نگاه از سمت Y به مرکز تا Z بالا دیده شود
+camera.position.set(0, -10, 5);
+
 
 
 // رندر
 const renderer = new THREE.WebGLRenderer({
-    antialias: true
+    antialias:true
 });
 
 renderer.setSize(
@@ -31,14 +33,18 @@ renderer.setPixelRatio(
     window.devicePixelRatio
 );
 
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.outputColorSpace =
+THREE.SRGBColorSpace;
 
-document.body.appendChild(renderer.domElement);
+document.body.appendChild(
+    renderer.domElement
+);
 
 
 
-// کنترل‌ها
-const controls = new OrbitControls(
+// کنترل
+const controls =
+new OrbitControls(
     camera,
     renderer.domElement
 );
@@ -56,8 +62,8 @@ controls.update();
 
 
 
-// نور
 
+// نور
 scene.add(
     new THREE.AmbientLight(
         0xffffff,
@@ -66,14 +72,20 @@ scene.add(
 );
 
 
-const sunLight = new THREE.DirectionalLight(
+const light =
+new THREE.DirectionalLight(
     0xffffff,
     2
 );
 
-sunLight.position.set(5,5,5);
+light.position.set(
+    5,
+    -5,
+    5
+);
 
-scene.add(sunLight);
+scene.add(light);
+
 
 
 
@@ -96,16 +108,15 @@ new THREE.Mesh(
     ),
 
     new THREE.MeshStandardMaterial({
-
-        map: earthTexture,
-        roughness: 1
-
+        map:earthTexture,
+        roughness:1
     })
 
 );
 
-
 scene.add(earth);
+
+
 
 
 
@@ -139,7 +150,10 @@ scene.add(celestialSphere);
 
 
 
-// استوای سماوی (صفحه XY)
+
+
+// استوای سماوی
+// صفحه XY
 
 const equator =
 new THREE.Mesh(
@@ -168,7 +182,10 @@ scene.add(equator);
 
 
 
+
+
 // دایره البروج
+// کج شدن نسبت به استوا حول X
 
 const ecliptic =
 new THREE.Mesh(
@@ -202,53 +219,53 @@ scene.add(ecliptic);
 
 
 
+
 // محورهای مختصات
 
 const axisLength = 7;
 
 
-scene.add(
+// X اعتدال بهاری
 
+scene.add(
 new THREE.ArrowHelper(
     new THREE.Vector3(1,0,0),
     new THREE.Vector3(0,0,0),
     axisLength,
     0xff0000
 )
-
 );
 
 
+// Y طول 90 درجه
 
 scene.add(
-
 new THREE.ArrowHelper(
     new THREE.Vector3(0,1,0),
     new THREE.Vector3(0,0,0),
     axisLength,
     0x00ff00
 )
-
 );
 
 
+// Z قطب شمال
 
 scene.add(
-
 new THREE.ArrowHelper(
     new THREE.Vector3(0,0,1),
     new THREE.Vector3(0,0,0),
     axisLength,
     0x0088ff
 )
-
 );
 
 
 
 
 
-// برچسب محور ها
+
+// برچسب محورها
 
 function createLabel(text,color){
 
@@ -291,7 +308,6 @@ function createLabel(text,color){
 
 
     return sprite;
-
 }
 
 
@@ -300,9 +316,7 @@ const xLabel =
 createLabel("X","red");
 
 xLabel.position.set(
-    7.3,
-    0,
-    0
+    7.3,0,0
 );
 
 
@@ -311,9 +325,7 @@ const yLabel =
 createLabel("Y","lime");
 
 yLabel.position.set(
-    0,
-    7.3,
-    0
+    0,7.3,0
 );
 
 
@@ -322,11 +334,8 @@ const zLabel =
 createLabel("Z","cyan");
 
 zLabel.position.set(
-    0,
-    0,
-    7.3
+    0,0,7.3
 );
-
 
 
 scene.add(
@@ -340,12 +349,12 @@ scene.add(
 
 
 
+
 function animate(){
 
     requestAnimationFrame(
         animate
     );
-
 
     controls.update();
 
@@ -358,8 +367,8 @@ function animate(){
 }
 
 
-
 animate();
+
 
 
 
@@ -368,7 +377,6 @@ animate();
 window.addEventListener(
 "resize",
 ()=>{
-
 
 camera.aspect =
 window.innerWidth /
@@ -382,6 +390,5 @@ renderer.setSize(
 window.innerWidth,
 window.innerHeight
 );
-
 
 });
