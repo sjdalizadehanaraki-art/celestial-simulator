@@ -38,6 +38,7 @@ export function createSolarPosition(
 
 
         // زاویه ساعتی
+        // ظهر = صفر
 
         const hourAngle =
         (
@@ -56,11 +57,15 @@ export function createSolarPosition(
 
 
 
+        // ارتفاع خورشید
+
         const sinAltitude =
         Math.sin(lat)
         *
         Math.sin(declination)
+
         +
+
         Math.cos(lat)
         *
         Math.cos(declination)
@@ -76,13 +81,32 @@ export function createSolarPosition(
 
 
 
-        return {
+        // سمت خورشید
 
+        const azimuth =
+        Math.atan2(
+
+            Math.sin(hourAngle),
+
+            Math.cos(hourAngle)
+            *
+            Math.sin(lat)
+
+            -
+
+            Math.tan(declination)
+            *
+            Math.cos(lat)
+
+        );
+
+
+
+        return {
 
             altitude,
 
-            azimuth:0
-
+            azimuth
 
         };
 
