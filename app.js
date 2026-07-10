@@ -1,3 +1,4 @@
+import { createLocalSky } from "./localSky.js";
 import { createTimeDisplay } from "./timeDisplay.js";
 import { createSeasonPoints } from "./seasonPoints.js";
 import { createSunTrail } from "./sunTrail.js";
@@ -24,6 +25,8 @@ export function createApp() {
     const time = createTimeController();
 
     const timeDisplay = createTimeDisplay(time);
+
+    const localSky = createLocalSky();
 
     const { camera, controls } = createCamera();
 
@@ -88,9 +91,10 @@ export function createApp() {
     );
 
     createTimeControls(
-        time,
-        sunTrail
-    );
+    time,
+    sunTrail,
+    localSky
+);
 
     function animate() {
 
