@@ -105,7 +105,7 @@ createTimeControls(
 
         sunTrail.addPoint(
     sun.position,
-    time.getTime()
+    0
 );
 
         controls.update();
