@@ -43,6 +43,8 @@ controls.minDistance = 2;
 controls.maxDistance = 20;
 
 controls.enablePan = false;
+controls.target.set(0,0,0);
+controls.update();
 
 
 
