@@ -1,178 +1,78 @@
-export function createTimeControls(time, trail){
+export function createTimeController() {
 
+    let simulationTime = 0;
 
-    const panel =
-    document.createElement("div");
+    let lastRealTime = performance.now();
 
+    let speed = 1;
 
-    panel.style.position =
-    "absolute";
+    let playing = true;
 
-    panel.style.top =
-    "20px";
+    const YEAR_SECONDS = 1825;
 
-    panel.style.left =
-    "20px";
 
-    panel.style.zIndex =
-    "100";
+    function update() {
 
+        const now = performance.now();
 
-    panel.style.display =
-    "flex";
+        const delta =
+            (now - lastRealTime) / 1000;
 
-    panel.style.flexDirection =
-    "column";
+        lastRealTime = now;
 
+        if (playing) {
 
-    panel.style.gap =
-    "5px";
+            simulationTime +=
+                delta * speed / YEAR_SECONDS;
 
-
-
-    const play =
-    document.createElement("button");
-
-    play.textContent =
-    "▶ Play";
-
-
-    play.onclick = ()=>{
-
-        time.play();
-
-    };
-
-
-
-    const pause =
-    document.createElement("button");
-
-    pause.textContent =
-    "⏸ Pause";
-
-
-    pause.onclick = ()=>{
-
-        time.pause();
-
-    };
-
-
-
-    panel.appendChild(play);
-
-    panel.appendChild(pause);
-
-
-
-    const speeds =
-    [
-        0.1,
-        0.5,
-        1,
-        2,
-        5,
-        10
-    ];
-
-
-
-    speeds.forEach(speed=>{
-
-
-        const button =
-        document.createElement("button");
-
-
-        button.textContent =
-        "×" + speed;
-
-
-        button.onclick = ()=>{
-
-            time.setSpeed(speed);
-
-        };
-
-
-        panel.appendChild(button);
-
-
-    });
-
-
-
-
-
-    // نمایش مسیر خورشید
-
-    const pathButton =
-    document.createElement("button");
-
-
-    pathButton.textContent =
-    "☑ Show Path";
-
-
-    pathButton.onclick = ()=>{
-
-
-        trail.toggle();
-
-
-        if(trail.isVisible()){
-
-            pathButton.textContent =
-            "☑ Show Path";
-
-        }
-        else{
-
-            pathButton.textContent =
-            "☐ Show Path";
+            simulationTime =
+                simulationTime % 1;
 
         }
 
+    }
+
+
+    function play() {
+
+        playing = true;
+
+    }
+
+
+    function pause() {
+
+        playing = false;
+
+    }
+
+
+    function setSpeed(value) {
+
+        speed = value;
+
+    }
+
+
+    function getTime() {
+
+        return simulationTime;
+
+    }
+
+
+    return {
+
+        update,
+
+        play,
+
+        pause,
+
+        setSpeed,
+
+        getTime
+
     };
-
-
-
-    panel.appendChild(
-        pathButton
-    );
-
-
-
-
-    // پاک کردن مسیر
-
-    const clearButton =
-    document.createElement("button");
-
-
-    clearButton.textContent =
-    "🗑 Clear Path";
-
-
-    clearButton.onclick = ()=>{
-
-
-        trail.clear();
-
-
-    };
-
-
-    panel.appendChild(
-        clearButton
-    );
-
-
-
-    document.body.appendChild(
-        panel
-    );
-
 
 }
