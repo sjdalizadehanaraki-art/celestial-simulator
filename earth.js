@@ -32,6 +32,7 @@ export function createEarth(scene){
 
     );
 
+    earth.rotation.x = THREE.MathUtils.degToRad(90);
 
     scene.add(earth);
 
