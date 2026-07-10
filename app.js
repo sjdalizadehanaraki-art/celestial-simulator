@@ -1,3 +1,4 @@
+import { createSun } from "./sun.js";
 import { createSunTrail } from "./sunTrail.js";
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -114,6 +115,8 @@ scene.add(
     sunTrail.line
 );
 
+    const sun =
+createSun(scene);
 
 
     function animate(){
