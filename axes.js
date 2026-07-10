@@ -1,150 +1,157 @@
 import * as THREE from "three";
+import { CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
 
 
 export function createAxes(scene){
 
-
     const length = 5;
 
 
-
-    // محور X (قرمز)
+    // ---------- X ----------
 
     scene.add(
+
         new THREE.ArrowHelper(
+
             new THREE.Vector3(1,0,0),
+
             new THREE.Vector3(0,0,0),
+
             length,
+
             0xff0000
+
         )
+
     );
 
 
 
-    // محور Y (سبز)
+    // ---------- Y ----------
 
     scene.add(
+
         new THREE.ArrowHelper(
+
             new THREE.Vector3(0,1,0),
+
             new THREE.Vector3(0,0,0),
+
             length,
+
             0x00ff00
+
         )
+
     );
 
 
 
-    // محور Z (آبی)
+    // ---------- Z ----------
 
     scene.add(
+
         new THREE.ArrowHelper(
+
             new THREE.Vector3(0,0,1),
+
             new THREE.Vector3(0,0,0),
+
             length,
+
             0x0088ff
+
         )
+
     );
 
 
 
     // برچسب ها
 
-    const xLabel =
-    createLabel("X", "red");
-
-    xLabel.position.set(
-        5.4,
-        0,
-        0
+    scene.add(
+        createLabel(
+            "X",
+            "red",
+            5.3,
+            0,
+            0
+        )
     );
-
-
-    const yLabel =
-    createLabel("Y", "lime");
-
-    yLabel.position.set(
-        0,
-        5.4,
-        0
-    );
-
-
-    const zLabel =
-    createLabel("Z", "cyan");
-
-    zLabel.position.set(
-        0,
-        0,
-        5.4
-    );
-
 
 
     scene.add(
-        xLabel,
-        yLabel,
-        zLabel
+        createLabel(
+            "Y",
+            "lime",
+            0,
+            5.3,
+            0
+        )
+    );
+
+
+    scene.add(
+        createLabel(
+            "Z",
+            "cyan",
+            0,
+            0,
+            5.3
+        )
     );
 
 }
 
 
 
+function createLabel(
+    text,
+    color,
+    x,
+    y,
+    z
+){
+
+    const div =
+    document.createElement("div");
 
 
-function createLabel(text,color){
+    div.textContent =
+    text;
 
 
-    const canvas =
-    document.createElement("canvas");
-
-
-    const ctx =
-    canvas.getContext("2d");
-
-
-    canvas.width = 128;
-    canvas.height = 128;
-
-
-    ctx.font =
-    "80px Arial";
-
-
-    ctx.fillStyle =
+    div.style.color =
     color;
 
 
-    ctx.fillText(
-        text,
-        20,
-        80
+    div.style.fontSize =
+    "24px";
+
+
+    div.style.fontWeight =
+    "bold";
+
+
+    div.style.fontFamily =
+    "Arial";
+
+
+    div.style.userSelect =
+    "none";
+
+
+    const label =
+    new CSS2DObject(div);
+
+
+    label.position.set(
+        x,
+        y,
+        z
     );
 
 
-
-    const texture =
-    new THREE.CanvasTexture(
-        canvas
-    );
-
-
-    const sprite =
-    new THREE.Sprite(
-        new THREE.SpriteMaterial({
-            map:texture,
-            transparent:true
-        })
-    );
-
-
-    sprite.scale.set(
-        0.5,
-        0.5,
-        0.5
-    );
-
-
-    return sprite;
+    return label;
 
 }
