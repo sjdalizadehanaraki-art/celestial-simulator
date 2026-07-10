@@ -1,5 +1,5 @@
-alert("NEW VERSION");
 import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
@@ -28,8 +28,21 @@ renderer.setSize(
 renderer.setPixelRatio(
     window.devicePixelRatio
 );
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 document.body.appendChild(renderer.domElement);
+const controls = new OrbitControls(
+    camera,
+    renderer.domElement
+);
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+
+controls.minDistance = 2;
+controls.maxDistance = 20;
+
+controls.enablePan = false;
 
 
 
@@ -97,12 +110,15 @@ function animate(){
 
     requestAnimationFrame(animate);
 
-    earth.rotation.y += 0.003;
+    controls.update();
 
-    renderer.render(
-        scene,
-        camera
-    );
+// فعلاً چرخش خودکار را خاموش می‌کنیم
+// earth.rotation.y += 0.003;
+
+renderer.render(
+    scene,
+    camera
+);
 
 }
 
