@@ -1,3 +1,4 @@
+import { createPathControls } from "./pathControls.js";
 import { createSunTrail } from "./sunTrail.js";
 import { createTimeControls } from "./timeControls.js";
 import { createTimeController } from "./timeController.js";
@@ -81,12 +82,9 @@ export function createApp(){
     const sun =
     createSun(scene);
     const sunMotion =
-    createSunMotion(
-    sun,
-    time
-);
-    const sunTrail =
-createSunTrail();
+    createSunMotion(sun,time);
+    const sunTrail = createSunTrail();
+    createPathControls(sunTrail);
 
 
 scene.add(
