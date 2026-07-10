@@ -56,8 +56,9 @@ export function createApp(){
 
     document.body.appendChild(
         renderer.domElement
-        console.log("RENDERER OK");
+        
     );
+    console.log("RENDERER OK");
 
 
 
@@ -85,8 +86,9 @@ export function createApp(){
 
     document.body.appendChild(
         labelRenderer.domElement
-        console.log("LABEL OK");
+
     );
+    console.log("LABEL OK");
 
 
 
