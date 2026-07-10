@@ -1,3 +1,4 @@
+alert("PATH CONTROL LOADED");
 export function createPathControls(trail){
 
 
