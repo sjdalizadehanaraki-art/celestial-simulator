@@ -12,7 +12,6 @@ export function createLocalSky(){
     window.innerHeight;
 
 
-
     canvas.style.position =
     "absolute";
 
@@ -50,6 +49,11 @@ export function createLocalSky(){
 
 
 
+    const pathPoints = [];
+
+
+
+
     function setSunPosition(
         alt,
         azi
@@ -59,7 +63,18 @@ export function createLocalSky(){
 
         azimuth = azi;
 
+
+        pathPoints.push({
+
+            altitude: alt,
+
+            azimuth: azi
+
+        });
+
+
     }
+
 
 
 
@@ -107,7 +122,8 @@ export function createLocalSky(){
 
 
 
-        // افق
+
+        // خط افق
 
         ctx.strokeStyle =
         "white";
@@ -132,13 +148,16 @@ export function createLocalSky(){
 
 
 
+
+
+        // جهت ها
+
         ctx.fillStyle =
         "white";
 
 
         ctx.font =
         "20px Arial";
-
 
 
         ctx.fillText(
@@ -163,22 +182,90 @@ export function createLocalSky(){
 
 
 
-        // تبدیل آزیموت به موقعیت افقی
+
+
+        // رسم مسیر خورشید
+
+        ctx.strokeStyle =
+        "rgba(255,255,0,0.8)";
+
+
+        ctx.beginPath();
+
+
+
+        pathPoints.forEach(
+            (point,index)=>{
+
+
+                const px =
+                w/2
+                +
+                (
+                    (point.azimuth - Math.PI)
+                    /
+                    Math.PI
+                )
+                *
+                (w/2-80);
+
+
+
+                const py =
+                horizon
+                -
+                (
+                    point.altitude /
+                    (Math.PI/2)
+                )
+                *
+                (horizon-50);
+
+
+
+                if(index===0){
+
+                    ctx.moveTo(
+                        px,
+                        py
+                    );
+
+                }
+                else{
+
+                    ctx.lineTo(
+                        px,
+                        py
+                    );
+
+                }
+
+
+            }
+        );
+
+
+        ctx.stroke();
+
+
+
+
+
+        // موقع فعلی خورشید
+
 
         const x =
-w/2
-+
-(
-    (azimuth - Math.PI)
-    /
-    Math.PI
-)
-*
-(w/2-80);
+        w/2
+        +
+        (
+            (azimuth - Math.PI)
+            /
+            Math.PI
+        )
+        *
+        (w/2-80);
 
 
-
-        // تبدیل ارتفاع به عمودی
 
         const y =
         horizon
@@ -192,7 +279,8 @@ w/2
 
 
 
-        // خورشید
+
+        // خود خورشید (نقطه کوچک)
 
         ctx.fillStyle =
         "yellow";
@@ -202,11 +290,16 @@ w/2
 
 
         ctx.arc(
+
             x,
             y,
-            3,
+
+            4,
+
             0,
+
             Math.PI*2
+
         );
 
 
@@ -218,6 +311,16 @@ w/2
 
 
 
+
+    function clearPath(){
+
+        pathPoints.length = 0;
+
+    }
+
+
+
+
     function show(){
 
         visible = true;
@@ -225,10 +328,10 @@ w/2
         canvas.style.display =
         "block";
 
-
         draw();
 
     }
+
 
 
 
@@ -243,6 +346,8 @@ w/2
 
 
 
+
+
     return {
 
         show,
@@ -251,7 +356,9 @@ w/2
 
         draw,
 
-        setSunPosition
+        setSunPosition,
+
+        clearPath
 
     };
 
