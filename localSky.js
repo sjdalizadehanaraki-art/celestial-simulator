@@ -12,19 +12,24 @@ export function createLocalSky(){
     window.innerHeight;
 
 
-
     canvas.style.position =
     "absolute";
+
 
     canvas.style.top =
     "0";
 
+
     canvas.style.left =
     "0";
+
 
     canvas.style.display =
     "none";
 
+
+    canvas.style.zIndex =
+    "5";
 
 
     document.body.appendChild(
@@ -32,26 +37,30 @@ export function createLocalSky(){
     );
 
 
+
     const ctx =
     canvas.getContext("2d");
 
 
 
-    function show(){
+    let sunX = 0.5;
 
-        canvas.style.display =
-        "block";
-
-        draw();
-
-    }
+    let sunY = 0.3;
 
 
 
-    function hide(){
+    let visible = false;
 
-        canvas.style.display =
-        "none";
+
+
+    function setSunPosition(
+        x,
+        y
+    ){
+
+        sunX = x;
+
+        sunY = y;
 
     }
 
@@ -60,87 +69,69 @@ export function createLocalSky(){
     function draw(){
 
 
-        ctx.clearRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        ctx.fillStyle =
-        "black";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+        if(!visible)
+        return;
 
 
 
         const w =
         canvas.width;
 
+
         const h =
         canvas.height;
 
 
 
-        // افق
+        ctx.clearRect(
+            0,
+            0,
+            w,
+            h
+        );
+
+
+
+        ctx.fillStyle =
+        "black";
+
+
+        ctx.fillRect(
+            0,
+            0,
+            w,
+            h
+        );
+
+
+
+        // خط افق
 
         ctx.strokeStyle =
         "white";
 
+
         ctx.beginPath();
+
 
         ctx.moveTo(
             0,
             h*0.75
         );
 
+
         ctx.lineTo(
             w,
             h*0.75
         );
 
+
         ctx.stroke();
 
 
 
-        // جهت ها
+        // خورشید
 
-        ctx.fillStyle =
-        "white";
-
-        ctx.font =
-        "20px Arial";
-
-
-        ctx.fillText(
-            "شرق",
-            50,
-            h*0.75+40
-        );
-
-
-        ctx.fillText(
-            "جنوب",
-            w/2-30,
-            h*0.75+40
-        );
-
-
-        ctx.fillText(
-            "غرب",
-            w-80,
-            h*0.75+40
-        );
-
-
-
-        // خورشید تست
 
         ctx.fillStyle =
         "yellow";
@@ -150,8 +141,8 @@ export function createLocalSky(){
 
 
         ctx.arc(
-            w/2,
-            h/3,
+            sunX*w,
+            sunY*h,
             20,
             0,
             Math.PI*2
@@ -165,13 +156,39 @@ export function createLocalSky(){
 
 
 
+    function show(){
+
+        visible = true;
+
+        canvas.style.display =
+        "block";
+
+        draw();
+
+    }
+
+
+
+    function hide(){
+
+        visible = false;
+
+        canvas.style.display =
+        "none";
+
+    }
+
+
+
     return {
 
         show,
 
         hide,
 
-        draw
+        draw,
+
+        setSunPosition
 
     };
 
