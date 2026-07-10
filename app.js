@@ -106,7 +106,9 @@ createPathControls(
         sunMotion.update();
 
         sunTrail.addPoint(
-        sun.position);
+    sun.position,
+    time.getTime()
+);
 
         controls.update();
 
