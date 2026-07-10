@@ -1,80 +1,61 @@
 import * as THREE from "three";
 
-
 export function createSunMotion(
     sun,
     time
 ){
 
-
     const radius = 5;
 
-
-    const dailyPeriod = 5; 
-    // یک روز شبیه‌سازی = 5 ثانیه
-
-
-    const yearlyPeriod = 1825;
-    // یک سال شبیه‌سازی = 1825 ثانیه
-
-
     const obliquity =
-    THREE.MathUtils.degToRad(23.44);
-
+    THREE.MathUtils.degToRad(
+        23.44
+    );
 
 
     function update(){
 
-
-        const t =
-        time.getTime();
-
-
-
-        // زاویه حرکت روزانه
-
-        const dailyAngle =
-        (t / dailyPeriod) *
-        Math.PI *
-        2;
+        const yearAngle =
+        time.getYearFraction() *
+        Math.PI * 2;
 
 
+        const dayAngle =
+        time.getDayFraction() *
+        Math.PI * 2;
 
-        // زاویه حرکت سالانه
-
-        const yearlyAngle =
-        (t / yearlyPeriod) *
-        Math.PI *
-        2;
-
-
-
-        // میل خورشید
 
         const declination =
-        obliquity *
-        Math.sin(yearlyAngle);
+        Math.asin(
+            Math.sin(obliquity) *
+            Math.sin(yearAngle)
+        );
 
+
+        const rightAscension =
+        yearAngle;
+
+
+        const hourAngle =
+        rightAscension +
+        dayAngle;
 
 
         const x =
         radius *
         Math.cos(declination) *
-        Math.cos(dailyAngle);
-
+        Math.cos(hourAngle);
 
 
         const y =
         radius *
         Math.cos(declination) *
-        Math.sin(dailyAngle);
-
+        Math.sin(hourAngle);
 
 
         const z =
         radius *
         Math.sin(declination);
-
 
 
         sun.position.set(
@@ -83,16 +64,13 @@ export function createSunMotion(
             z
         );
 
-
     }
 
 
-
-    return {
+    return{
 
         update
 
     };
-
 
 }
