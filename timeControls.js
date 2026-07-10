@@ -113,6 +113,47 @@ export function createTimeControls(time){
     panel.appendChild(label);
 
 
+    // دکمه مسیر خورشید
+
+const pathButton =
+document.createElement("button");
+
+pathButton.textContent =
+"☑ Show Sun Path";
+
+
+pathButton.onclick = ()=>{
+
+    trail.toggle();
+
+
+    if(trail.isVisible()){
+
+        pathButton.textContent =
+        "☑ Show Sun Path";
+
+    }
+
+    else{
+
+        pathButton.textContent =
+        "☐ Show Sun Path";
+
+    }
+
+};
+
+
+panel.appendChild(
+    document.createElement("br")
+);
+
+
+panel.appendChild(
+    pathButton
+);
+
+
 
     document.body.appendChild(panel);
 
