@@ -1,7 +1,6 @@
+import { createSunTrail } from "./sunTrail.js";
 import * as THREE from "three";
-
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
-
 import { createCamera } from "./camera.js";
 import { createAxes } from "./axes.js";
 import { createEarth } from "./earth.js";
@@ -106,6 +105,14 @@ export function createApp(){
     createCelestialSphere(scene);
 
     createCelestialPlanes(scene);
+
+    const sunTrail =
+createSunTrail();
+
+
+scene.add(
+    sunTrail.line
+);
 
 
 
