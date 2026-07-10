@@ -1,3 +1,5 @@
+import { createObserver } from "./observer.js";
+import { createSolarPosition } from "./solarPosition.js";
 import { createLocalSky } from "./localSky.js";
 import { createTimeDisplay } from "./timeDisplay.js";
 import { createSeasonPoints } from "./seasonPoints.js";
@@ -27,6 +29,10 @@ export function createApp() {
     const timeDisplay = createTimeDisplay(time);
 
     const localSky = createLocalSky();
+
+    const observer = createObserver();
+
+    const solarPosition = createSolarPosition(time,observer);
 
     const { camera, controls } = createCamera();
 
@@ -107,17 +113,12 @@ export function createApp() {
         timeDisplay.update();
 
         sunMotion.update();
-        const x =
-0.5 + sun.position.x / 12;
+        const sunData =
+solarPosition.update();
 
 
-const y =
-0.5 - sun.position.y / 12;
-
-
-localSky.setSunPosition(
-    x,
-    y
+console.log(
+    sunData.altitude * 180 / Math.PI
 );
 
 localSky.draw();
