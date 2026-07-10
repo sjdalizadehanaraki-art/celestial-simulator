@@ -1,18 +1,21 @@
 import * as THREE from "three";
 
 
-export function createSunMotion(sun){
+export function createSunMotion(
+    sun,
+    time
+){
 
 
     const radius = 5;
 
 
-    const dailySpeed =
-    (Math.PI * 2) / 5;
+    const dailyPeriod = 5; 
+    // یک روز شبیه‌سازی = 5 ثانیه
 
 
-    const yearlySpeed =
-    (Math.PI * 2) / 1825;
+    const yearlyPeriod = 1825;
+    // یک سال شبیه‌سازی = 1825 ثانیه
 
 
     const obliquity =
@@ -20,34 +23,29 @@ export function createSunMotion(sun){
 
 
 
-    const start =
-    performance.now();
-
-
-
     function update(){
 
 
-        const now =
-        performance.now();
-
-
         const t =
-        (now - start) / 1000;
+        time.getTime();
 
 
 
-        // حرکت روزانه زمین
+        // زاویه حرکت روزانه
 
         const dailyAngle =
-        dailySpeed * t;
+        (t / dailyPeriod) *
+        Math.PI *
+        2;
 
 
 
-        // موقعیت سال در مدار
+        // زاویه حرکت سالانه
 
         const yearlyAngle =
-        yearlySpeed * t;
+        (t / yearlyPeriod) *
+        Math.PI *
+        2;
 
 
 
@@ -58,8 +56,6 @@ export function createSunMotion(sun){
         Math.sin(yearlyAngle);
 
 
-
-        // مختصات روی کره سماوی
 
         const x =
         radius *
@@ -88,15 +84,15 @@ export function createSunMotion(sun){
         );
 
 
-        requestAnimationFrame(
-            update
-        );
-
-
     }
 
 
-    update();
+
+    return {
+
+        update
+
+    };
 
 
 }
