@@ -14,6 +14,8 @@ import { createEarth } from "./earth.js";
 
 export function createApp(){
 
+    alert("APP START");
+
     const scene = new THREE.Scene();
 
     scene.background =
@@ -104,7 +106,7 @@ export function createApp(){
 
     createEarth(scene);
 
-   // createEarthEquator(scene);
+    createEarthEquator(scene);
 
     createCelestialSphere(scene);
 
