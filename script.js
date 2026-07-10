@@ -61,7 +61,7 @@ const loader = new THREE.TextureLoader();
 
 
 const earthTexture = loader.load(
-    "earth.jpg"
+    "earth.png"
 );
 
 
