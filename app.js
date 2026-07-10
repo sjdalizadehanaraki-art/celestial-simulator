@@ -1,3 +1,4 @@
+import { createSeasonPoints } from "./seasonPoints.js";
 import { createPathControls } from "./pathControls.js";
 import { createSunTrail } from "./sunTrail.js";
 import { createTimeControls } from "./timeControls.js";
@@ -74,6 +75,7 @@ document.body.appendChild(
     createEarthEquator(scene);
     createCelestialSphere(scene);
     createCelestialPlanes(scene);
+    createSeasonPoints(scene);
     const sun =
     createSun(scene);
     const sunMotion =
