@@ -74,7 +74,7 @@ document.body.appendChild(
     createEarthEquator(scene);
     createCelestialSphere(scene);
     createCelestialPlanes(scene);
-    createSeasonPoints(scene);
+  //  createSeasonPoints(scene);
     const sun =
     createSun(scene);
     const sunMotion =
