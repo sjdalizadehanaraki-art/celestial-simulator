@@ -1,15 +1,11 @@
 import * as THREE from "three";
 
-
 export function createSunTrail(){
-
 
     const points = [];
 
-
     const geometry =
     new THREE.BufferGeometry();
-
 
     const material =
     new THREE.LineBasicMaterial({
@@ -22,8 +18,6 @@ export function createSunTrail(){
 
     });
 
-
-
     const line =
     new THREE.Line(
         geometry,
@@ -31,43 +25,36 @@ export function createSunTrail(){
     );
 
 
+    const lastPoint =
+    new THREE.Vector3(
+        Infinity,
+        Infinity,
+        Infinity
+    );
 
-    let lastSampleTime = -1;
 
+    const minDistance = 0.02;
 
 
     function rebuild(){
-
 
         geometry.setFromPoints(
             points
         );
 
-
     }
 
 
-
-    return {
-
-
+    return{
 
         line,
 
 
-
-        addPoint(position, simTime){
-
-
-            const minute =
-            Math.floor(
-                simTime / (5 / 1440)
-            );
-
-
+        addPoint(position){
 
             if(
-                minute === lastSampleTime
+                lastPoint.distanceTo(position)
+                < minDistance
             ){
 
                 return;
@@ -75,10 +62,7 @@ export function createSunTrail(){
             }
 
 
-
-            lastSampleTime =
-            minute;
-
+            lastPoint.copy(position);
 
 
             points.push(
@@ -88,20 +72,14 @@ export function createSunTrail(){
 
             rebuild();
 
-
         },
-
 
 
         show(){
 
             line.visible = true;
 
-
-            rebuild();
-
         },
-
 
 
         hide(){
@@ -111,21 +89,12 @@ export function createSunTrail(){
         },
 
 
-
         toggle(){
 
             line.visible =
             !line.visible;
 
-
-            if(line.visible){
-
-                rebuild();
-
-            }
-
         },
-
 
 
         isVisible(){
@@ -135,18 +104,19 @@ export function createSunTrail(){
         },
 
 
-
         clear(){
 
             points.length = 0;
 
-            lastSampleTime = -1;
+            lastPoint.set(
+                Infinity,
+                Infinity,
+                Infinity
+            );
 
             rebuild();
 
         }
-
-
 
     };
 
