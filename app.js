@@ -1,3 +1,5 @@
+import { createEarthEquator } from "./earthEquator.js";
+
 import { createCelestialSphere } from "./celestialSphere.js";
 
 import * as THREE from "three";
@@ -101,6 +103,8 @@ export function createApp(){
     createAxes(scene);
 
     createEarth(scene);
+
+    createEarthEquator(scene);
 
     createCelestialSphere(scene);
 
