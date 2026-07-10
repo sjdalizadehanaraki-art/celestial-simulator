@@ -15,25 +15,11 @@ export function createCamera(){
 
 
     // نمای مورد نظر تو
-    camera.position.set(
-        -8,
-        -8,
-        8
-    );
+    camera.position.set(8, 8, 8);
 
+camera.up.set(0, 0, 1);
 
-    camera.up.set(
-        0,
-        0,
-        1
-    );
-
-
-    camera.lookAt(
-        0,
-        0,
-        0
-    );
+camera.lookAt(0, 0, 0);
 
 
 
