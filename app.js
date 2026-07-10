@@ -1,3 +1,4 @@
+import { createTimeDisplay } from "./timeDisplay.js";
 import { createSeasonPoints } from "./seasonPoints.js";
 import { createSunTrail } from "./sunTrail.js";
 import { createTimeControls } from "./timeControls.js";
@@ -21,6 +22,8 @@ export function createApp() {
     scene.background = new THREE.Color(0x000000);
 
     const time = createTimeController();
+
+    const timeDisplay = createTimeDisplay(time);
 
     const { camera, controls } = createCamera();
 
@@ -96,6 +99,8 @@ export function createApp() {
         );
 
         time.update();
+
+        timeDisplay.update();
 
         sunMotion.update();
 
