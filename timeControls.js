@@ -2,7 +2,8 @@ alert("TIME CONTROLS OK");
 
 export function createTimeControls(
     time,
-    trail
+    trail,
+    localSky
 ){
 
 
@@ -199,8 +200,49 @@ export function createTimeControls(
 
     panel.appendChild(row2);
 
+    const viewButton =
+document.createElement("button");
 
 
+viewButton.textContent =
+"☀ Local Sky";
+
+
+let localVisible = false;
+
+
+viewButton.onclick = ()=>{
+
+
+    localVisible =
+    !localVisible;
+
+
+    if(localVisible){
+
+        localSky.show();
+
+        viewButton.textContent =
+        "🌍 3D View";
+
+    }
+    else{
+
+        localSky.hide();
+
+        viewButton.textContent =
+        "☀ Local Sky";
+
+    }
+
+
+};
+
+
+panel.appendChild(
+    viewButton
+);
+    
     document.body.appendChild(
         panel
     );
