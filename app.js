@@ -28,6 +28,8 @@ export function createApp() {
 
     const localSky = createLocalSky();
 
+    const localSky = createLocalSky();
+
     const { camera, controls } = createCamera();
 
     const renderer = new THREE.WebGLRenderer({
@@ -107,6 +109,10 @@ export function createApp() {
         timeDisplay.update();
 
         sunMotion.update();
+        const x = (sun.position.x + 5) / 10;
+        const y = 1 - ((sun.position.z + 5) / 10);
+        localSky.setSunPosition(x,y);
+        localSky.draw();
 
         sunTrail.addPoint(
     sun.position
