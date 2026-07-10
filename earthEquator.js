@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export function createEarthEquator(scene){
+export function createearthEquator(scene){
 
     const material = new THREE.LineBasicMaterial({
         color: 0x00ff00
