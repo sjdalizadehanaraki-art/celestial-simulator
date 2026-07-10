@@ -20,7 +20,7 @@ export function createSolarPosition(
 
 
 
-        const dayFraction =
+        const day =
         time.getDayFraction();
 
 
@@ -42,31 +42,31 @@ export function createSolarPosition(
 
         const hourAngle =
         (
-            dayFraction * 360
-            -180
+            day * 360 - 180
         )
         *
         Math.PI/180;
 
 
 
-        const lat =
+        const latitude =
         observer.getLatitude()
         *
         Math.PI/180;
 
 
 
-        // ارتفاع خورشید
 
-        const sinAltitude =
-        Math.sin(lat)
+        // ارتفاع
+
+        const sinAlt =
+        Math.sin(latitude)
         *
         Math.sin(declination)
 
         +
 
-        Math.cos(lat)
+        Math.cos(latitude)
         *
         Math.cos(declination)
         *
@@ -76,12 +76,14 @@ export function createSolarPosition(
 
         const altitude =
         Math.asin(
-            sinAltitude
+            sinAlt
         );
 
 
 
-        // سمت خورشید
+
+
+        // آزیموت واقعی
 
         const azimuth =
         Math.atan2(
@@ -90,15 +92,15 @@ export function createSolarPosition(
 
             Math.cos(hourAngle)
             *
-            Math.sin(lat)
-
+            Math.sin(latitude)
             -
-
             Math.tan(declination)
             *
-            Math.cos(lat)
+            Math.cos(latitude)
 
-        );
+        )
+        +
+        Math.PI;
 
 
 
