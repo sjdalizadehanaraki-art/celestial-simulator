@@ -2,7 +2,7 @@ alert("NEW VERSION");
 import * as THREE from "three";
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xff0000);
+scene.background = new THREE.Color(0x000000);
 
 
 const camera = new THREE.PerspectiveCamera(
@@ -12,7 +12,7 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
-camera.position.set(0, 0, 4);
+camera.position.set(0, 0, 5);
 
 
 // رندر
@@ -69,7 +69,7 @@ const earthTexture = loader.load(
 // کره زمین
 const earth = new THREE.Mesh(
     new THREE.SphereGeometry(
-        1,
+        0.8,
         64,
         64
     ),
