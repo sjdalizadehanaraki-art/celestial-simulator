@@ -1,4 +1,5 @@
 alert("TIME CONTROLS OK");
+
 export function createTimeControls(
     time,
     trail
@@ -18,10 +19,13 @@ export function createTimeControls(
     panel.style.borderRadius = "10px";
     panel.style.color = "white";
     panel.style.fontFamily = "Arial";
+    panel.style.display = "flex";
+    panel.style.flexDirection = "column";
+    panel.style.gap = "5px";
 
 
 
-    // دکمه Play
+    // Play
 
     const play =
     document.createElement("button");
@@ -38,7 +42,7 @@ export function createTimeControls(
 
 
 
-    // دکمه Pause
+    // Pause
 
     const pause =
     document.createElement("button");
@@ -55,13 +59,22 @@ export function createTimeControls(
 
 
 
-    // سرعت
+    panel.appendChild(play);
+
+    panel.appendChild(pause);
+
+
+
+    // Speed
 
     const label =
     document.createElement("div");
 
     label.textContent =
     "Speed";
+
+
+    panel.appendChild(label);
 
 
 
@@ -76,7 +89,6 @@ export function createTimeControls(
     ];
 
 
-
     speeds.forEach(value=>{
 
 
@@ -85,7 +97,7 @@ export function createTimeControls(
 
 
         button.textContent =
-        "×"+value;
+        "×" + value;
 
 
         button.onclick = ()=>{
@@ -102,63 +114,70 @@ export function createTimeControls(
 
 
 
-    panel.appendChild(
-        document.createElement("br")
+    // Show / Hide Path
+
+    const pathButton =
+    document.createElement("button");
+
+
+    pathButton.textContent =
+    "☑ Show Sun Path";
+
+
+    pathButton.onclick = ()=>{
+
+
+        trail.toggle();
+
+
+        if(trail.isVisible()){
+
+            pathButton.textContent =
+            "☑ Show Sun Path";
+
+        }
+        else{
+
+            pathButton.textContent =
+            "☐ Show Sun Path";
+
+        }
+
+
+    };
+
+
+    panel.appendChild(pathButton);
+
+
+
+
+    // Clear Path
+
+    const clearButton =
+    document.createElement("button");
+
+
+    clearButton.textContent =
+    "🗑 Clear Path";
+
+
+    clearButton.onclick = ()=>{
+
+
+        trail.clear();
+
+
+    };
+
+
+    panel.appendChild(clearButton);
+
+
+
+    document.body.appendChild(
+        panel
     );
-
-
-    panel.appendChild(play);
-
-
-    panel.appendChild(pause);
-
-
-    panel.appendChild(label);
-
-
-    // دکمه مسیر خورشید
-
-const pathButton =
-document.createElement("button");
-
-pathButton.textContent =
-"☑ Show Sun Path";
-
-
-pathButton.onclick = ()=>{
-
-    trail.toggle();
-
-
-    if(trail.isVisible()){
-
-        pathButton.textContent =
-        "☑ Show Sun Path";
-
-    }
-
-    else{
-
-        pathButton.textContent =
-        "☐ Show Sun Path";
-
-    }
-
-};
-
-
-panel.appendChild(
-    document.createElement("br")
-);
-
-
-panel.appendChild(
-    pathButton
-);
-
-
-
-    document.body.appendChild(panel);
 
 
 }
