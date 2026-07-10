@@ -1,4 +1,3 @@
-import { createSeasonPoints } from "./seasonPoints.js";
 alert("APP IMPORTS OK1");
 import { createSunTrail } from "./sunTrail.js";
 alert("APP IMPORTS OK2");
