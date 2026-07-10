@@ -74,14 +74,21 @@ export function createApp(){
     createEarthEquator(scene);
     createCelestialSphere(scene);
     createCelestialPlanes(scene);
-    const sun = createSun(scene);
-    createSunMotion(sun);
+    const sun =
+    createSun(scene);
+    const sunMotion =
+    createSunMotion(
+    sun,
+    time
+);
 
     function animate(){
 
         requestAnimationFrame(animate);
 
         time.update();
+
+        sunMotion.update();
 
         controls.update();
 
