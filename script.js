@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-alert("VERSION 5");
+alert("VERSION 6");
 
 
 const scene = new THREE.Scene();
@@ -118,7 +118,7 @@ new THREE.Mesh(
 
 scene.add(earth);
 // انتقال قطب شمال از +Y به +Z
-earth.rotation.x = Math.PI / 2;
+earth.rotation.x = -Math.PI / 2;
 
 // قرار دادن نصف‌النهار مبدأ روی محور Y (اعتدال بهاری)
 earth.rotation.z = Math.PI / 2;
