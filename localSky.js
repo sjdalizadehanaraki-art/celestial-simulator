@@ -166,15 +166,15 @@ export function createLocalSky(){
         // تبدیل آزیموت به موقعیت افقی
 
         const x =
-        w/2
-        +
-        (
-            (azimuth - Math.PI)
-            /
-            (Math.PI/2)
-        )
-        *
-        (w/2-80);
+w/2
++
+(
+    (azimuth - Math.PI)
+    /
+    Math.PI
+)
+*
+(w/2-80);
 
 
 
