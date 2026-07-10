@@ -1,67 +1,94 @@
-export function createTimeController() {
+export function createTimeController(){
 
-    let simulationTime = 0;
+    const DAY_SECONDS = 5;
+    const YEAR_DAYS = 365;
+
+    let playing = true;
+    let speed = 1;
 
     let lastRealTime = performance.now();
 
-    let speed = 1;
-
-    let playing = true;
-
-    const YEAR_SECONDS = 1825;
+    let dayOfYear = 0;
+    let timeOfDay = 0;
 
 
-    function update() {
+    function update(){
 
         const now = performance.now();
 
         const delta =
-            (now - lastRealTime) / 1000;
+        (now-lastRealTime)/1000;
 
         lastRealTime = now;
 
-        if (playing) {
+        if(!playing) return;
 
-            simulationTime +=
-                delta * speed / YEAR_SECONDS;
 
-            simulationTime =
-                simulationTime % 1;
+        timeOfDay +=
+        delta * speed;
+
+
+        while(timeOfDay >= DAY_SECONDS){
+
+            timeOfDay -= DAY_SECONDS;
+
+            dayOfYear++;
 
         }
+
+
+        dayOfYear =
+        dayOfYear % YEAR_DAYS;
 
     }
 
 
-    function play() {
+    function play(){
 
         playing = true;
 
     }
 
 
-    function pause() {
+    function pause(){
 
         playing = false;
 
     }
 
 
-    function setSpeed(value) {
+    function setSpeed(value){
 
         speed = value;
 
     }
 
 
-    function getTime() {
+    function getDay(){
 
-        return simulationTime;
+        return dayOfYear;
 
     }
 
 
-    return {
+    function getDayFraction(){
+
+        return timeOfDay / DAY_SECONDS;
+
+    }
+
+
+    function getYearFraction(){
+
+        return (
+            dayOfYear +
+            getDayFraction()
+        ) / YEAR_DAYS;
+
+    }
+
+
+    return{
 
         update,
 
@@ -71,7 +98,11 @@ export function createTimeController() {
 
         setSpeed,
 
-        getTime
+        getDay,
+
+        getDayFraction,
+
+        getYearFraction
 
     };
 
