@@ -23,7 +23,7 @@ export function createApp(){
     const time =
     createTimeController();
 
-    createTimeControls(time);
+    createTimeControls(time,sunTrail);
 
     const camera = createCamera();
 
