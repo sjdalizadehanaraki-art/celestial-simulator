@@ -15,7 +15,7 @@ export function createCamera(){
 
 
     // نمای مورد نظر تو
-    camera.position.set(9, 9, 9);
+    camera.position.set(15, 15, 15);
 
 camera.up.set(0, 0, 1);
 
