@@ -1,3 +1,5 @@
+import { createTimeController } from "./timeController.js";
+import { createSunMotion } from "./sunApparentMotion.js";
 import { createSun } from "./sun.js";
 import { createSunTrail } from "./sunTrail.js";
 import * as THREE from "three";
@@ -118,6 +120,16 @@ scene.add(
     const sun =
 createSun(scene);
 
+    const time =
+createTimeController();
+
+
+const sunMotion =
+createSunMotion(
+    sun,
+    time
+);
+
 
     function animate(){
 
@@ -125,6 +137,11 @@ createSun(scene);
         requestAnimationFrame(
             animate
         );
+
+
+        time.update();
+
+        sunMotion.update();
 
 
         controls.update();
