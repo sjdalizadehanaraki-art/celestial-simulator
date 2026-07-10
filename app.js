@@ -1,3 +1,4 @@
+import { createSunTrail } from "./sunTrail.js";
 import { createTimeControls } from "./timeControls.js";
 import { createTimeController } from "./timeController.js";
 import { createSun } from "./sun.js";
@@ -84,6 +85,13 @@ export function createApp(){
     sun,
     time
 );
+    const sunTrail =
+createSunTrail();
+
+
+scene.add(
+    sunTrail.line
+);
 
     function animate(){
 
@@ -92,6 +100,9 @@ export function createApp(){
         time.update();
 
         sunMotion.update();
+
+        sunTrail.addPoint(
+        sun.position);
 
         controls.update();
 
