@@ -179,7 +179,7 @@ export function createApp(){
 
     createEarth(scene);
 
-    createEarthEquator(scene);
+    //createEarthEquator(scene);
 
     createCelestialSphere(scene);
 
