@@ -11,15 +11,12 @@ export function createObserverCamera(
     let observerMode = false;
 
 
-
     const normalPosition =
     new THREE.Vector3();
 
 
     const normalTarget =
     new THREE.Vector3();
-
-
 
 
 
@@ -31,13 +28,9 @@ export function createObserverCamera(
 
 
 
-        observerMode = true;
+        observerMode=true;
 
 
-
-
-
-        // ذخیره وضعیت قبلی
 
         normalPosition.copy(
             camera.position
@@ -51,64 +44,38 @@ export function createObserverCamera(
 
 
 
-
-
-        // انتقال گروه Observer
-
-        observerGroup.position.set(
-            0,
-            0,
-            -2
-        );
-
-
-
-        observerGroup.visible =
-        true;
+        observerGroup.visible=true;
 
 
 
 
 
-
-
-        // ورود دوربین به حالت ناظر
 
         camera.position.set(
-
             0,
             0,
             0
-
         );
 
 
 
         camera.rotation.set(
-
             0,
             0,
             0
-
         );
 
 
 
         camera.lookAt(
-
             0,
             0,
-            -1
-
+            -10
         );
 
 
 
-
-
-        controls.enabled =
-        false;
-
+        controls.enabled=false;
 
 
     }
@@ -119,20 +86,10 @@ export function createObserverCamera(
 
 
 
-
-
     function exit(){
 
 
-        if(!observerMode)
-        return;
-
-
-
-        observerMode =
-        false;
-
-
+        observerMode=false;
 
 
 
@@ -146,34 +103,17 @@ export function createObserverCamera(
         );
 
 
-
-        controls.enabled =
-        true;
-
+        controls.enabled=true;
 
 
         controls.update();
 
 
 
-
-
-
-
-        observerGroup.visible =
-        false;
-
-
-        observerGroup.position.set(
-            0,
-            0,
-            0
-        );
-
+        observerGroup.visible=false;
 
 
     }
-
 
 
 
@@ -183,22 +123,11 @@ export function createObserverCamera(
 
     function toggle(){
 
-
-        if(observerMode){
-
-
+        if(observerMode)
             exit();
 
-
-        }
-        else{
-
-
+        else
             enter();
-
-
-        }
-
 
     }
 
@@ -206,29 +135,19 @@ export function createObserverCamera(
 
 
 
-
-
-
     return {
-
 
         enter,
 
-
         exit,
-
 
         toggle,
 
-
         isActive(){
-
 
             return observerMode;
 
-
         }
-
 
     };
 
