@@ -9,8 +9,6 @@ export function createObserverHorizon(){
 
 
 
-    // زمین افقی زیر پا
-
     const groundGeometry =
     new THREE.PlaneGeometry(
         50,
@@ -27,7 +25,9 @@ export function createObserverHorizon(){
 
         transparent:true,
 
-        opacity:0.8
+        opacity:0.8,
+
+        depthWrite:false
 
     });
 
@@ -41,14 +41,14 @@ export function createObserverHorizon(){
 
 
 
-    ground.rotation.z =
+    ground.rotation.x =
     -Math.PI / 2;
 
 
 
     ground.position.set(
         0,
-        -2,
+        0,
         0
     );
 
@@ -60,13 +60,10 @@ export function createObserverHorizon(){
 
 
 
-
-
     return {
 
         group
 
     };
-
 
 }
