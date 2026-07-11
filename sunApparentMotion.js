@@ -14,7 +14,6 @@ export function createSunMotion(
     function update(){
 
 
-
         const day =
         time.getYearFraction()
         *
@@ -31,7 +30,7 @@ export function createSunMotion(
 
 
 
-        // میل خورشید نسبت به استوای سماوی
+        // میل خورشید
 
         const declination =
         23.44 *
@@ -46,8 +45,6 @@ export function createSunMotion(
 
 
 
-
-
         const dec =
         THREE.MathUtils.degToRad(
             declination
@@ -57,18 +54,12 @@ export function createSunMotion(
 
 
 
-        // حرکت روزانه
+        // زاویه روزانه
+        // لحظه شروع: اعتدال بهاری روی +X
 
-        const hourAngle =
-        (hours - 12)
-        *
-        15;
-
-
-
-        const H =
+        const angle =
         THREE.MathUtils.degToRad(
-            hourAngle
+            (hours / 24) * 360
         );
 
 
@@ -76,22 +67,17 @@ export function createSunMotion(
 
 
 
-
-        // مختصات روی کره سماوی
-
         const x =
         radius *
-        Math.cos(dec)
-        *
-        Math.cos(H);
+        Math.cos(dec) *
+        Math.cos(angle);
 
 
 
         const y =
         radius *
-        Math.cos(dec)
-        *
-        Math.sin(H);
+        Math.cos(dec) *
+        Math.sin(angle);
 
 
 
@@ -109,7 +95,6 @@ export function createSunMotion(
             y,
             z
         );
-
 
 
     }
