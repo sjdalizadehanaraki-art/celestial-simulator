@@ -12,14 +12,12 @@ export function createObserverCamera(
     let observerMode = false;
 
 
-
     const normalPosition =
     new THREE.Vector3();
 
 
     const normalTarget =
     new THREE.Vector3();
-
 
 
 
@@ -31,13 +29,9 @@ export function createObserverCamera(
         return;
 
 
-
         observerMode = true;
 
 
-
-
-        // ذخیره حالت قبلی دوربین
 
         normalPosition.copy(
             camera.position
@@ -50,45 +44,14 @@ export function createObserverCamera(
 
 
 
+        worldGroup.visible = true;
 
 
-        // خاموش کردن مدل اصلی
-
-        if(worldGroup){
-
-            worldGroup.visible = false;
-
-        }
+        observerGroup.visible = false;
 
 
-
-
-
-        // روشن کردن محیط ناظر
-
-        if(observerGroup){
-
-            observerGroup.visible = true;
-
-        }
-
-
-
-
-
-
-
-        // قرار گرفتن چشم ناظر
 
         camera.position.set(
-            0,
-            1.7,
-            0
-        );
-
-
-
-        camera.rotation.set(
             0,
             0,
             0
@@ -98,24 +61,20 @@ export function createObserverCamera(
 
         camera.lookAt(
             0,
-            1.7,
-            -1
+            1,
+            0
         );
 
 
 
-        camera.updateMatrixWorld(true);
+        camera.updateMatrixWorld();
 
 
 
-
-
-        controls.enabled =
-        false;
+        controls.enabled = false;
 
 
     }
-
 
 
 
@@ -130,15 +89,9 @@ export function createObserverCamera(
         return;
 
 
-
         observerMode = false;
 
 
-
-
-
-
-        // برگرداندن دوربین
 
         camera.position.copy(
             normalPosition
@@ -151,40 +104,11 @@ export function createObserverCamera(
 
 
 
-
-
-        camera.updateMatrixWorld(true);
-
+        camera.updateMatrixWorld();
 
 
 
-
-        // روشن کردن مدل اصلی
-
-        if(worldGroup){
-
-            worldGroup.visible = true;
-
-        }
-
-
-
-
-
-        // خاموش کردن محیط ناظر
-
-        if(observerGroup){
-
-            observerGroup.visible = false;
-
-        }
-
-
-
-
-
-        controls.enabled =
-        true;
+        controls.enabled = true;
 
 
         controls.update();
@@ -198,25 +122,16 @@ export function createObserverCamera(
 
 
 
-
     function toggle(){
 
 
-        if(observerMode){
-
+        if(observerMode)
             exit();
-
-        }
-        else{
-
+        else
             enter();
-
-        }
 
 
     }
-
-
 
 
 
