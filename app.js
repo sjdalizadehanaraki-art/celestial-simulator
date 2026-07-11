@@ -10,7 +10,6 @@ import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 
-// import { createObserverFrame } from "./observerFrame.js";
 import { createObserverCamera } from "./observerCamera.js";
 
 import * as THREE from "three";
@@ -34,6 +33,23 @@ export function createApp(){
 
     scene.background =
     new THREE.Color(0x000000);
+
+
+
+    // =========================
+    // گروه‌ها
+    // =========================
+
+    const worldGroup =
+    new THREE.Group();
+
+    const observerGroup =
+    new THREE.Group();
+
+    scene.add(worldGroup);
+    scene.add(observerGroup);
+
+    observerGroup.visible = false;
 
 
 
@@ -175,17 +191,17 @@ export function createApp(){
 
 
 
-    //createAxes(scene);
+    // createAxes(worldGroup);
 
-    createEarth(scene);
+    createEarth(worldGroup);
 
-    //createEarthEquator(scene);
+    // createEarthEquator(worldGroup);
 
-    createCelestialSphere(scene);
+    createCelestialSphere(worldGroup);
 
-    createCelestialPlanes(scene);
+    createCelestialPlanes(worldGroup);
 
-    createSeasonPoints(scene);
+    createSeasonPoints(worldGroup);
 
 
 
@@ -194,7 +210,7 @@ export function createApp(){
 
 
     const sun =
-    createSun(scene);
+    createSun(worldGroup);
 
 
 
@@ -217,22 +233,9 @@ export function createApp(){
 
 
 
-    scene.add(
+    worldGroup.add(
         sunTrail.line
     );
-
-
-
-
-
-
-
-    // موقتاً حذف شد
-    // const observerFrame =
-    // createObserverFrame(
-    //     scene,
-    //     observer
-    // );
 
 
 
@@ -321,13 +324,6 @@ export function createApp(){
 
 
         localSky.draw();
-
-
-
-
-
-
-        // observerFrame.update();
 
 
 
