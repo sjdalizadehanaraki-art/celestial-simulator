@@ -1,8 +1,9 @@
 // solarPosition.js
 //
-// خروجی:
-// altitude : degree
-// azimuth  : degree
+// مدل جدید:
+// خورشید از اعتدال بهاری شروع می‌شود
+// حرکت سالانه روی دایره البروج
+// خروجی: مختصات کروی خورشید
 
 
 export function createSolarPosition(
@@ -11,12 +12,13 @@ export function createSolarPosition(
 ){
 
 
-    const rad =
-    Math.PI / 180;
+
+    const obliquity =
+    23.44 *
+    Math.PI /
+    180;
 
 
-    const deg =
-    180 / Math.PI;
 
 
 
@@ -25,65 +27,13 @@ export function createSolarPosition(
 
 
 
-        const year =
-        time.getYearFraction();
+        // زاویه سالانه خورشید
 
-
-
-        const day =
-        time.getDayFraction();
-
-
-
-
-
-        // میل خورشید
-
-        const declination =
-        23.44 *
-        Math.sin(
-            year *
-            Math.PI *
-            2
-        );
-
-
-
-
-
-        // زاویه ساعتی
-        // ظهر خورشیدی = صفر
-
-
-        const hourAngle =
-        (
-            day *
-            360
-            -
-            180
-        );
-
-
-
-
-
-
-        const lat =
-        observer.getLatitude()
+        const lambda =
+        time.getEclipticAngle()
         *
-        rad;
-
-
-
-        const dec =
-        declination *
-        rad;
-
-
-
-        const ha =
-        hourAngle *
-        rad;
+        Math.PI /
+        180;
 
 
 
@@ -91,71 +41,25 @@ export function createSolarPosition(
 
 
 
-        // ارتفاع
+        // مختصات دایره البروجی تبدیل شده
+        // به استوایی
+
+        const x =
+        Math.cos(lambda);
 
 
-        const altitude =
-        Math.asin(
 
-            Math.sin(lat)
-            *
-            Math.sin(dec)
-
-            +
-
-            Math.cos(lat)
-            *
-            Math.cos(dec)
-            *
-            Math.cos(ha)
-
-        )
+        const y =
+        Math.cos(obliquity)
         *
-        deg;
+        Math.sin(lambda);
 
 
 
-
-
-
-
-        // آزیموت
-
-
-        let azimuth =
-        Math.atan2(
-
-            Math.sin(ha),
-
-            Math.cos(ha)
-            *
-            Math.sin(lat)
-
-            -
-
-            Math.tan(dec)
-            *
-            Math.cos(lat)
-
-        )
+        const z =
+        Math.sin(obliquity)
         *
-        deg;
-
-
-
-        azimuth += 180;
-
-
-
-        if(azimuth < 0)
-
-            azimuth += 360;
-
-
-
-        if(azimuth >= 360)
-
-            azimuth -= 360;
+        Math.sin(lambda);
 
 
 
@@ -166,16 +70,19 @@ export function createSolarPosition(
         return {
 
 
-            altitude,
+            x,
 
+            y,
 
-            azimuth
+            z
 
 
         };
 
 
     }
+
+
 
 
 
