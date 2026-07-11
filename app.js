@@ -11,6 +11,7 @@ import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 import { createObserverFrame } from "./observerFrame.js";
 import { createObserverCamera } from "./observerCamera.js";
+import { createObserverTransform } from "./observerTransform.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -37,8 +38,10 @@ export function createApp(){
 
 
 
+
     const time =
     createTimeController();
+
 
 
 
@@ -51,8 +54,10 @@ export function createApp(){
 
 
 
+
     const observer =
     createObserver();
+
 
 
 
@@ -66,10 +71,29 @@ export function createApp(){
 
 
 
+
+    const observerTransform =
+    createObserverTransform(
+        observer
+    );
+
+
+
+
+
+    scene.add(
+        observerTransform.group
+    );
+
+
+
+
+
     const localSky =
     createLocalSky(
         observer
     );
+
 
 
 
@@ -83,8 +107,10 @@ export function createApp(){
 
 
 
+
     const {camera, controls} =
     createCamera();
+
 
 
 
@@ -92,7 +118,8 @@ export function createApp(){
     const observerCamera =
     createObserverCamera(
         camera,
-        controls
+        controls,
+        observer
     );
 
 
@@ -125,7 +152,6 @@ export function createApp(){
     document.body.appendChild(
         renderer.domElement
     );
-
 
 
 
@@ -170,11 +196,14 @@ export function createApp(){
 
 
     scene.add(
+
         new THREE.AmbientLight(
             0xffffff,
             0.8
         )
+
     );
+
 
 
 
@@ -192,20 +221,22 @@ export function createApp(){
 
 
 
+
+
     createCelestialSphere(
-        observerFrame.group
+        observerTransform.group
     );
 
 
 
     createCelestialPlanes(
-        observerFrame.group
+        observerTransform.group
     );
 
 
 
     createSeasonPoints(
-        observerFrame.group
+        observerTransform.group
     );
 
 
@@ -215,8 +246,9 @@ export function createApp(){
 
     const sun =
     createSun(
-        observerFrame.group
+        observerTransform.group
     );
+
 
 
 
@@ -225,7 +257,9 @@ export function createApp(){
     const sunMotion =
     createSunMotion(
         sun,
-        time
+        time,
+        observerTransform,
+        observer
     );
 
 
@@ -241,6 +275,7 @@ export function createApp(){
     scene.add(
         sunTrail.line
     );
+
 
 
 
@@ -286,7 +321,9 @@ export function createApp(){
 
 
 
+
         timeDisplay.update();
+
 
 
 
@@ -325,11 +362,18 @@ export function createApp(){
 
 
 
-        // ثبت مسیر واقعی خورشید در جهان
+        observerTransform.update();
+
+
+
+
 
         sun.getWorldPosition(
             sunWorldPosition
         );
+
+
+
 
 
         sunTrail.addPoint(
@@ -358,7 +402,6 @@ export function createApp(){
             scene,
             camera
         );
-
 
 
     }
@@ -407,9 +450,9 @@ export function createApp(){
             );
 
 
-
         }
     );
+
 
 
 }
