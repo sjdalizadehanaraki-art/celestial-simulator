@@ -57,20 +57,20 @@ export function createSunMotion(
 
         const sidereal =
         THREE.MathUtils.degToRad(
-
             time.getSiderealAngle()
-
         );
 
 
 
 
 
-        // زاویه ساعت
+
+        // زاویه ساعتی
 
         const hourAngle =
-        sidereal -
-        ra;
+        normalizeAngle(
+            sidereal - ra
+        );
 
 
 
@@ -78,7 +78,15 @@ export function createSunMotion(
 
 
 
-        // مختصات استوایی کره سماوی
+
+        // تبدیل مختصات استوایی
+        // قرارداد پروژه:
+        //
+        // X = اعتدال بهاری
+        // Z = قطب شمال سماوی
+        //
+        // حرکت روزانه حول Z
+
 
 
         const x =
@@ -88,19 +96,16 @@ export function createSunMotion(
 
 
 
-
         const y =
         radius *
-        Math.sin(dec);
-
+        Math.cos(dec) *
+        Math.sin(hourAngle);
 
 
 
         const z =
         radius *
-        Math.cos(dec) *
-        Math.sin(hourAngle);
-
+        Math.sin(dec);
 
 
 
@@ -135,6 +140,44 @@ export function createSunMotion(
 
 
     };
+
+
+}
+
+
+
+
+
+
+
+function normalizeAngle(angle){
+
+
+
+    while(
+        angle > Math.PI
+    ){
+
+        angle -=
+        Math.PI * 2;
+
+    }
+
+
+
+
+    while(
+        angle < -Math.PI
+    ){
+
+        angle +=
+        Math.PI * 2;
+
+    }
+
+
+
+    return angle;
 
 
 }
