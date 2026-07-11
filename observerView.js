@@ -11,7 +11,6 @@ export function createObserverView(
     new THREE.Group();
 
 
-
     scene.add(
         group
     );
@@ -22,9 +21,11 @@ export function createObserverView(
 
 
 
-    // نیم کره آسمان
+    // -------------------------
+    // آسمان نیم‌کره بالا
+    // -------------------------
 
-    const geometry =
+    const skyGeometry =
     new THREE.SphereGeometry(
         5,
         64,
@@ -37,14 +38,14 @@ export function createObserverView(
 
 
 
-    const material =
+    const skyMaterial =
     new THREE.MeshBasicMaterial({
 
-        color:0x004400,
+        color:0x003366,
 
         transparent:true,
 
-        opacity:0.15,
+        opacity:0.25,
 
         side:THREE.BackSide,
 
@@ -56,18 +57,9 @@ export function createObserverView(
 
     const sky =
     new THREE.Mesh(
-        geometry,
-        material
+        skyGeometry,
+        skyMaterial
     );
-
-
-
-    // چون دوربین داخل کره است
-    // نیمه بالا باید بالای سر باشد
-
-    sky.rotation.x =
-    0;
-
 
 
     group.add(
@@ -81,9 +73,116 @@ export function createObserverView(
 
 
 
+
+    // -------------------------
+    // زمین نیم‌کره پایین
+    // -------------------------
+
+    const groundGeometry =
+    new THREE.SphereGeometry(
+        5,
+        64,
+        32,
+        0,
+        Math.PI * 2,
+        Math.PI / 2,
+        Math.PI / 2
+    );
+
+
+
+    const groundMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color:0x5a3a1a,
+
+        transparent:true,
+
+        opacity:0.8,
+
+        side:THREE.BackSide,
+
+        depthWrite:false
+
+    });
+
+
+
+    const ground =
+    new THREE.Mesh(
+        groundGeometry,
+        groundMaterial
+    );
+
+
+    group.add(
+        ground
+    );
+
+
+
+
+
+
+
+
+
+    // -------------------------
+    // خط افق
+    // -------------------------
+
+    const horizonGeometry =
+    new THREE.RingGeometry(
+        4.98,
+        5.02,
+        128
+    );
+
+
+
+    const horizonMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color:0xffffff,
+
+        transparent:true,
+
+        opacity:0.4,
+
+        side:THREE.DoubleSide
+
+    });
+
+
+
+    const horizon =
+    new THREE.Mesh(
+        horizonGeometry,
+        horizonMaterial
+    );
+
+
+    horizon.rotation.x =
+    Math.PI / 2;
+
+
+    group.add(
+        horizon
+    );
+
+
+
+
+
+
+
+
+
     return {
 
+
         group
+
 
     };
 
