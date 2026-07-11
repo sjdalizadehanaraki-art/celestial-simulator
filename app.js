@@ -10,7 +10,7 @@ import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 
-import { createObserverFrame } from "./observerFrame.js";
+// import { createObserverFrame } from "./observerFrame.js";
 import { createObserverCamera } from "./observerCamera.js";
 
 import * as THREE from "three";
@@ -27,7 +27,6 @@ import { createCelestialSphere } from "./celestialSphere.js";
 export function createApp(){
 
 
-
     const scene =
     new THREE.Scene();
 
@@ -40,9 +39,9 @@ export function createApp(){
 
 
 
-
     const time =
     createTimeController();
+
 
 
 
@@ -56,10 +55,8 @@ export function createApp(){
 
 
 
-
     const observer =
     createObserver();
-
 
 
 
@@ -75,10 +72,8 @@ export function createApp(){
 
 
 
-
     const {camera, controls} =
     createCamera();
-
 
 
 
@@ -89,7 +84,6 @@ export function createApp(){
         camera,
         controls
     );
-
 
 
 
@@ -206,7 +200,6 @@ export function createApp(){
 
 
 
-
     const sunMotion =
     createSunMotion(
         sun,
@@ -234,12 +227,12 @@ export function createApp(){
 
 
 
-
-    const observerFrame =
-    createObserverFrame(
-        scene,
-        observer
-    );
+    // موقتاً حذف شد
+    // const observerFrame =
+    // createObserverFrame(
+    //     scene,
+    //     observer
+    // );
 
 
 
@@ -334,7 +327,7 @@ export function createApp(){
 
 
 
-        observerFrame.update();
+        // observerFrame.update();
 
 
 
@@ -428,7 +421,6 @@ export function createApp(){
 
         }
     );
-
 
 
 }
