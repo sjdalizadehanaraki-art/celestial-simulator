@@ -1,7 +1,22 @@
 export function createTimeController(){
 
 
-    let totalMinutes = 0;
+    // شروع مدل:
+    // 29 اسفند 1404
+    // ساعت 18:16
+    // اعتدال بهاری 1405
+
+
+    const START_HOUR = 18;
+
+    const START_MINUTE = 16;
+
+
+
+    let totalMinutes =
+    START_HOUR * 60 +
+    START_MINUTE;
+
 
 
     let speed = 1;
@@ -16,17 +31,13 @@ export function createTimeController(){
 
 
 
+
     const YEAR_MINUTES =
     365.2422 * 1440;
 
 
 
 
-    // ساعت شروع مدل
-    // 29 اسفند 1405 - 18:16
-
-    const START_HOUR =
-    18.266;
 
 
 
@@ -40,7 +51,7 @@ export function createTimeController(){
 
 
         const delta =
-        (now-lastTime)/1000;
+        (now - lastTime) / 1000;
 
 
 
@@ -66,11 +77,17 @@ export function createTimeController(){
 
 
 
+
+
     function play(){
 
         playing = true;
 
     }
+
+
+
+
 
 
 
@@ -84,11 +101,31 @@ export function createTimeController(){
 
 
 
+
+
+
+
     function setSpeed(value){
 
         speed = value;
 
     }
+
+
+
+
+
+
+
+
+    function reset(){
+
+        totalMinutes =
+        START_HOUR * 60 +
+        START_MINUTE;
+
+    }
+
 
 
 
@@ -108,7 +145,6 @@ export function createTimeController(){
 
 
 
-    // زاویه روزانه نسبت به لحظه شروع
 
     function getDailyAngle(){
 
@@ -119,31 +155,11 @@ export function createTimeController(){
             360 /
             1440
 
-        );
+        ) % 360;
 
 
     }
 
-
-
-
-
-
-    // زاویه روزانه مطلق شروع مدل
-
-    function getStartDailyAngle(){
-
-
-        return (
-
-            START_HOUR *
-            360 /
-            24
-
-        );
-
-
-    }
 
 
 
@@ -160,10 +176,12 @@ export function createTimeController(){
             360 /
             YEAR_MINUTES
 
-        );
+        ) % 360;
 
 
     }
+
+
 
 
 
@@ -172,11 +190,18 @@ export function createTimeController(){
 
     function getDay(){
 
+
         return Math.floor(
-            totalMinutes / 1440
+
+            totalMinutes /
+            1440
+
         );
 
+
     }
+
+
 
 
 
@@ -188,7 +213,8 @@ export function createTimeController(){
 
         return (
 
-            totalMinutes % 1440
+            totalMinutes %
+            1440
 
         )
         /
@@ -196,6 +222,7 @@ export function createTimeController(){
 
 
     }
+
 
 
 
@@ -222,13 +249,14 @@ export function createTimeController(){
 
 
 
-    function getSiderealAngle(){
 
+    function getSiderealAngle(){
 
         return getDailyAngle();
 
-
     }
+
+
 
 
 
@@ -246,14 +274,12 @@ export function createTimeController(){
 
         setSpeed,
 
+        reset,
+
 
         getTotalMinutes,
 
-
         getDailyAngle,
-
-        getStartDailyAngle,
-
 
         getEclipticAngle,
 
@@ -269,5 +295,6 @@ export function createTimeController(){
 
 
     };
+
 
 }
