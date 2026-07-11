@@ -1,65 +1,152 @@
 // horizontalProjection.js
-// تبدیل مختصات آسمان محلی به مختصات صفحه
 //
-// altitude: درجه (-90 تا +90)
-// azimuth : درجه (0 شمال، 90 شرق، 180 جنوب، 270 غرب)
+// تبدیل مختصات افقی آسمان به مختصات پیکسلی
+//
+// azimuth : درجه
+// altitude: درجه
 
 
-export function createHorizontalProjection(
+export function createHorizontalProjection({
+
     width,
-    height
-){
+
+    height,
+
+    latitude,
+
+    longitude
+
+}){
 
 
-    const horizon =
-    height * 0.75;
+    // -------------------------
+    // محدوده دید ناظر
+    // -------------------------
+
+
+    const minAzimuth =
+    longitude - 90;
+
+
+    const maxAzimuth =
+    longitude + 90;
 
 
 
-    const horizontalScale =
-    width / 2 - 40;
+    const minAltitude =
+    latitude;
+
+
+    const maxAltitude =
+    latitude + 90;
 
 
 
-    const verticalScale =
-    horizon - 120;
+
+
+    // -------------------------
+    // مقیاس برابر
+    // -------------------------
+
+
+    const azimuthRange =
+    maxAzimuth -
+    minAzimuth;
+
+
+
+    const altitudeRange =
+    maxAltitude -
+    minAltitude;
+
+
+
+    const range =
+    Math.max(
+        azimuthRange,
+        altitudeRange
+    );
+
+
+
+    const scale =
+    Math.min(
+        width,
+        height
+    )
+    /
+    range;
+
+
+
+
+
+    // اندازه واقعی میدان دید
+
+    const viewWidth =
+    azimuthRange *
+    scale;
+
+
+    const viewHeight =
+    altitudeRange *
+    scale;
+
+
+
+
+
+    // مرکز کادر
+
+    const offsetX =
+    (width - viewWidth) / 2;
+
+
+    const offsetY =
+    (height - viewHeight) / 2;
+
+
+
 
 
 
 
 
     function project(
+
         altitude,
+
         azimuth
+
     ){
 
 
 
         const x =
-        width / 2
+        offsetX
         +
         (
-            (azimuth - 180)
-            /
-            180
+            azimuth -
+            minAzimuth
         )
         *
-        horizontalScale;
-
+        scale;
 
 
 
         const y =
-        horizon
+        height
         -
         (
-            altitude
-            /
-            90
-        )
-        *
-        verticalScale;
-
+            offsetY
+            +
+            (
+                altitude -
+                minAltitude
+            )
+            *
+            scale
+        );
 
 
 
@@ -79,47 +166,26 @@ export function createHorizontalProjection(
 
 
 
-    function getHorizon(){
 
-        return horizon;
+    return{
 
-    }
-
-
-
-
-
-    function getWidth(){
-
-        return width;
-
-    }
-
-
-
-
-
-    function getHeight(){
-
-        return height;
-
-    }
-
-
-
-
-
-    return {
 
         project,
 
-        getHorizon,
 
-        getWidth,
+        minAzimuth,
 
-        getHeight
+        maxAzimuth,
+
+
+        minAltitude,
+
+        maxAltitude,
+
+
+        scale
+
 
     };
-
 
 }
