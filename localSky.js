@@ -98,10 +98,12 @@ export function createLocalSky(
 
 
 
+
     function setSunPosition(
         position,
         minute
     ){
+
 
 
         const length =
@@ -109,16 +111,21 @@ export function createLocalSky(
 
 
 
-        const X =
+
+
+        let X =
         position.x / length;
 
 
-        const Y =
+
+        let Y =
         position.y / length;
+
 
 
         const Z =
         position.z / length;
+
 
 
 
@@ -134,6 +141,50 @@ export function createLocalSky(
 
 
 
+        const lon =
+        observer.getLongitude()
+        *
+        Math.PI /
+        180;
+
+
+
+
+
+
+
+
+        // اصلاح موقعیت نسبت به طول جغرافیایی
+
+        const rotatedX =
+
+        X * Math.cos(lon)
+        -
+        Y * Math.sin(lon);
+
+
+
+
+        const rotatedY =
+
+        X * Math.sin(lon)
+        +
+        Y * Math.cos(lon);
+
+
+
+
+        X = rotatedX;
+
+        Y = rotatedY;
+
+
+
+
+
+
+
+
         // محور بالا (ارتفاع)
 
         const up =
@@ -141,6 +192,8 @@ export function createLocalSky(
         Math.cos(lat) * X
         +
         Math.sin(lat) * Z;
+
+
 
 
 
@@ -161,11 +214,14 @@ export function createLocalSky(
 
 
 
+
         // شرق
 
         const east =
 
         -Y;
+
+
 
 
 
@@ -200,7 +256,6 @@ export function createLocalSky(
 
 
 
-
         if(azimuth < 0){
 
             azimuth += 360;
@@ -212,7 +267,10 @@ export function createLocalSky(
 
 
 
-        if(minute !== lastMinute){
+
+        if(
+            minute !== lastMinute
+        ){
 
 
             lastMinute =
@@ -230,6 +288,7 @@ export function createLocalSky(
 
 
         }
+
 
 
     }
@@ -305,6 +364,7 @@ export function createLocalSky(
             projection.viewHeight
 
         );
+
 
 
 
@@ -389,6 +449,8 @@ export function createLocalSky(
 
 
 
+        // مسیر خورشید
+
         if(showPath){
 
 
@@ -456,6 +518,7 @@ export function createLocalSky(
 
 
 
+        // خورشید فعلی
 
         const sun =
         projection.project(
@@ -508,11 +571,15 @@ export function createLocalSky(
 
     function clearPath(){
 
+
         pathPoints.length = 0;
+
 
         lastMinute = -1;
 
+
     }
+
 
 
 
@@ -522,8 +589,10 @@ export function createLocalSky(
 
     function togglePath(){
 
+
         showPath =
         !showPath;
+
 
     }
 
@@ -533,7 +602,9 @@ export function createLocalSky(
 
 
 
+
     function show(){
+
 
         visible = true;
 
@@ -553,7 +624,9 @@ export function createLocalSky(
 
 
 
+
     function hide(){
+
 
         visible = false;
 
@@ -563,6 +636,7 @@ export function createLocalSky(
 
 
     }
+
 
 
 
