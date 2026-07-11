@@ -276,11 +276,11 @@ export function createApp(){
 
 
     createTimeControls(
-        time,
-        sunTrail,
-        localSky
-    );
-
+    time,
+    sunTrail,
+    localSky,
+    observerCamera
+);
 
 
 
