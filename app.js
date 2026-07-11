@@ -11,7 +11,7 @@ import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 import { createObserverView } from "./observerView.js";
 import { createObserverCamera } from "./observerCamera.js";
-
+import { createObserverFrame } from "./observerFrame.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -27,7 +27,6 @@ import { createCelestialSphere } from "./celestialSphere.js";
 export function createApp(){
 
 
-
     const scene =
     new THREE.Scene();
 
@@ -35,7 +34,6 @@ export function createApp(){
 
     scene.background =
     new THREE.Color(0x000000);
-
 
 
 
@@ -57,10 +55,18 @@ export function createApp(){
 
 
 
-
     const observer =
     createObserver();
 
+
+
+
+
+    const observerFrame =
+    createObserverFrame(
+        scene,
+        observer
+    );
 
 
 
@@ -76,13 +82,10 @@ export function createApp(){
 
 
 
-
     const localSky =
     createLocalSky(
         observer
     );
-
-
 
 
 
@@ -98,12 +101,8 @@ export function createApp(){
 
 
 
-
-
     const {camera, controls} =
     createCamera();
-
-
 
 
 
@@ -121,15 +120,12 @@ export function createApp(){
 
 
 
-
-
     const renderer =
     new THREE.WebGLRenderer({
 
         antialias:true
 
     });
-
 
 
 
@@ -156,8 +152,6 @@ export function createApp(){
 
 
 
-
-
     const labelRenderer =
     new CSS2DRenderer();
 
@@ -174,27 +168,21 @@ export function createApp(){
     "absolute";
 
 
-
     labelRenderer.domElement.style.top =
     "0";
-
 
 
     labelRenderer.domElement.style.left =
     "0";
 
 
-
     labelRenderer.domElement.style.pointerEvents =
     "none";
-
 
 
     document.body.appendChild(
         labelRenderer.domElement
     );
-
-
 
 
 
@@ -210,8 +198,6 @@ export function createApp(){
         )
 
     );
-
-
 
 
 
@@ -237,11 +223,8 @@ export function createApp(){
 
 
 
-
-
     const sun =
     createSun(scene);
-
 
 
 
@@ -264,7 +247,6 @@ export function createApp(){
 
 
 
-
     scene.add(
         sunTrail.line
     );
@@ -276,12 +258,11 @@ export function createApp(){
 
 
     createTimeControls(
-    time,
-    sunTrail,
-    localSky,
-    observerCamera
-);
-
+        time,
+        sunTrail,
+        localSky,
+        observerCamera
+    );
 
 
 
@@ -300,17 +281,12 @@ export function createApp(){
 
 
 
-
-
         time.update();
 
 
 
 
-
         timeDisplay.update();
-
-
 
 
 
@@ -321,11 +297,8 @@ export function createApp(){
 
 
 
-
-
         const sunData =
         solarPosition.update();
-
 
 
 
@@ -339,8 +312,14 @@ export function createApp(){
 
 
 
+
         localSky.draw();
 
+
+
+
+
+        observerFrame.update();
 
 
 
@@ -354,9 +333,7 @@ export function createApp(){
 
 
 
-
         controls.update();
-
 
 
 
@@ -366,7 +343,6 @@ export function createApp(){
             scene,
             camera
         );
-
 
 
 
@@ -388,8 +364,6 @@ export function createApp(){
 
 
     animate();
-
-
 
 
 
