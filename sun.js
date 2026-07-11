@@ -1,7 +1,8 @@
 import * as THREE from "three";
 
 
-export function createSun(scene){
+export function createSun(parent){
+
 
 
     const sun =
@@ -13,6 +14,7 @@ export function createSun(scene){
             32
         ),
 
+
         new THREE.MeshBasicMaterial({
 
             color:0xffff00
@@ -22,7 +24,11 @@ export function createSun(scene){
     );
 
 
-    // شروع اعتدال بهاری روی +X
+
+
+
+    // موقعیت اولیه:
+    // اعتدال بهاری روی +X
 
     sun.position.set(
         5,
@@ -31,9 +37,18 @@ export function createSun(scene){
     );
 
 
-    scene.add(sun);
+
+
+
+    parent.add(
+        sun
+    );
+
+
+
 
 
     return sun;
+
 
 }
