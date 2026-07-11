@@ -1,23 +1,26 @@
 import { createObserver } from "./observer.js";
+import { createSolarPosition } from "./solarPosition.js";
+import { createLocalSky } from "./localSky.js";
 import { createTimeDisplay } from "./timeDisplay.js";
-import { createTimeController } from "./timeController.js";
+import { createSeasonPoints } from "./seasonPoints.js";
+import { createSunTrail } from "./sunTrail.js";
 import { createTimeControls } from "./timeControls.js";
-
+import { createTimeController } from "./timeController.js";
 import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
-import { createSunTrail } from "./sunTrail.js";
+import { createCelestialPlanes } from "./celestialPlanes.js";
+
+import { createObserverFrame } from "./observerFrame.js";
+import { createObserverCamera } from "./observerCamera.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { createCamera } from "./camera.js";
-
 import { createAxes } from "./axes.js";
 import { createEarth } from "./earth.js";
 import { createEarthEquator } from "./earthEquator.js";
 import { createCelestialSphere } from "./celestialSphere.js";
-import { createCelestialPlanes } from "./celestialPlanes.js";
-import { createSeasonPoints } from "./seasonPoints.js";
 
 
 
@@ -26,6 +29,7 @@ export function createApp(){
 
     const scene =
     new THREE.Scene();
+
 
 
     scene.background =
@@ -40,6 +44,7 @@ export function createApp(){
 
 
 
+    const timeDisplay =
     createTimeDisplay(
         time
     );
@@ -55,6 +60,26 @@ export function createApp(){
 
 
 
+    const localSky =
+    createLocalSky(
+        observer
+    );
+
+
+
+
+
+    const solarPosition =
+    createSolarPosition(
+        time,
+        observer
+    );
+
+
+
+
+
+
     const {camera, controls} =
     createCamera();
 
@@ -63,21 +88,12 @@ export function createApp(){
 
 
 
-    const observerCamera = {
+    const observerCamera =
+    createObserverCamera(
+        camera,
+        controls
+    );
 
-        toggle(){},
-
-        enter(){},
-
-        exit(){},
-
-        isActive(){
-
-            return false;
-
-        }
-
-    };
 
 
 
@@ -105,10 +121,10 @@ export function createApp(){
     );
 
 
+
     document.body.appendChild(
         renderer.domElement
     );
-
 
 
 
@@ -119,10 +135,12 @@ export function createApp(){
     new CSS2DRenderer();
 
 
+
     labelRenderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
+
 
 
     labelRenderer.domElement.style.position =
@@ -141,6 +159,7 @@ export function createApp(){
     "none";
 
 
+
     document.body.appendChild(
         labelRenderer.domElement
     );
@@ -152,13 +171,12 @@ export function createApp(){
 
 
     scene.add(
-
         new THREE.AmbientLight(
             0xffffff,
-            1
+            0.8
         )
-
     );
+
 
 
 
@@ -182,9 +200,9 @@ export function createApp(){
 
 
 
+
     const sun =
     createSun(scene);
-
 
 
 
@@ -215,11 +233,21 @@ export function createApp(){
 
 
 
+    const observerFrame =
+    createObserverFrame(
+        scene,
+        observer
+    );
+
+
+
+
+
 
     createTimeControls(
         time,
         sunTrail,
-        null,
+        localSky,
         observerCamera
     );
 
@@ -238,8 +266,8 @@ export function createApp(){
 
 
 
-
     function animate(){
+
 
 
         requestAnimationFrame(
@@ -249,67 +277,60 @@ export function createApp(){
 
 
 
-        try{
 
-            time.update();
+        time.update();
 
-        }
-        catch(e){
 
-            console.error(
-                "time",
-                e
-            );
 
-        }
+        timeDisplay.update();
 
 
 
 
+        sunMotion.update();
 
 
-        try{
 
-            sunMotion.update();
 
-        }
-        catch(e){
-
-            console.error(
-                "sunMotion",
-                e
-            );
-
-        }
+        const sunData =
+        solarPosition.update();
 
 
 
 
 
+        localSky.setSunPosition(
+            sunData.altitude,
+            sunData.azimuth
+        );
 
 
-        try{
-
-            sun.getWorldPosition(
-                sunWorldPosition
-            );
 
 
-            sunTrail.addPoint(
-                sunWorldPosition
-            );
+
+        localSky.draw();
 
 
-        }
-        catch(e){
 
-            console.error(
-                "trail",
-                e
-            );
 
-        }
 
+        observerFrame.update();
+
+
+
+
+
+        sun.getWorldPosition(
+            sunWorldPosition
+        );
+
+
+
+
+
+        sunTrail.addPoint(
+            sunWorldPosition
+        );
 
 
 
@@ -365,7 +386,6 @@ export function createApp(){
 
 
 
-
             renderer.setSize(
                 window.innerWidth,
                 window.innerHeight
@@ -377,7 +397,6 @@ export function createApp(){
                 window.innerWidth,
                 window.innerHeight
             );
-
 
 
         }
