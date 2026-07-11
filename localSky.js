@@ -118,6 +118,7 @@ export function createLocalSky(
 
 
 
+
     function updatePosition(){
 
 
@@ -128,7 +129,6 @@ export function createLocalSky(
 
 
 
-        // حرکت روزانه
 
         const dayAngle =
 
@@ -141,32 +141,29 @@ export function createLocalSky(
 
 
 
-        // حرکت خورشید در آسمان
-        // تقریب ساده از دید ناظر
 
         azimuth =
 
-        START_AZIMUTH +
-        dayAngle;
-
-
-
-
-
-        azimuth %= 360;
+        (
+            START_AZIMUTH +
+            dayAngle
+        )
+        % 360;
 
 
 
 
 
 
-        // ارتفاع با سینوس مسیر روزانه
+
 
         const phase =
 
-        THREE.MathUtils.degToRad(
-            dayAngle
-        );
+        dayAngle *
+        Math.PI /
+        180;
+
+
 
 
 
@@ -184,14 +181,25 @@ export function createLocalSky(
 
 
 
+
+
+
+
+        const currentMinute =
+
+        Math.floor(
+            minutes
+        );
+
+
+
         if(
-            Math.floor(minutes)
-            !== lastMinute
+            currentMinute !== lastMinute
         ){
 
 
             lastMinute =
-            Math.floor(minutes);
+            currentMinute;
 
 
 
@@ -208,6 +216,7 @@ export function createLocalSky(
 
 
     }
+
 
 
 
@@ -275,10 +284,12 @@ export function createLocalSky(
 
 
 
-        // کادر
 
         ctx.strokeStyle =
         "white";
+
+
+        ctx.lineWidth = 2;
 
 
         ctx.strokeRect(
@@ -299,13 +310,14 @@ export function createLocalSky(
 
 
 
-        // افق
+        // خط افق
 
         ctx.strokeStyle =
         "red";
 
 
         ctx.beginPath();
+
 
 
         ctx.moveTo(
@@ -317,6 +329,7 @@ export function createLocalSky(
         );
 
 
+
         ctx.lineTo(
 
             left +
@@ -325,6 +338,7 @@ export function createLocalSky(
             projection.bottomY
 
         );
+
 
 
         ctx.stroke();
@@ -353,6 +367,7 @@ export function createLocalSky(
 
 
                     const point =
+
                     projection.project(
 
                         p.altitude,
@@ -363,7 +378,7 @@ export function createLocalSky(
 
 
 
-                    if(index===0){
+                    if(index === 0){
 
                         ctx.moveTo(
 
@@ -391,6 +406,7 @@ export function createLocalSky(
             );
 
 
+
             ctx.stroke();
 
 
@@ -402,7 +418,8 @@ export function createLocalSky(
 
 
 
-        // خورشید
+        // خورشید فعلی
+
 
         const sun =
 
@@ -420,7 +437,9 @@ export function createLocalSky(
         "yellow";
 
 
+
         ctx.beginPath();
+
 
 
         ctx.arc(
@@ -433,9 +452,10 @@ export function createLocalSky(
 
             0,
 
-            Math.PI*2
+            Math.PI * 2
 
         );
+
 
 
         ctx.fill();
@@ -454,9 +474,12 @@ export function createLocalSky(
 
     function clearPath(){
 
+
         pathPoints.length = 0;
 
+
         lastMinute = -1;
+
 
     }
 
@@ -469,8 +492,10 @@ export function createLocalSky(
 
     function togglePath(){
 
+
         showPath =
         !showPath;
+
 
     }
 
@@ -483,10 +508,16 @@ export function createLocalSky(
 
     function show(){
 
+
         visible = true;
+
 
         canvas.style.display =
         "block";
+
+
+        draw();
+
 
     }
 
@@ -499,10 +530,13 @@ export function createLocalSky(
 
     function hide(){
 
+
         visible = false;
+
 
         canvas.style.display =
         "none";
+
 
     }
 
