@@ -6,8 +6,10 @@ export function createTimeControls(
 ){
 
 
+
     const panel =
     document.createElement("div");
+
 
 
     panel.style.position = "absolute";
@@ -26,41 +28,26 @@ export function createTimeControls(
 
 
 
-    const row1 =
+
+    const row =
     document.createElement("div");
 
-    row1.style.display =
+
+    row.style.display =
     "flex";
 
-    row1.style.flexWrap =
+    row.style.flexWrap =
     "wrap";
 
-    row1.style.gap =
-    "5px";
-
-
-
-
-    const row2 =
-    document.createElement("div");
-
-    row2.style.display =
-    "flex";
-
-    row2.style.flexWrap =
-    "wrap";
-
-    row2.style.gap =
+    row.style.gap =
     "5px";
 
 
 
 
 
-    // -------------------------
+
     // Play
-    // -------------------------
-
 
     const play =
     document.createElement("button");
@@ -77,16 +64,14 @@ export function createTimeControls(
     };
 
 
-    row1.appendChild(play);
+    row.appendChild(play);
 
 
 
 
 
-    // -------------------------
+
     // Pause
-    // -------------------------
-
 
     const pause =
     document.createElement("button");
@@ -103,7 +88,7 @@ export function createTimeControls(
     };
 
 
-    row1.appendChild(pause);
+    row.appendChild(pause);
 
 
 
@@ -111,10 +96,7 @@ export function createTimeControls(
 
 
 
-    // -------------------------
-    // Speed
-    // -------------------------
-
+    // سرعت
 
     const speeds =
     [
@@ -136,7 +118,8 @@ export function createTimeControls(
 
 
         button.textContent =
-        "×"+value;
+        "×" + value;
+
 
 
         button.onclick = ()=>{
@@ -146,7 +129,8 @@ export function createTimeControls(
         };
 
 
-        row1.appendChild(button);
+
+        row.appendChild(button);
 
 
     });
@@ -157,70 +141,37 @@ export function createTimeControls(
 
 
 
+    panel.appendChild(row);
 
 
-    // -------------------------
-    // Sun Path
-    // -------------------------
 
+
+
+
+
+
+
+    // نمایش مسیر خورشید
 
     const pathButton =
     document.createElement("button");
-
-
-    let pathVisible = true;
-
 
 
     pathButton.textContent =
     "☑ Show Sun Path";
 
 
-
     pathButton.onclick = ()=>{
 
 
-        pathVisible =
-        !pathVisible;
+        trail.toggle();
 
-
-
-        if(pathVisible){
-
-            trail.show();
-
-        }
-        else{
-
-            trail.hide();
-
-        }
-
-
-
-        localSky.togglePath();
-
-
-
-        if(pathVisible){
-
-            pathButton.textContent =
-            "☑ Show Sun Path";
-
-        }
-        else{
-
-            pathButton.textContent =
-            "☐ Show Sun Path";
-
-        }
 
 
     };
 
 
-
-    row2.appendChild(
+    panel.appendChild(
         pathButton
     );
 
@@ -230,10 +181,8 @@ export function createTimeControls(
 
 
 
-    // -------------------------
-    // Clear Path
-    // -------------------------
 
+    // پاک کردن مسیر
 
     const clearButton =
     document.createElement("button");
@@ -243,20 +192,17 @@ export function createTimeControls(
     "🗑 Clear Path";
 
 
-
     clearButton.onclick = ()=>{
 
 
         trail.clear();
 
 
-        localSky.clearPath();
-
 
     };
 
 
-    row2.appendChild(
+    panel.appendChild(
         clearButton
     );
 
@@ -268,21 +214,18 @@ export function createTimeControls(
 
 
 
-    // -------------------------
     // Local Sky
-    // -------------------------
-
 
     const localButton =
     document.createElement("button");
 
 
+    let localVisible = false;
+
+
+
     localButton.textContent =
     "☀ Local Sky";
-
-
-    let localVisible =
-    false;
 
 
 
@@ -305,7 +248,6 @@ export function createTimeControls(
 
 
         }
-
         else{
 
 
@@ -323,7 +265,7 @@ export function createTimeControls(
 
 
 
-    row2.appendChild(
+    panel.appendChild(
         localButton
     );
 
@@ -334,33 +276,31 @@ export function createTimeControls(
 
 
 
-    // -------------------------
-    // Observer View
-    // -------------------------
 
+    // Observer View
 
     const observerButton =
     document.createElement("button");
+
+
+    let observerVisible = false;
+
 
 
     observerButton.textContent =
     "👁 Observer View";
 
 
-    let observerActive =
-    false;
-
-
 
     observerButton.onclick = ()=>{
 
 
-        observerActive =
-        !observerActive;
+        observerVisible =
+        !observerVisible;
 
 
 
-        if(observerActive){
+        if(observerVisible){
 
 
             observerCamera.enter();
@@ -368,11 +308,10 @@ export function createTimeControls(
 
 
             observerButton.textContent =
-            "🌍 Earth View";
+            "🌍 3D View";
 
 
         }
-
         else{
 
 
@@ -387,12 +326,11 @@ export function createTimeControls(
         }
 
 
-
     };
 
 
 
-    row2.appendChild(
+    panel.appendChild(
         observerButton
     );
 
@@ -400,16 +338,6 @@ export function createTimeControls(
 
 
 
-
-
-    panel.appendChild(
-        row1
-    );
-
-
-    panel.appendChild(
-        row2
-    );
 
 
 
