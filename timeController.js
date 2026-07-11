@@ -1,19 +1,28 @@
 export function createTimeController(){
 
+
     const DAY_SECONDS = 5;
     const YEAR_DAYS = 365;
 
+
     let playing = true;
+
     let speed = 1;
+
 
     let lastRealTime =
     performance.now();
 
+
+
     // روز سال
+    // 0 = اعتدال بهاری
+
     let dayOfYear = 0;
 
-    // شروع از اعتدال بهاری
-    // ساعت 18:16
+
+
+    // شروع از ساعت 18:16
 
     let timeOfDay =
     DAY_SECONDS *
@@ -22,23 +31,43 @@ export function createTimeController(){
 
 
 
+
+
+
     function update(){
+
 
         const now =
         performance.now();
 
+
+
         const delta =
         (now - lastRealTime) / 1000;
 
+
+
         lastRealTime = now;
+
+
 
         if(!playing)
             return;
 
+
+
+
+
         timeOfDay +=
         delta * speed;
 
-        while(timeOfDay >= DAY_SECONDS){
+
+
+
+
+        while(
+            timeOfDay >= DAY_SECONDS
+        ){
 
             timeOfDay -= DAY_SECONDS;
 
@@ -46,7 +75,14 @@ export function createTimeController(){
 
         }
 
-        while(timeOfDay < 0){
+
+
+
+
+
+        while(
+            timeOfDay < 0
+        ){
 
             timeOfDay += DAY_SECONDS;
 
@@ -54,13 +90,39 @@ export function createTimeController(){
 
         }
 
-        while(dayOfYear >= YEAR_DAYS)
+
+
+
+
+
+
+        while(
+            dayOfYear >= YEAR_DAYS
+        ){
+
             dayOfYear -= YEAR_DAYS;
 
-        while(dayOfYear < 0)
+        }
+
+
+
+
+
+
+        while(
+            dayOfYear < 0
+        ){
+
             dayOfYear += YEAR_DAYS;
 
+        }
+
+
+
     }
+
+
+
 
 
 
@@ -75,11 +137,19 @@ export function createTimeController(){
 
 
 
+
+
+
+
     function pause(){
 
         playing = false;
 
     }
+
+
+
+
 
 
 
@@ -91,6 +161,10 @@ export function createTimeController(){
 
 
 
+
+
+
+
     function getDay(){
 
         return dayOfYear;
@@ -99,34 +173,56 @@ export function createTimeController(){
 
 
 
+
+
+
+
     function getDayFraction(){
 
-        return timeOfDay /
-        DAY_SECONDS;
+        return (
+            timeOfDay /
+            DAY_SECONDS
+        );
 
     }
+
+
+
+
 
 
 
     function getYearFraction(){
 
         return (
+
             dayOfYear +
             getDayFraction()
-        ) / YEAR_DAYS;
+
+        )
+        /
+        YEAR_DAYS;
 
     }
+
+
 
 
 
 
 
     // ساعت خورشیدی
+    // 0 تا 24 ساعت
 
     function getSolarHour(){
 
-        return
-        getDayFraction() * 24;
+
+        return (
+            getDayFraction()
+            *
+            24
+        );
+
 
     }
 
@@ -134,12 +230,23 @@ export function createTimeController(){
 
 
 
-    // زاویه چرخش کره سماوی
+
+
+
+    // زاویه چرخش روزانه کره سماوی
+    // 0 تا 360 درجه
 
     function getSiderealAngle(){
 
-        return
-        getDayFraction() * 360;
+
+        return (
+
+            getDayFraction()
+            *
+            360
+
+        );
+
 
     }
 
@@ -147,26 +254,39 @@ export function createTimeController(){
 
 
 
-    return{
+
+
+    return {
+
 
         update,
 
+
         play,
+
 
         pause,
 
+
         setSpeed,
+
 
         getDay,
 
+
         getDayFraction,
+
 
         getYearFraction,
 
+
         getSolarHour,
+
 
         getSiderealAngle
 
+
     };
+
 
 }
