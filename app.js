@@ -1,27 +1,27 @@
 import { createObserver } from "./observer.js";
-import { createSolarPosition } from "./solarPosition.js";
-import { createLocalSky } from "./localSky.js";
 import { createTimeDisplay } from "./timeDisplay.js";
-import { createSeasonPoints } from "./seasonPoints.js";
-import { createSunTrail } from "./sunTrail.js";
-import { createTimeControls } from "./timeControls.js";
 import { createTimeController } from "./timeController.js";
+import { createTimeControls } from "./timeControls.js";
+
 import { createSun } from "./sun.js";
-import { createSunMotion } from "./sunApparentMotion.js";
-import { createCelestialPlanes } from "./celestialPlanes.js";
+import { createSunTrail } from "./sunTrail.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { createCamera } from "./camera.js";
+
 import { createAxes } from "./axes.js";
 import { createEarth } from "./earth.js";
 import { createEarthEquator } from "./earthEquator.js";
 import { createCelestialSphere } from "./celestialSphere.js";
+import { createCelestialPlanes } from "./celestialPlanes.js";
+import { createSeasonPoints } from "./seasonPoints.js";
 
 
 
 export function createApp(){
+
 
 
     const scene =
@@ -43,9 +43,6 @@ export function createApp(){
 
 
 
-
-
-    const timeDisplay =
     createTimeDisplay(
         time
     );
@@ -54,30 +51,8 @@ export function createApp(){
 
 
 
-
     const observer =
     createObserver();
-
-
-
-
-
-
-    const localSky =
-    createLocalSky(
-        observer
-    );
-
-
-
-
-
-
-    const solarPosition =
-    createSolarPosition(
-        time,
-        observer
-    );
 
 
 
@@ -98,11 +73,16 @@ export function createApp(){
 
         exit(){},
 
-        enable(){},
+        toggle(){},
 
-        disable(){}
+        isActive(){
+
+            return false;
+
+        }
 
     };
+
 
 
 
@@ -119,8 +99,6 @@ export function createApp(){
 
 
 
-
-
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
@@ -128,13 +106,9 @@ export function createApp(){
 
 
 
-
-
     renderer.setPixelRatio(
         window.devicePixelRatio
     );
-
-
 
 
 
@@ -154,14 +128,10 @@ export function createApp(){
 
 
 
-
-
     labelRenderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
-
-
 
 
 
@@ -185,8 +155,6 @@ export function createApp(){
 
 
 
-
-
     document.body.appendChild(
         labelRenderer.domElement
     );
@@ -202,7 +170,7 @@ export function createApp(){
 
         new THREE.AmbientLight(
             0xffffff,
-            0.8
+            1
         )
 
     );
@@ -214,24 +182,21 @@ export function createApp(){
 
 
 
-    createAxes(scene);
+    // ساخت جهان
 
+    createAxes(scene);
 
 
     createEarth(scene);
 
 
-
     createEarthEquator(scene);
-
 
 
     createCelestialSphere(scene);
 
 
-
     createCelestialPlanes(scene);
-
 
 
     createSeasonPoints(scene);
@@ -243,22 +208,9 @@ export function createApp(){
 
 
 
-    const sun =
+    // خورشید فقط برای تست
+
     createSun(scene);
-
-
-
-
-
-
-
-
-    const sunMotion =
-    createSunMotion(
-        sun,
-        time
-    );
-
 
 
 
@@ -268,9 +220,6 @@ export function createApp(){
 
     const sunTrail =
     createSunTrail();
-
-
-
 
 
     scene.add(
@@ -287,19 +236,10 @@ export function createApp(){
     createTimeControls(
         time,
         sunTrail,
-        localSky,
+        null,
         observerCamera
     );
 
-
-
-
-
-
-
-
-    const sunWorldPosition =
-    new THREE.Vector3();
 
 
 
@@ -320,66 +260,7 @@ export function createApp(){
 
 
 
-        time.update();
-
-
-
-
-
-        timeDisplay.update();
-
-
-
-
-
-        sunMotion.update();
-
-
-
-
-
-        const sunData =
-        solarPosition.update();
-
-
-
-
-
-        localSky.setSunPosition(
-            sunData.altitude,
-            sunData.azimuth
-        );
-
-
-
-
-
-        localSky.draw();
-
-
-
-
-
-
-
-        sun.getWorldPosition(
-            sunWorldPosition
-        );
-
-
-
-
-
-        sunTrail.addPoint(
-            sunWorldPosition
-        );
-
-
-
-
-
         controls.update();
-
 
 
 
@@ -400,7 +281,6 @@ export function createApp(){
         );
 
 
-
     }
 
 
@@ -409,8 +289,8 @@ export function createApp(){
 
 
 
-
     animate();
+
 
 
 
@@ -432,9 +312,7 @@ export function createApp(){
 
 
 
-
             camera.updateProjectionMatrix();
-
 
 
 
@@ -443,7 +321,6 @@ export function createApp(){
                 window.innerWidth,
                 window.innerHeight
             );
-
 
 
 
