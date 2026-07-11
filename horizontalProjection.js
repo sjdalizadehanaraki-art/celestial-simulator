@@ -1,15 +1,19 @@
 // horizontalProjection.js
 //
-// تبدیل altitude / azimuth به مختصات پیکسلی
+// تبدیل مختصات افقی خورشید به پیکسل
 //
 // Azimuth:
-// 0 = شمال
-// 90 = شرق
+// 90  = شرق
 // 180 = جنوب
 // 270 = غرب
 //
+// در صفحه:
+// جنوب وسط
+// شرق سمت راست
+// غرب سمت چپ
+//
 // Altitude:
-// درجه بالای افق
+// از افق به بالا
 
 
 export function createHorizontalProjection({
@@ -18,33 +22,34 @@ export function createHorizontalProjection({
 
     height,
 
-    latitude,
-
-    longitude
+    latitude
 
 }){
 
 
     // -------------------------
-    // محدوده دید ناظر
+    // محدوده دید
     // -------------------------
 
 
-    const minAzimuth =
-    longitude - 90;
+    const minAzimuth = 90;
 
-
-    const maxAzimuth =
-    longitude + 90;
+    const maxAzimuth = 270;
 
 
 
-    const minAltitude =
-    latitude;
+    const minAltitude = 0;
 
+
+
+    // بیشترین ارتفاع ممکن آسمان
+    // برای ناظر با عرض جغرافیایی latitude
 
     const maxAltitude =
-    latitude + 90;
+    Math.min(
+        90,
+        latitude + 90
+    );
 
 
 
@@ -66,7 +71,7 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // مقیاس یکسان
+    // مقیاس برابر
     // -------------------------
 
 
@@ -91,7 +96,6 @@ export function createHorizontalProjection({
 
 
 
-
     const viewWidth =
     azimuthRange *
     scale;
@@ -109,7 +113,7 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // موقعیت کادر
+    // جای کادر
     // -------------------------
 
 
@@ -138,23 +142,6 @@ export function createHorizontalProjection({
 
 
 
-
-    // مرکز میدان دید آزیموت
-
-    const centerAzimuth =
-    (
-        minAzimuth +
-        maxAzimuth
-    )
-    /
-    2;
-
-
-
-
-
-
-
     function project(
 
         altitude,
@@ -166,35 +153,12 @@ export function createHorizontalProjection({
 
 
         // -------------------------
-        // تبدیل آزیموت
+        // محور افقی
         // -------------------------
 
 
-        let relativeAzimuth =
-        azimuth -
-        centerAzimuth;
-
-
-
-
-        // جلوگیری از پرش 360 درجه
-
-
-        if(relativeAzimuth > 180){
-
-            relativeAzimuth -= 360;
-
-        }
-
-
-
-        if(relativeAzimuth < -180){
-
-            relativeAzimuth += 360;
-
-        }
-
-
+        const relativeAzimuth =
+        azimuth - 180;
 
 
 
@@ -211,7 +175,7 @@ export function createHorizontalProjection({
 
 
         // -------------------------
-        // ارتفاع
+        // محور ارتفاع
         // -------------------------
 
 
@@ -230,7 +194,6 @@ export function createHorizontalProjection({
 
 
 
-
         return {
 
             x,
@@ -241,7 +204,6 @@ export function createHorizontalProjection({
 
 
     }
-
 
 
 
