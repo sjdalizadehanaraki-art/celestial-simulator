@@ -56,37 +56,28 @@ export function createHorizontalRenderer(
     function drawFrame(){
 
 
-        const size =
-        projection.scale *
-        Math.max(
-
-            projection.maxAzimuth -
-            projection.minAzimuth,
-
-            projection.maxAltitude -
-            projection.minAltitude
-
-        );
-
-
-
         ctx.strokeStyle =
         "white";
 
 
-        ctx.lineWidth = 2;
+        ctx.lineWidth =
+        2;
 
 
 
         ctx.strokeRect(
 
-            projection.centerX - size/2,
+            projection.centerX -
+            projection.viewWidth/2,
 
-            projection.centerY - size/2,
 
-            size,
+            projection.topY,
 
-            size
+
+            projection.viewWidth,
+
+
+            projection.viewHeight
 
         );
 
@@ -105,7 +96,10 @@ export function createHorizontalRenderer(
 
 
 
-        // محور Azimuth
+        // -------------------
+        // خط افق / Azimuth
+        // -------------------
+
 
         ctx.strokeStyle =
         "red";
@@ -123,7 +117,7 @@ export function createHorizontalRenderer(
             projection.centerX -
             projection.viewWidth/2,
 
-            projection.centerY
+            projection.bottomY
 
         );
 
@@ -134,7 +128,7 @@ export function createHorizontalRenderer(
             projection.centerX +
             projection.viewWidth/2,
 
-            projection.centerY
+            projection.bottomY
 
         );
 
@@ -148,7 +142,9 @@ export function createHorizontalRenderer(
 
 
 
-        // محور Altitude
+        // -------------------
+        // محور ارتفاع
+        // -------------------
 
 
         ctx.strokeStyle =
@@ -159,13 +155,11 @@ export function createHorizontalRenderer(
         ctx.beginPath();
 
 
-
         ctx.moveTo(
 
             projection.centerX,
 
-            projection.centerY +
-            projection.viewHeight/2
+            projection.bottomY
 
         );
 
@@ -175,15 +169,13 @@ export function createHorizontalRenderer(
 
             projection.centerX,
 
-            projection.centerY -
-            projection.viewHeight/2
+            projection.topY
 
         );
 
 
 
         ctx.stroke();
-
 
 
     }
@@ -197,7 +189,6 @@ export function createHorizontalRenderer(
 
 
     function drawLabels(){
-
 
 
         ctx.fillStyle =
@@ -215,7 +206,7 @@ export function createHorizontalRenderer(
 
             projection.centerX-35,
 
-            projection.centerY+30
+            projection.bottomY+35
 
         );
 
@@ -227,11 +218,9 @@ export function createHorizontalRenderer(
 
             projection.centerX+10,
 
-            projection.centerY-20
+            projection.topY-10
 
         );
-
-
 
 
 
@@ -247,7 +236,7 @@ export function createHorizontalRenderer(
             projection.centerX -
             projection.viewWidth/2,
 
-            projection.centerY+20
+            projection.bottomY+20
 
         );
 
@@ -260,7 +249,7 @@ export function createHorizontalRenderer(
             projection.centerX +
             projection.viewWidth/2-30,
 
-            projection.centerY+20
+            projection.bottomY+20
 
         );
 
@@ -272,8 +261,7 @@ export function createHorizontalRenderer(
 
             projection.centerX+10,
 
-            projection.centerY+
-            projection.viewHeight/2
+            projection.bottomY-10
 
         );
 
@@ -285,8 +273,7 @@ export function createHorizontalRenderer(
 
             projection.centerX+10,
 
-            projection.centerY-
-            projection.viewHeight/2+15
+            projection.topY+15
 
         );
 
@@ -301,9 +288,7 @@ export function createHorizontalRenderer(
 
 
 
-    function drawSun(
-        sun
-    ){
+    function drawSun(sun){
 
 
 
@@ -320,7 +305,6 @@ export function createHorizontalRenderer(
 
         ctx.fillStyle =
         "yellow";
-
 
 
         ctx.beginPath();
@@ -344,7 +328,6 @@ export function createHorizontalRenderer(
         ctx.fill();
 
 
-
     }
 
 
@@ -354,10 +337,7 @@ export function createHorizontalRenderer(
 
 
 
-
-    function drawPath(
-        path
-    ){
+    function drawPath(path){
 
 
 
@@ -372,7 +352,8 @@ export function createHorizontalRenderer(
         "yellow";
 
 
-        ctx.lineWidth = 2;
+        ctx.lineWidth =
+        2;
 
 
 
@@ -419,9 +400,7 @@ export function createHorizontalRenderer(
         );
 
 
-
         ctx.stroke();
-
 
 
     }
@@ -438,7 +417,7 @@ export function createHorizontalRenderer(
 
         sun,
 
-        path
+        path=[]
 
     }){
 
@@ -459,6 +438,12 @@ export function createHorizontalRenderer(
 
 
 
+        drawPath(
+            path
+        );
+
+
+
         if(sun){
 
             drawSun(
@@ -468,13 +453,8 @@ export function createHorizontalRenderer(
         }
 
 
-
-        drawPath(
-            path
-        );
-
-
     }
+
 
 
 
