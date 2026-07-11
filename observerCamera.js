@@ -1,6 +1,10 @@
+import * as THREE from "three";
+
+
 export function createObserverCamera(
     camera,
-    controls
+    controls,
+    observer
 ){
 
 
@@ -12,6 +16,7 @@ export function createObserverCamera(
     camera.position.clone();
 
 
+
     const normalTarget =
     controls.target.clone();
 
@@ -20,6 +25,7 @@ export function createObserverCamera(
 
 
     function enter(){
+
 
 
         if(observerMode)
@@ -36,26 +42,36 @@ export function createObserverCamera(
 
 
 
+
+
+        // موقعیت ناظر روی کره زمین
+        // فعلاً نزدیک مرکز برای تست سیستم دید
+
+
         camera.position.set(
             0,
             0,
-            0
+            1.05
         );
 
 
 
-        camera.rotation.set(
+
+
+        camera.up.set(
             0,
             0,
-            0
+            1
         );
+
+
 
 
 
         camera.lookAt(
             0,
-            0,
-            -1
+            1,
+            1
         );
 
 
@@ -66,7 +82,11 @@ export function createObserverCamera(
 
 
 
+
+
+
     function exit(){
+
 
 
         if(!observerMode)
@@ -95,6 +115,14 @@ export function createObserverCamera(
 
 
 
+        camera.up.set(
+            0,
+            0,
+            1
+        );
+
+
+
         controls.update();
 
 
@@ -105,7 +133,11 @@ export function createObserverCamera(
 
 
 
+
+
+
     function toggle(){
+
 
 
         if(observerMode){
@@ -126,7 +158,11 @@ export function createObserverCamera(
 
 
 
+
+
+
     function isActive(){
+
 
 
         return observerMode;
@@ -138,8 +174,9 @@ export function createObserverCamera(
 
 
 
-    return {
 
+
+    return {
 
         enter,
 
@@ -148,7 +185,6 @@ export function createObserverCamera(
         toggle,
 
         isActive
-
 
     };
 
