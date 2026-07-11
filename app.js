@@ -31,7 +31,6 @@ export function createApp(){
     new THREE.Scene();
 
 
-
     scene.background =
     new THREE.Color(0x000000);
 
@@ -41,7 +40,6 @@ export function createApp(){
 
     const time =
     createTimeController();
-
 
 
 
@@ -75,14 +73,6 @@ export function createApp(){
     const observerTransform =
     createObserverTransform(
         observer
-    );
-
-
-
-
-
-    scene.add(
-        observerTransform.group
     );
 
 
@@ -168,7 +158,6 @@ export function createApp(){
     );
 
 
-
     labelRenderer.domElement.style.position =
     "absolute";
 
@@ -195,13 +184,12 @@ export function createApp(){
 
 
 
-    scene.add(
 
+    scene.add(
         new THREE.AmbientLight(
             0xffffff,
             0.8
         )
-
     );
 
 
@@ -209,6 +197,8 @@ export function createApp(){
 
 
 
+
+    // جهان اصلی
 
     createAxes(scene);
 
@@ -220,23 +210,20 @@ export function createApp(){
 
 
 
-
-
-
     createCelestialSphere(
-        observerTransform.group
+        scene
     );
 
 
 
     createCelestialPlanes(
-        observerTransform.group
+        scene
     );
 
 
 
     createSeasonPoints(
-        observerTransform.group
+        scene
     );
 
 
@@ -246,9 +233,8 @@ export function createApp(){
 
     const sun =
     createSun(
-        observerTransform.group
+        scene
     );
-
 
 
 
@@ -257,9 +243,7 @@ export function createApp(){
     const sunMotion =
     createSunMotion(
         sun,
-        time,
-        observerTransform,
-        observer
+        time
     );
 
 
@@ -294,10 +278,8 @@ export function createApp(){
 
 
 
-
     const sunWorldPosition =
     new THREE.Vector3();
-
 
 
 
@@ -397,11 +379,11 @@ export function createApp(){
 
 
 
-
         labelRenderer.render(
             scene,
             camera
         );
+
 
 
     }
@@ -450,9 +432,9 @@ export function createApp(){
             );
 
 
+
         }
     );
-
 
 
 }
