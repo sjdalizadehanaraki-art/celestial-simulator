@@ -11,7 +11,6 @@ export function createObserverFrame(
     new THREE.Group();
 
 
-
     scene.add(
         group
     );
@@ -19,15 +18,89 @@ export function createObserverFrame(
 
 
 
+
+
+
     // -------------------------
-    // صفحه افق
+    // زمین زیر پای ناظر
+    // -------------------------
+
+
+    const groundGeometry =
+    new THREE.SphereGeometry(
+
+        5,
+
+        64,
+
+        32,
+
+        0,
+
+        Math.PI * 2,
+
+        Math.PI / 2,
+
+        Math.PI / 2
+
+    );
+
+
+
+    const groundMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color:0x6b4a2b,
+
+        side:THREE.DoubleSide
+
+    });
+
+
+
+    const ground =
+    new THREE.Mesh(
+
+        groundGeometry,
+
+        groundMaterial
+
+    );
+
+
+
+    // نیمکره پایین
+
+    ground.rotation.x =
+    Math.PI;
+
+
+
+    group.add(
+        ground
+    );
+
+
+
+
+
+
+
+
+    // -------------------------
+    // خط افق
     // -------------------------
 
 
     const horizonGeometry =
-    new THREE.CircleGeometry(
-        5,
+    new THREE.RingGeometry(
+
+        4.95,
+
+        5.05,
+
         128
+
     );
 
 
@@ -37,13 +110,7 @@ export function createObserverFrame(
 
         color:0xff0000,
 
-        transparent:true,
-
-        opacity:0.15,
-
-        side:THREE.DoubleSide,
-
-        depthWrite:false
+        side:THREE.DoubleSide
 
     });
 
@@ -51,8 +118,11 @@ export function createObserverFrame(
 
     const horizon =
     new THREE.Mesh(
+
         horizonGeometry,
+
         horizonMaterial
+
     );
 
 
@@ -65,6 +135,9 @@ export function createObserverFrame(
     group.add(
         horizon
     );
+
+
+
 
 
 
@@ -102,6 +175,8 @@ export function createObserverFrame(
     group.add(
         zenith
     );
+
+
 
 
 
@@ -147,15 +222,53 @@ export function createObserverFrame(
 
 
 
+
+
+    // -------------------------
+    // شرق
+    // -------------------------
+
+
+    const east =
+    new THREE.ArrowHelper(
+
+        new THREE.Vector3(
+            1,
+            0,
+            0
+        ),
+
+        new THREE.Vector3(
+            0,
+            0,
+            0
+        ),
+
+        3,
+
+        0x00ff00
+
+    );
+
+
+
+    group.add(
+        east
+    );
+
+
+
+
+
+
+
+
+
     function update(){
 
 
-        // فعلاً اینجا هیچ چرخشی نداریم
-        // فقط فریم هندسی ناظر است
-
-
-
     }
+
 
 
 
