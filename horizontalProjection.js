@@ -2,18 +2,10 @@
 //
 // تبدیل مختصات افقی خورشید به پیکسل
 //
-// Azimuth:
-// 90  = شرق
-// 180 = جنوب
-// 270 = غرب
-//
-// در صفحه:
-// جنوب وسط
-// شرق سمت راست
-// غرب سمت چپ
-//
-// Altitude:
-// از افق به بالا
+// سیستم دید ناظر:
+// سمت چپ  = شرق (Azimuth 90)
+// وسط     = جنوب (Azimuth 180)
+// سمت راست= غرب (Azimuth 270)
 
 
 export function createHorizontalProjection({
@@ -28,9 +20,8 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // محدوده دید
+    // محدوده آزیموت
     // -------------------------
-
 
     const minAzimuth = 90;
 
@@ -38,16 +29,17 @@ export function createHorizontalProjection({
 
 
 
-    const minAltitude = 0;
+    // -------------------------
+    // محدوده ارتفاع
+    // -------------------------
 
+    const minAltitude =
+    latitude;
 
-
-    // بیشترین ارتفاع ممکن آسمان
-    // برای ناظر با عرض جغرافیایی latitude
 
     const maxAltitude =
     Math.min(
-        90,
+        180,
         latitude + 90
     );
 
@@ -60,7 +52,6 @@ export function createHorizontalProjection({
     minAzimuth;
 
 
-
     const altitudeRange =
     maxAltitude -
     minAltitude;
@@ -71,9 +62,8 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // مقیاس برابر
+    // مقیاس یکسان
     // -------------------------
-
 
     const squareSize =
     Math.min(
@@ -101,7 +91,6 @@ export function createHorizontalProjection({
     scale;
 
 
-
     const viewHeight =
     altitudeRange *
     scale;
@@ -111,11 +100,9 @@ export function createHorizontalProjection({
 
 
 
-
     // -------------------------
-    // جای کادر
+    // محل کادر
     // -------------------------
-
 
     const centerX =
     width / 2;
@@ -141,7 +128,6 @@ export function createHorizontalProjection({
 
 
 
-
     function project(
 
         altitude,
@@ -153,18 +139,39 @@ export function createHorizontalProjection({
 
 
         // -------------------------
-        // محور افقی
+        // آزیموت
+        //
+        // شرق = چپ
+        // جنوب = وسط
+        // غرب = راست
         // -------------------------
 
 
-        const relativeAzimuth =
+        let relativeAzimuth =
         azimuth - 180;
+
+
+
+        if(relativeAzimuth > 180){
+
+            relativeAzimuth -= 360;
+
+        }
+
+
+
+        if(relativeAzimuth < -180){
+
+            relativeAzimuth += 360;
+
+        }
+
 
 
 
         const x =
         centerX
-        +
+        -
         relativeAzimuth *
         scale;
 
@@ -175,7 +182,7 @@ export function createHorizontalProjection({
 
 
         // -------------------------
-        // محور ارتفاع
+        // ارتفاع
         // -------------------------
 
 
@@ -193,7 +200,6 @@ export function createHorizontalProjection({
 
 
 
-
         return {
 
             x,
@@ -204,6 +210,7 @@ export function createHorizontalProjection({
 
 
     }
+
 
 
 
