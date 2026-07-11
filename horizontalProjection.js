@@ -1,7 +1,8 @@
 // horizontalProjection.js
 //
-// تبدیل altitude / azimuth به مختصات پیکسلی
-// مقیاس هر دو محور برابر است
+// تبدیل مختصات افقی آسمان به پیکسل
+// Azimuth : محور افقی
+// Altitude: محور عمودی
 
 
 export function createHorizontalProjection({
@@ -18,7 +19,7 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // محدوده دید ناظر
+    // محدوده دید
     // -------------------------
 
 
@@ -57,7 +58,7 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // میدان دید مربع
+    // مقیاس یکسان
     // -------------------------
 
 
@@ -71,12 +72,6 @@ export function createHorizontalProjection({
 
 
 
-
-
-    // درجه به پیکسل
-    // هر دو محور یکسان
-
-
     const scale =
     squareSize /
     Math.max(
@@ -88,10 +83,10 @@ export function createHorizontalProjection({
 
 
 
-
     const viewWidth =
     azimuthRange *
     scale;
+
 
 
     const viewHeight =
@@ -102,16 +97,29 @@ export function createHorizontalProjection({
 
 
 
-
-    // مرکز صفحه
+    // -------------------------
+    // موقعیت کادر
+    // -------------------------
 
 
     const centerX =
     width / 2;
 
 
-    const centerY =
-    height / 2;
+
+    const bottomY =
+    (
+        height +
+        viewHeight
+    )
+    /
+    2;
+
+
+
+    const topY =
+    bottomY -
+    viewHeight;
 
 
 
@@ -151,18 +159,11 @@ export function createHorizontalProjection({
 
 
         const y =
-        centerY
+        bottomY
         -
         (
             altitude -
-            (
-                (
-                    minAltitude +
-                    maxAltitude
-                )
-                /
-                2
-            )
+            minAltitude
         )
         *
         scale;
@@ -188,8 +189,7 @@ export function createHorizontalProjection({
 
 
 
-
-    return{
+    return {
 
 
         project,
@@ -210,7 +210,10 @@ export function createHorizontalProjection({
 
         centerX,
 
-        centerY,
+
+        topY,
+
+        bottomY,
 
 
         viewWidth,
@@ -219,5 +222,6 @@ export function createHorizontalProjection({
 
 
     };
+
 
 }
