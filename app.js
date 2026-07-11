@@ -10,8 +10,6 @@ import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 
-import { createObserverFrame } from "./observerFrame.js";
-
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
@@ -30,6 +28,7 @@ export function createApp(){
     new THREE.Scene();
 
 
+
     scene.background =
     new THREE.Color(0x000000);
 
@@ -37,8 +36,10 @@ export function createApp(){
 
 
 
+
     const time =
     createTimeController();
+
 
 
 
@@ -53,8 +54,10 @@ export function createApp(){
 
 
 
+
     const observer =
     createObserver();
+
 
 
 
@@ -64,6 +67,7 @@ export function createApp(){
     createLocalSky(
         observer
     );
+
 
 
 
@@ -87,7 +91,7 @@ export function createApp(){
 
 
 
-    // موقتاً غیرفعال برای تست
+
     const observerCamera = {
 
         enter(){},
@@ -108,8 +112,12 @@ export function createApp(){
 
     const renderer =
     new THREE.WebGLRenderer({
+
         antialias:true
+
     });
+
+
 
 
 
@@ -119,9 +127,15 @@ export function createApp(){
     );
 
 
+
+
+
     renderer.setPixelRatio(
         window.devicePixelRatio
     );
+
+
+
 
 
     document.body.appendChild(
@@ -133,8 +147,12 @@ export function createApp(){
 
 
 
+
+
     const labelRenderer =
     new CSS2DRenderer();
+
+
 
 
 
@@ -145,20 +163,27 @@ export function createApp(){
 
 
 
+
+
     labelRenderer.domElement.style.position =
     "absolute";
+
 
 
     labelRenderer.domElement.style.top =
     "0";
 
 
+
     labelRenderer.domElement.style.left =
     "0";
 
 
+
     labelRenderer.domElement.style.pointerEvents =
     "none";
+
+
 
 
 
@@ -171,12 +196,18 @@ export function createApp(){
 
 
 
+
+
     scene.add(
+
         new THREE.AmbientLight(
             0xffffff,
             0.8
         )
+
     );
+
+
 
 
 
@@ -186,16 +217,21 @@ export function createApp(){
     createAxes(scene);
 
 
+
     createEarth(scene);
+
 
 
     createEarthEquator(scene);
 
 
+
     createCelestialSphere(scene);
 
 
+
     createCelestialPlanes(scene);
+
 
 
     createSeasonPoints(scene);
@@ -206,8 +242,11 @@ export function createApp(){
 
 
 
+
     const sun =
     createSun(scene);
+
+
 
 
 
@@ -225,8 +264,12 @@ export function createApp(){
 
 
 
+
+
     const sunTrail =
     createSunTrail();
+
+
 
 
 
@@ -235,15 +278,6 @@ export function createApp(){
     );
 
 
-
-
-
-
-    const observerFrame =
-    createObserverFrame(
-        scene,
-        observer
-    );
 
 
 
@@ -263,8 +297,11 @@ export function createApp(){
 
 
 
+
     const sunWorldPosition =
     new THREE.Vector3();
+
+
 
 
 
@@ -274,9 +311,12 @@ export function createApp(){
     function animate(){
 
 
+
         requestAnimationFrame(
             animate
         );
+
+
 
 
 
@@ -284,7 +324,11 @@ export function createApp(){
 
 
 
+
+
         timeDisplay.update();
+
+
 
 
 
@@ -293,8 +337,10 @@ export function createApp(){
 
 
 
+
         const sunData =
         solarPosition.update();
+
 
 
 
@@ -306,11 +352,12 @@ export function createApp(){
 
 
 
+
+
         localSky.draw();
 
 
 
-        observerFrame.update();
 
 
 
@@ -321,13 +368,19 @@ export function createApp(){
 
 
 
+
+
         sunTrail.addPoint(
             sunWorldPosition
         );
 
 
 
+
+
         controls.update();
+
+
 
 
 
@@ -339,12 +392,18 @@ export function createApp(){
 
 
 
+
+
         labelRenderer.render(
             scene,
             camera
         );
 
+
+
     }
+
+
 
 
 
@@ -359,9 +418,11 @@ export function createApp(){
 
 
 
+
     window.addEventListener(
         "resize",
         ()=>{
+
 
 
             camera.aspect =
@@ -370,7 +431,11 @@ export function createApp(){
 
 
 
+
+
             camera.updateProjectionMatrix();
+
+
 
 
 
@@ -381,14 +446,18 @@ export function createApp(){
 
 
 
+
+
             labelRenderer.setSize(
                 window.innerWidth,
                 window.innerHeight
             );
 
 
+
         }
     );
+
 
 
 }
