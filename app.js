@@ -12,8 +12,10 @@ import { createCelestialPlanes } from "./celestialPlanes.js";
 
 import { createObserverFrame } from "./observerFrame.js";
 import { createObserverCamera } from "./observerCamera.js";
+import { createObserverControls } from "./observerControls.js";
 
 import * as THREE from "three";
+
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { createCamera } from "./camera.js";
@@ -39,8 +41,11 @@ export function createApp(){
 
 
 
+
+
     const time =
     createTimeController();
+
 
 
 
@@ -53,6 +58,7 @@ export function createApp(){
 
 
 
+
     const observer =
     createObserver();
 
@@ -60,29 +66,26 @@ export function createApp(){
 
 
 
+
     const localSky =
-createLocalSky(
-    observer,
-    time
-);
+    createLocalSky(
+        observer,
+        time
+    );
 
 
 
 
 
-    const {camera, controls} =
+
+
+    const {
+        camera,
+        controls
+    } =
     createCamera();
 
 
-
-
-
-
-    const observerCamera =
-    createObserverCamera(
-        camera,
-        controls
-    );
 
 
 
@@ -100,21 +103,63 @@ createLocalSky(
 
 
     renderer.setSize(
+
         window.innerWidth,
+
         window.innerHeight
+
     );
 
 
 
     renderer.setPixelRatio(
+
         window.devicePixelRatio
+
     );
 
 
 
     document.body.appendChild(
+
         renderer.domElement
+
     );
+
+
+
+
+
+
+
+
+    const observerControls =
+    createObserverControls(
+
+        camera,
+
+        renderer.domElement
+
+    );
+
+
+
+
+
+
+
+
+
+    const observerCamera =
+    createObserverCamera(
+
+        camera,
+
+        controls
+
+    );
+
+
 
 
 
@@ -127,9 +172,13 @@ createLocalSky(
 
 
 
+
     labelRenderer.setSize(
+
         window.innerWidth,
+
         window.innerHeight
+
     );
 
 
@@ -152,8 +201,12 @@ createLocalSky(
 
 
     document.body.appendChild(
+
         labelRenderer.domElement
+
     );
+
+
 
 
 
@@ -162,11 +215,17 @@ createLocalSky(
 
 
     scene.add(
+
         new THREE.AmbientLight(
+
             0xffffff,
+
             0.8
+
         )
+
     );
+
 
 
 
@@ -176,15 +235,21 @@ createLocalSky(
 
     createAxes(scene);
 
+
     createEarth(scene);
+
 
     createEarthEquator(scene);
 
+
     createCelestialSphere(scene);
+
 
     createCelestialPlanes(scene);
 
+
     createSeasonPoints(scene);
+
 
 
 
@@ -201,9 +266,13 @@ createLocalSky(
 
     const sunMotion =
     createSunMotion(
+
         sun,
+
         time
+
     );
+
 
 
 
@@ -215,9 +284,15 @@ createLocalSky(
 
 
 
+
     scene.add(
+
         sunTrail.line
+
     );
+
+
+
 
 
 
@@ -226,9 +301,15 @@ createLocalSky(
 
     const observerFrame =
     createObserverFrame(
+
         scene,
+
         observer
+
     );
+
+
+
 
 
 
@@ -236,11 +317,20 @@ createLocalSky(
 
 
     createTimeControls(
+
         time,
+
         sunTrail,
+
         localSky,
-        observerCamera
+
+        observerCamera,
+
+        observerControls
+
     );
+
+
 
 
 
@@ -257,12 +347,16 @@ createLocalSky(
 
 
 
+
+
     function animate(){
 
 
 
         requestAnimationFrame(
+
             animate
+
         );
 
 
@@ -270,6 +364,7 @@ createLocalSky(
 
 
         time.update();
+
 
 
 
@@ -286,7 +381,9 @@ createLocalSky(
 
 
         sun.getWorldPosition(
+
             sunWorldPosition
+
         );
 
 
@@ -300,7 +397,9 @@ createLocalSky(
             sunWorldPosition,
 
             Math.floor(
+
                 time.getTotalMinutes()
+
             )
 
         );
@@ -330,7 +429,9 @@ createLocalSky(
             sunWorldPosition,
 
             Math.floor(
+
                 time.getTotalMinutes()
+
             )
 
         );
@@ -344,24 +445,39 @@ createLocalSky(
 
 
 
+        observerControls.update();
+
+
+
+
+
 
 
 
         renderer.render(
+
             scene,
+
             camera
+
         );
 
 
 
+
+
         labelRenderer.render(
+
             scene,
+
             camera
+
         );
 
 
 
     }
+
 
 
 
@@ -376,13 +492,19 @@ createLocalSky(
 
 
 
+
+
     window.addEventListener(
+
         "resize",
+
         ()=>{
 
 
             camera.aspect =
+
             window.innerWidth /
+
             window.innerHeight;
 
 
@@ -391,21 +513,32 @@ createLocalSky(
 
 
 
+
             renderer.setSize(
+
                 window.innerWidth,
+
                 window.innerHeight
+
             );
+
 
 
 
             labelRenderer.setSize(
+
                 window.innerWidth,
+
                 window.innerHeight
+
             );
 
 
+
         }
+
     );
+
 
 
 }
