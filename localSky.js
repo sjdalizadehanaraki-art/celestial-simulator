@@ -1,8 +1,6 @@
 // localSky.js
-// نمایش آسمان محلی
-// ورودی خورشید:
-// altitude : degree
-// azimuth  : degree
+
+import { createHorizontalProjection } from "./horizontalProjection.js";
 
 
 export function createLocalSky(){
@@ -51,6 +49,14 @@ export function createLocalSky(){
 
 
 
+    const projection =
+    createHorizontalProjection(
+        canvas.width,
+        canvas.height
+    );
+
+
+
     let altitude = 0;
 
     let azimuth = 180;
@@ -66,6 +72,7 @@ export function createLocalSky(){
 
 
 
+
     function setSunPosition(
         alt,
         azi
@@ -74,6 +81,7 @@ export function createLocalSky(){
         altitude = alt;
 
         azimuth = azi;
+
 
 
         pathPoints.push({
@@ -86,6 +94,7 @@ export function createLocalSky(){
 
 
     }
+
 
 
 
@@ -129,10 +138,8 @@ export function createLocalSky(){
 
 
 
-
         const horizon =
         h * 0.75;
-
 
 
 
@@ -176,7 +183,6 @@ export function createLocalSky(){
         "20px Arial";
 
 
-
         ctx.fillText(
             "شرق",
             50,
@@ -200,10 +206,8 @@ export function createLocalSky(){
 
 
 
-        // -------------------------
-        // مسیر خورشید
-        // -------------------------
 
+        // مسیر خورشید
 
         ctx.strokeStyle =
         "rgba(255,255,0,0.8)";
@@ -220,46 +224,27 @@ export function createLocalSky(){
             (point,index)=>{
 
 
-                const px =
-                w/2
-                +
-                (
-                    (point.azimuth - 180)
-                    /
-                    180
-                )
-                *
-                (w/2 - 20);
-
-
-
-
-                const py =
-                horizon
-                -
-                (
-                    point.altitude
-                    /
-                    90
-                )
-                *
-                (horizon - 120);
+                const pos =
+                projection.project(
+                    point.altitude,
+                    point.azimuth
+                );
 
 
 
                 if(index === 0){
 
                     ctx.moveTo(
-                        px,
-                        py
+                        pos.x,
+                        pos.y
                     );
 
                 }
                 else{
 
                     ctx.lineTo(
-                        px,
-                        py
+                        pos.x,
+                        pos.y
                     );
 
                 }
@@ -275,42 +260,17 @@ export function createLocalSky(){
 
 
 
-
-        // -------------------------
-        // موقع فعلی خورشید
-        // -------------------------
+        // موقعیت فعلی خورشید
 
 
-        const x =
-        w/2
-        +
-        (
-            (azimuth - 180)
-            /
-            180
-        )
-        *
-        (w/2 - 20);
+        const sunPosition =
+        projection.project(
+            altitude,
+            azimuth
+        );
 
 
 
-
-        const y =
-        horizon
-        -
-        (
-            altitude
-            /
-            90
-        )
-        *
-        (horizon - 120);
-
-
-
-
-
-        // خورشید
 
         ctx.fillStyle =
         "yellow";
@@ -320,8 +280,8 @@ export function createLocalSky(){
 
 
         ctx.arc(
-            x,
-            y,
+            sunPosition.x,
+            sunPosition.y,
             6,
             0,
             Math.PI*2
@@ -329,7 +289,6 @@ export function createLocalSky(){
 
 
         ctx.fill();
-
 
 
 
