@@ -1,30 +1,39 @@
 export function createTimeController(){
 
 
-    const DAY_SECONDS = 5;
-    const YEAR_DAYS = 365;
+
+    // هر دقیقه شبیه سازی
+
+    let totalMinutes = 0;
 
 
-    let playing = true;
+
+    // سرعت شبیه سازی
 
     let speed = 1;
 
 
-    let lastRealTime =
+
+    let playing = true;
+
+
+
+    let lastTime =
     performance.now();
 
 
 
-    // روز 0 = اعتدال بهاری
-    // شروع: 29 اسفند ساعت 18:16
-
-    let dayOfYear = 0;
 
 
+    // طول شبیه سازی
+    // 5 سال
 
-    let timeOfDay =
-    DAY_SECONDS *
-    (18.2666666667 / 24);
+    const TOTAL_MINUTES =
+    5 *
+    365.2422 *
+    1440;
+
+
 
 
 
@@ -35,17 +44,21 @@ export function createTimeController(){
     function update(){
 
 
+
         const now =
         performance.now();
 
 
 
         const delta =
-        (now - lastRealTime) / 1000;
+        (now - lastTime)
+        /
+        1000;
 
 
 
-        lastRealTime = now;
+        lastTime = now;
+
 
 
 
@@ -56,62 +69,22 @@ export function createTimeController(){
 
 
 
-        timeOfDay +=
-        delta * speed;
+
+        // تبدیل ثانیه واقعی به دقیقه شبیه سازی
+
+        totalMinutes +=
+        delta *
+        speed;
 
 
 
 
 
 
-        while(
-            timeOfDay >= DAY_SECONDS
-        ){
 
-            timeOfDay -= DAY_SECONDS;
+        if(totalMinutes >= TOTAL_MINUTES){
 
-            dayOfYear++;
-
-        }
-
-
-
-
-
-
-        while(
-            timeOfDay < 0
-        ){
-
-            timeOfDay += DAY_SECONDS;
-
-            dayOfYear--;
-
-        }
-
-
-
-
-
-
-        while(
-            dayOfYear >= YEAR_DAYS
-        ){
-
-            dayOfYear -= YEAR_DAYS;
-
-        }
-
-
-
-
-
-
-        while(
-            dayOfYear < 0
-        ){
-
-            dayOfYear += YEAR_DAYS;
+            totalMinutes = 0;
 
         }
 
@@ -138,13 +111,11 @@ export function createTimeController(){
 
 
 
-
     function pause(){
 
         playing = false;
 
     }
-
 
 
 
@@ -163,48 +134,14 @@ export function createTimeController(){
 
 
 
-    function getDay(){
 
-        return dayOfYear;
+    // کل زمان گذشته از مبدا
+    // بر حسب دقیقه
 
-    }
-
-
+    function getTotalMinutes(){
 
 
-
-
-
-    function getDayFraction(){
-
-
-        return (
-
-            timeOfDay /
-            DAY_SECONDS
-
-        );
-
-
-    }
-
-
-
-
-
-
-
-    function getYearFraction(){
-
-
-        return (
-
-            dayOfYear +
-            getDayFraction()
-
-        )
-        /
-        YEAR_DAYS;
+        return totalMinutes;
 
 
     }
@@ -216,18 +153,22 @@ export function createTimeController(){
 
 
 
-    function getSolarHour(){
+
+    // حرکت روزانه
+
+    function getDailyAngle(){
 
 
         return (
 
-            getDayFraction()
+            totalMinutes
             *
-            24
+            360
+            /
+            1440
 
         );
 
-
     }
 
 
@@ -237,61 +178,25 @@ export function createTimeController(){
 
 
 
+    // حرکت سالانه
 
-    // زاویه حرکت روزانه کره سماوی
-    // لحظه شروع = اعتدال بهاری = صفر درجه
-
-    function getSiderealAngle(){
+    function getEclipticAngle(){
 
 
 
-        const startFraction =
-        18.2666666667 / 24;
+        return (
 
+            totalMinutes
+            *
+            360
+            /
+            (365.2422 * 1440)
 
-
-
-        let angle =
-
-        (
-
-            getDayFraction()
-            -
-            startFraction
-
-        )
-        *
-        360;
-
-
-
-
-
-
-        while(angle < 0){
-
-            angle += 360;
-
-        }
-
-
-
-
-
-        while(angle >= 360){
-
-            angle -= 360;
-
-        }
-
-
-
-
-
-        return angle;
-
+        );
 
     }
+
+
 
 
 
@@ -314,22 +219,16 @@ export function createTimeController(){
         setSpeed,
 
 
-        getDay,
+        getTotalMinutes,
 
 
-        getDayFraction,
+        getDailyAngle,
 
 
-        getYearFraction,
+        getEclipticAngle
 
-
-        getSolarHour,
-
-
-        getSiderealAngle
 
 
     };
-
 
 }
