@@ -1,12 +1,15 @@
 // horizontalProjection.js
 //
-// تبدیل مختصات افقی خورشید به پیکسل
+// نمایش آسمان از دید ناظر
 //
-// ناظر رو به جنوب است:
+// محور افقی:
+// چپ  = شرق
+// وسط = جنوب
+// راست = غرب
 //
-// چپ صفحه  = شرق (Azimuth 90)
-// وسط صفحه = جنوب (Azimuth 180)
-// راست صفحه = غرب (Azimuth 270)
+// محور عمودی:
+// پایین = افق
+// بالا = سمت‌الرأس
 
 
 export function createHorizontalProjection({
@@ -20,29 +23,29 @@ export function createHorizontalProjection({
 }){
 
 
-    // -------------------------
-    // محدوده آزیموت
-    // -------------------------
 
-    const minAzimuth = 90;
+    // محدوده دید افقی
+    const minAzimuth = 90;   // شرق
 
-    const maxAzimuth = 270;
+    const maxAzimuth = 270;  // غرب
 
 
 
-    // -------------------------
-    // محدوده ارتفاع
-    // -------------------------
-
-    const minAltitude =
-    latitude;
 
 
-    const maxAltitude =
-    Math.min(
-        180,
-        latitude + 90
-    );
+
+    // ارتفاع
+    //
+    // افق = 0
+    // سمت الرأس = 90
+
+
+    const minAltitude = 0;
+
+
+    const maxAltitude = 90;
+
+
 
 
 
@@ -51,6 +54,7 @@ export function createHorizontalProjection({
     const azimuthRange =
     maxAzimuth -
     minAzimuth;
+
 
 
     const altitudeRange =
@@ -62,9 +66,6 @@ export function createHorizontalProjection({
 
 
 
-    // -------------------------
-    // مقیاس برابر دو محور
-    // -------------------------
 
     const squareSize =
     Math.min(
@@ -72,16 +73,25 @@ export function createHorizontalProjection({
         height
     )
     *
-    0.8;
+    0.75;
+
+
+
+
 
 
 
     const scale =
     squareSize /
     Math.max(
+
         azimuthRange,
+
         altitudeRange
+
     );
+
+
 
 
 
@@ -90,6 +100,7 @@ export function createHorizontalProjection({
     const viewWidth =
     azimuthRange *
     scale;
+
 
 
     const viewHeight =
@@ -101,10 +112,6 @@ export function createHorizontalProjection({
 
 
 
-
-    // -------------------------
-    // محل کادر
-    // -------------------------
 
     const centerX =
     width / 2;
@@ -143,40 +150,28 @@ export function createHorizontalProjection({
 
 
 
-        // -------------------------
-        // محور آزیموت
+        // --------------------
+        // محور افقی
+        // --------------------
         //
-        // شرق -> چپ
-        // جنوب -> وسط
-        // غرب -> راست
-        // -------------------------
+        // شرق 90
+        // جنوب 180
+        // غرب 270
 
 
-        let relativeAzimuth =
-        azimuth - 180;
+        const relativeAzimuth =
 
+        azimuth -
+        180;
 
-
-        if(relativeAzimuth > 180){
-
-            relativeAzimuth -= 360;
-
-        }
-
-
-
-        if(relativeAzimuth < -180){
-
-            relativeAzimuth += 360;
-
-        }
 
 
 
 
         const x =
-        centerX
-        +
+
+        centerX +
+
         relativeAzimuth *
         scale;
 
@@ -187,20 +182,18 @@ export function createHorizontalProjection({
 
 
 
-        // -------------------------
-        // محور ارتفاع
-        // -------------------------
+        // --------------------
+        // ارتفاع
+        // --------------------
 
 
         const y =
-        bottomY
-        -
-        (
-            altitude -
-            minAltitude
-        )
-        *
+
+        bottomY -
+
+        altitude *
         scale;
+
 
 
 
@@ -208,14 +201,17 @@ export function createHorizontalProjection({
 
         return {
 
+
             x,
 
             y
+
 
         };
 
 
     }
+
 
 
 
