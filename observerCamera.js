@@ -53,7 +53,7 @@ export function createObserverCamera(
 
         camera.position.set(
             0,
-            0,
+            1.7,
             0
         );
 
