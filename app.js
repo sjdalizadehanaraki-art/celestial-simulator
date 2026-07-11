@@ -10,6 +10,7 @@ import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 import { createObserverFrame } from "./observerFrame.js";
+import { createObserverCamera } from "./observerCamera.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -25,7 +26,6 @@ import { createCelestialSphere } from "./celestialSphere.js";
 export function createApp(){
 
 
-
     const scene =
     new THREE.Scene();
 
@@ -37,10 +37,8 @@ export function createApp(){
 
 
 
-
     const time =
     createTimeController();
-
 
 
 
@@ -53,10 +51,8 @@ export function createApp(){
 
 
 
-
     const observer =
     createObserver();
-
 
 
 
@@ -70,12 +66,10 @@ export function createApp(){
 
 
 
-
     const localSky =
     createLocalSky(
         observer
     );
-
 
 
 
@@ -92,6 +86,16 @@ export function createApp(){
 
     const {camera, controls} =
     createCamera();
+
+
+
+
+    const observerCamera =
+    createObserverCamera(
+        camera,
+        controls
+    );
+
 
 
 
@@ -164,6 +168,8 @@ export function createApp(){
 
 
 
+
+
     scene.add(
 
         new THREE.AmbientLight(
@@ -178,11 +184,7 @@ export function createApp(){
 
 
 
-
-    // -------------------------
-    // زمین و دستگاه مختصات
-    // -------------------------
-
+    // زمین
 
     createAxes(scene);
 
@@ -195,20 +197,18 @@ export function createApp(){
 
 
 
-
-    // -------------------------
-    // آسمان ناظر
-    // -------------------------
-
+    // آسمان داخل فریم ناظر
 
     createCelestialSphere(
         observerFrame.group
     );
 
 
+
     createCelestialPlanes(
         observerFrame.group
     );
+
 
 
     createSeasonPoints(
@@ -227,13 +227,11 @@ export function createApp(){
 
 
 
-
     const sunMotion =
     createSunMotion(
         sun,
         time
     );
-
 
 
 
@@ -254,11 +252,11 @@ export function createApp(){
 
 
 
-
     createTimeControls(
         time,
         sunTrail,
-        localSky
+        localSky,
+        observerCamera
     );
 
 
@@ -270,12 +268,9 @@ export function createApp(){
     function animate(){
 
 
-
         requestAnimationFrame(
             animate
         );
-
-
 
 
 
@@ -283,11 +278,7 @@ export function createApp(){
 
 
 
-
-
         timeDisplay.update();
-
-
 
 
 
@@ -296,10 +287,8 @@ export function createApp(){
 
 
 
-
         const sunData =
         solarPosition.update();
-
 
 
 
@@ -312,9 +301,7 @@ export function createApp(){
 
 
 
-
         localSky.draw();
-
 
 
 
@@ -324,17 +311,7 @@ export function createApp(){
 
 
 
-
-        sunTrail.addPoint(
-            sun.position
-        );
-
-
-
-
-
         controls.update();
-
 
 
 
@@ -346,19 +323,13 @@ export function createApp(){
 
 
 
-
-
         labelRenderer.render(
             scene,
             camera
         );
 
 
-
     }
-
-
-
 
 
 
@@ -399,7 +370,6 @@ export function createApp(){
                 window.innerWidth,
                 window.innerHeight
             );
-
 
 
         }
