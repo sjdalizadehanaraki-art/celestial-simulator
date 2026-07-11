@@ -3,7 +3,8 @@ import * as THREE from "three";
 
 export function createObserverCamera(
     camera,
-    controls
+    controls,
+    scene
 ){
 
 
@@ -18,9 +19,99 @@ export function createObserverCamera(
     new THREE.Vector3();
 
 
-    const normalRotation =
-    new THREE.Euler();
 
+    const observerGroup =
+    new THREE.Group();
+
+
+    scene.add(
+        observerGroup
+    );
+
+
+
+    // خط افق
+
+    const horizonGeometry =
+    new THREE.CircleGeometry(
+        5,
+        128
+    );
+
+
+    const horizonMaterial =
+    new THREE.MeshBasicMaterial({
+
+        color:0x00ff00,
+
+        transparent:true,
+
+        opacity:0.25,
+
+        side:THREE.DoubleSide
+
+    });
+
+
+
+    const horizon =
+    new THREE.Mesh(
+        horizonGeometry,
+        horizonMaterial
+    );
+
+
+    horizon.rotation.x =
+    Math.PI / 2;
+
+
+    observerGroup.add(
+        horizon
+    );
+
+
+
+
+    // محور شمال
+
+    const northGeometry =
+    new THREE.BufferGeometry()
+    .setFromPoints([
+
+        new THREE.Vector3(
+            0,
+            0,
+            0
+        ),
+
+        new THREE.Vector3(
+            0,
+            0,
+            -5
+        )
+
+    ]);
+
+
+
+    const northLine =
+    new THREE.Line(
+
+        northGeometry,
+
+        new THREE.LineBasicMaterial({
+
+            color:0xff0000
+
+        })
+
+    );
+
+
+
+    observerGroup.add(
+        northLine
+    );
 
 
 
@@ -32,12 +123,9 @@ export function createObserverCamera(
         return;
 
 
-
         observerMode = true;
 
 
-
-        // ذخیره حالت قبلی
 
         normalPosition.copy(
             camera.position
@@ -49,15 +137,6 @@ export function createObserverCamera(
         );
 
 
-        normalRotation.copy(
-            camera.rotation
-        );
-
-
-
-
-
-        // ورود به مرکز کره سماوی
 
         camera.position.set(
             0,
@@ -66,34 +145,22 @@ export function createObserverCamera(
         );
 
 
-
-        // نگاه به سمت جنوب
-
-        camera.rotation.set(
-            0,
-            0,
-            0
-        );
-
-
-
         camera.lookAt(
             0,
-            -5,
-            0
+            0,
+            -1
         );
-
 
 
         controls.enabled =
         false;
 
 
+        observerGroup.visible =
+        true;
+
+
     }
-
-
-
-
 
 
 
@@ -106,7 +173,7 @@ export function createObserverCamera(
 
 
 
-        observerMode = false;
+        observerMode=false;
 
 
 
@@ -115,28 +182,21 @@ export function createObserverCamera(
         );
 
 
-        camera.rotation.copy(
-            normalRotation
-        );
-
-
         controls.target.copy(
             normalTarget
         );
 
 
-        controls.enabled =
-        true;
+        controls.enabled=true;
 
 
         controls.update();
 
 
+        observerGroup.visible=false;
+
+
     }
-
-
-
-
 
 
 
@@ -144,41 +204,19 @@ export function createObserverCamera(
     function toggle(){
 
 
-        if(observerMode){
-
+        if(observerMode)
             exit();
 
-        }
-        else{
-
+        else
             enter();
 
-        }
-
 
     }
-
-
-
-
-
-
-
-
-    function isActive(){
-
-        return observerMode;
-
-    }
-
-
-
 
 
 
 
     return {
-
 
         enter,
 
@@ -186,8 +224,11 @@ export function createObserverCamera(
 
         toggle,
 
-        isActive
+        isActive(){
 
+            return observerMode;
+
+        }
 
     };
 
