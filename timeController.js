@@ -1,21 +1,13 @@
 export function createTimeController(){
 
 
-
-    // هر دقیقه شبیه سازی
-
     let totalMinutes = 0;
 
-
-
-    // سرعت شبیه سازی
 
     let speed = 1;
 
 
-
     let playing = true;
-
 
 
     let lastTime =
@@ -23,19 +15,8 @@ export function createTimeController(){
 
 
 
-
-
-    // طول شبیه سازی
-    // 5 سال
-
-    const TOTAL_MINUTES =
-    5 *
-    365.2422 *
-    1440;
-
-
-
-
+    const YEAR_MINUTES =
+    365.2422 * 1440;
 
 
 
@@ -44,21 +25,15 @@ export function createTimeController(){
     function update(){
 
 
-
         const now =
         performance.now();
 
 
-
         const delta =
-        (now - lastTime)
-        /
-        1000;
-
+        (now-lastTime)/1000;
 
 
         lastTime = now;
-
 
 
 
@@ -67,34 +42,13 @@ export function createTimeController(){
 
 
 
-
-
-
-        // تبدیل ثانیه واقعی به دقیقه شبیه سازی
-
         totalMinutes +=
         delta *
         speed;
 
 
 
-
-
-
-
-        if(totalMinutes >= TOTAL_MINUTES){
-
-            totalMinutes = 0;
-
-        }
-
-
-
     }
-
-
-
-
 
 
 
@@ -108,9 +62,6 @@ export function createTimeController(){
 
 
 
-
-
-
     function pause(){
 
         playing = false;
@@ -119,30 +70,19 @@ export function createTimeController(){
 
 
 
-
-
-
     function setSpeed(value){
 
-        speed = value;
+        speed=value;
 
     }
 
 
 
 
-
-
-
-
-    // کل زمان گذشته از مبدا
-    // بر حسب دقیقه
 
     function getTotalMinutes(){
 
-
         return totalMinutes;
-
 
     }
 
@@ -150,23 +90,13 @@ export function createTimeController(){
 
 
 
-
-
-
-
-    // حرکت روزانه
 
     function getDailyAngle(){
 
-
         return (
-
-            totalMinutes
-            *
-            360
-            /
+            totalMinutes *
+            360 /
             1440
-
         );
 
     }
@@ -174,30 +104,68 @@ export function createTimeController(){
 
 
 
-
-
-
-
-    // حرکت سالانه
 
     function getEclipticAngle(){
 
-
-
         return (
-
-            totalMinutes
-            *
-            360
-            /
-            (365.2422 * 1440)
-
+            totalMinutes *
+            360 /
+            YEAR_MINUTES
         );
 
     }
 
 
 
+
+
+
+
+    // سازگاری با فایل های قبلی
+
+    function getDay(){
+
+        return Math.floor(
+            totalMinutes / 1440
+        );
+
+    }
+
+
+
+
+    function getDayFraction(){
+
+        return (
+            totalMinutes % 1440
+        )
+        /
+        1440;
+
+    }
+
+
+
+
+
+    function getYearFraction(){
+
+        return (
+            totalMinutes /
+            YEAR_MINUTES
+        );
+
+    }
+
+
+
+
+
+    function getSiderealAngle(){
+
+        return getDailyAngle();
+
+    }
 
 
 
@@ -209,26 +177,30 @@ export function createTimeController(){
 
         update,
 
-
         play,
 
-
         pause,
-
 
         setSpeed,
 
 
         getTotalMinutes,
 
-
         getDailyAngle,
 
+        getEclipticAngle,
 
-        getEclipticAngle
 
+        getDay,
+
+        getDayFraction,
+
+        getYearFraction,
+
+        getSiderealAngle
 
 
     };
+
 
 }
