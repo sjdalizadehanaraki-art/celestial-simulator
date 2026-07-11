@@ -9,6 +9,7 @@ import { createTimeController } from "./timeController.js";
 import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
+import { createObserverView } from "./observerView.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -24,10 +25,8 @@ import { createCelestialSphere } from "./celestialSphere.js";
 export function createApp() {
 
 
-
     const scene =
     new THREE.Scene();
-
 
 
     scene.background =
@@ -36,10 +35,8 @@ export function createApp() {
 
 
 
-
     const time =
     createTimeController();
-
 
 
 
@@ -52,10 +49,19 @@ export function createApp() {
 
 
 
-
     const observer =
     createObserver();
 
+
+
+
+    // سیستم دید ناظر
+
+    const observerView =
+    createObserverView(
+        scene,
+        observer
+    );
 
 
 
@@ -64,7 +70,6 @@ export function createApp() {
     createLocalSky(
         observer
     );
-
 
 
 
@@ -86,6 +91,7 @@ export function createApp() {
 
 
 
+
     const renderer =
     new THREE.WebGLRenderer({
 
@@ -95,13 +101,10 @@ export function createApp() {
 
 
 
-
-
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
-
 
 
     renderer.setPixelRatio(
@@ -118,10 +121,10 @@ export function createApp() {
 
 
 
+
+
     const labelRenderer =
     new CSS2DRenderer();
-
-
 
 
 
@@ -136,15 +139,12 @@ export function createApp() {
     "absolute";
 
 
-
     labelRenderer.domElement.style.top =
     "0";
 
 
-
     labelRenderer.domElement.style.left =
     "0";
-
 
 
     labelRenderer.domElement.style.pointerEvents =
@@ -160,12 +160,18 @@ export function createApp() {
 
 
 
+
+
     scene.add(
+
         new THREE.AmbientLight(
             0xffffff,
             0.8
         )
+
     );
+
+
 
 
 
@@ -173,18 +179,13 @@ export function createApp() {
 
     createAxes(scene);
 
-
     createEarth(scene);
-
 
     createEarthEquator(scene);
 
-
     createCelestialSphere(scene);
 
-
     createCelestialPlanes(scene);
-
 
     createSeasonPoints(scene);
 
@@ -192,9 +193,10 @@ export function createApp() {
 
 
 
+
+
     const sun =
     createSun(scene);
-
 
 
 
@@ -214,11 +216,10 @@ export function createApp() {
 
 
 
-
-
     scene.add(
         sunTrail.line
     );
+
 
 
 
@@ -236,9 +237,7 @@ export function createApp() {
 
 
 
-
     function animate(){
-
 
 
         requestAnimationFrame(
@@ -248,15 +247,12 @@ export function createApp() {
 
 
 
-
         time.update();
 
 
 
 
-
         timeDisplay.update();
-
 
 
 
@@ -285,16 +281,19 @@ export function createApp() {
 
 
 
-
         localSky.draw();
 
 
 
 
 
+
         sunTrail.addPoint(
+
             sun.position
+
         );
+
 
 
 
@@ -307,8 +306,11 @@ export function createApp() {
 
 
         renderer.render(
+
             scene,
+
             camera
+
         );
 
 
@@ -316,15 +318,16 @@ export function createApp() {
 
 
         labelRenderer.render(
+
             scene,
+
             camera
+
         );
 
 
 
     }
-
-
 
 
 
@@ -339,6 +342,7 @@ export function createApp() {
 
 
 
+
     window.addEventListener(
 
         "resize",
@@ -346,15 +350,15 @@ export function createApp() {
         ()=>{
 
 
-
             camera.aspect =
+
             window.innerWidth /
+
             window.innerHeight;
 
 
 
             camera.updateProjectionMatrix();
-
 
 
 
@@ -370,7 +374,6 @@ export function createApp() {
 
 
 
-
             labelRenderer.setSize(
 
                 window.innerWidth,
@@ -378,7 +381,6 @@ export function createApp() {
                 window.innerHeight
 
             );
-
 
 
         }
