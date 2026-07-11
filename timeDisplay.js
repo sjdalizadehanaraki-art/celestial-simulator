@@ -1,79 +1,56 @@
-export function createTimeDisplay(time){
+export function createTimeDisplay(
+    time
+){
 
 
-
-    const div =
+    const display =
     document.createElement("div");
 
 
 
-    div.style.position =
+    display.style.position =
     "absolute";
 
 
-
-    div.style.bottom =
+    display.style.top =
     "10px";
 
 
-
-    div.style.left =
-    "50%";
-
+    display.style.right =
+    "10px";
 
 
-    div.style.transform =
-    "translateX(-50%)";
+    display.style.zIndex =
+    "30";
 
 
-
-    div.style.zIndex =
-    "20";
-
-
-
-    div.style.color =
+    display.style.color =
     "white";
 
 
+    display.style.fontSize =
+    "18px";
 
-    div.style.fontFamily =
+
+    display.style.fontFamily =
     "Arial";
 
 
-
-    div.style.fontSize =
-    "14px";
-
+    display.style.background =
+    "rgba(0,0,0,0.5)";
 
 
-    div.style.background =
-    "rgba(0,0,0,0.6)";
+    display.style.padding =
+    "8px";
 
 
-
-    div.style.padding =
-    "8px 20px";
-
-
-
-    div.style.borderRadius =
-    "10px";
-
-
-
-    div.style.whiteSpace =
-    "nowrap";
-
-
-
-    div.style.textAlign =
-    "center";
+    display.style.borderRadius =
+    "8px";
 
 
 
     document.body.appendChild(
-        div
+        display
     );
 
 
@@ -81,28 +58,11 @@ export function createTimeDisplay(time){
 
 
 
+    // شروع مدل
+    // 29 اسفند 1405 - 18:16
 
-    // مبدا شبیه سازی
-
-    const startYear =
-    1405;
-
-
-    const startMonth =
-    12;
-
-
-    const startDay =
-    29;
-
-
-    const startHour =
-    18;
-
-
-    const startMinute =
-    16;
-
+    const START_MINUTES =
+    18 * 60 + 16;
 
 
 
@@ -114,203 +74,76 @@ export function createTimeDisplay(time){
 
 
 
-        const totalMinutes =
-        time.getTotalMinutes();
+        const total =
 
-
-
-
-
-        const date =
-        calculateDate(
-            totalMinutes
+        START_MINUTES
+        +
+        Math.floor(
+            time.getTotalMinutes()
         );
 
 
 
 
 
-        div.innerHTML =
+        const minutesOfDay =
 
-
-        `
-        ${date.year}/${pad(date.month)}/${pad(date.day)}
-        &nbsp;&nbsp;
-        ${pad(date.hour)}:${pad(date.minute)}
-        `;
-
-
-
-    }
+        total %
+        1440;
 
 
 
 
 
+        const hour =
+
+        Math.floor(
+            minutesOfDay / 60
+        );
 
 
 
 
-    function pad(value){
+
+        const minute =
+
+        minutesOfDay %
+        60;
 
 
-        return String(value)
+
+
+
+
+
+        const day =
+
+        Math.floor(
+            total / 1440
+        );
+
+
+
+
+
+
+        display.textContent =
+
+        "Day "
+        +
+        day
+        +
+        "   "
+        +
+        hour
+        .toString()
+        .padStart(2,"0")
+        +
+        ":"
+        +
+        minute
+        .toString()
         .padStart(2,"0");
-
-
-    }
-
-
-
-
-
-
-
-
-
-    function calculateDate(minutes){
-
-
-
-        let total =
-        Math.floor(minutes);
-
-
-
-
-
-        let minute =
-        startMinute +
-        (total % 60);
-
-
-
-
-
-        let hour =
-        startHour +
-        Math.floor(total / 60);
-
-
-
-
-
-        let extraDays =
-        Math.floor(hour / 24);
-
-
-
-        hour =
-        hour % 24;
-
-
-
-
-
-
-
-        let year =
-        startYear;
-
-
-
-        let month =
-        startMonth;
-
-
-
-        let day =
-        startDay +
-        extraDays;
-
-
-
-
-
-
-
-        const monthDays =
-        [
-            31,
-            31,
-            31,
-            31,
-            31,
-            31,
-            30,
-            30,
-            30,
-            30,
-            30,
-            29
-        ];
-
-
-
-
-
-
-
-
-        while(
-            day >
-            monthDays[month-1]
-        ){
-
-
-
-            day -=
-            monthDays[month-1];
-
-
-
-            month++;
-
-
-
-
-
-            if(month > 12){
-
-
-                month = 1;
-
-
-                year++;
-
-
-            }
-
-
-        }
-
-
-
-
-
-
-
-
-        return {
-
-
-            year,
-
-
-            month,
-
-
-            day,
-
-
-            hour,
-
-
-            minute
-
-
-
-        };
 
 
 
