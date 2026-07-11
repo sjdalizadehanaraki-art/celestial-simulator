@@ -3,7 +3,8 @@ import * as THREE from "three";
 
 export function createObserverCamera(
     camera,
-    controls
+    controls,
+    observerGroup
 ){
 
 
@@ -35,8 +36,6 @@ export function createObserverCamera(
 
 
 
-        // ذخیره وضعیت قبلی دوربین
-
         normalPosition.copy(
             camera.position
         );
@@ -49,8 +48,6 @@ export function createObserverCamera(
 
 
 
-
-        // ورود به نقطه دید ناظر
 
         camera.position.set(
 
@@ -79,6 +76,23 @@ export function createObserverCamera(
 
 
 
+
+
+        // فعال کردن نمای ناظر
+
+        observerGroup.visible =
+        true;
+
+
+        // مخفی کردن مدل اصلی
+
+        observerGroup.position.set(
+            0,
+            0,
+            0
+        );
+
+
     }
 
 
@@ -97,7 +111,8 @@ export function createObserverCamera(
 
 
 
-        observerMode = false;
+        observerMode=false;
+
 
 
 
@@ -105,7 +120,6 @@ export function createObserverCamera(
         camera.position.copy(
             normalPosition
         );
-
 
 
         controls.target.copy(
@@ -118,13 +132,17 @@ export function createObserverCamera(
         true;
 
 
-
         controls.update();
 
 
 
-    }
 
+
+        observerGroup.visible =
+        false;
+
+
+    }
 
 
 
@@ -138,34 +156,14 @@ export function createObserverCamera(
 
         if(observerMode){
 
-
             exit();
-
 
         }
         else{
 
-
             enter();
 
-
         }
-
-
-    }
-
-
-
-
-
-
-
-
-
-    function isActive(){
-
-
-        return observerMode;
 
 
     }
@@ -189,7 +187,11 @@ export function createObserverCamera(
         toggle,
 
 
-        isActive
+        isActive(){
+
+            return observerMode;
+
+        }
 
 
     };
