@@ -1,5 +1,8 @@
 // horizontalProjection.js
-// تبدیل مختصات آسمان محلی به مختصات پیکسلی
+// تبدیل مختصات آسمان محلی به مختصات صفحه
+//
+// altitude: درجه (-90 تا +90)
+// azimuth : درجه (0 شمال، 90 شرق، 180 جنوب، 270 غرب)
 
 
 export function createHorizontalProjection(
@@ -14,7 +17,8 @@ export function createHorizontalProjection(
 
 
     const horizontalScale =
-    width / 2 - 20;
+    width / 2 - 40;
+
 
 
     const verticalScale =
@@ -23,17 +27,11 @@ export function createHorizontalProjection(
 
 
 
+
     function project(
         altitude,
         azimuth
     ){
-
-
-        // azimuth:
-        // 0 شمال
-        // 90 شرق
-        // 180 جنوب
-        // 270 غرب
 
 
 
@@ -79,9 +77,47 @@ export function createHorizontalProjection(
 
 
 
+
+
+    function getHorizon(){
+
+        return horizon;
+
+    }
+
+
+
+
+
+    function getWidth(){
+
+        return width;
+
+    }
+
+
+
+
+
+    function getHeight(){
+
+        return height;
+
+    }
+
+
+
+
+
     return {
 
-        project
+        project,
+
+        getHorizon,
+
+        getWidth,
+
+        getHeight
 
     };
 
