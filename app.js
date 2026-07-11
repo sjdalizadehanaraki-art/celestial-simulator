@@ -11,6 +11,7 @@ import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 
 import { createObserverCamera } from "./observerCamera.js";
+import { createObserverSphere } from "./observerSphere.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -36,20 +37,39 @@ export function createApp(){
 
 
 
+
+
     // =========================
     // گروه‌ها
     // =========================
 
+
     const worldGroup =
     new THREE.Group();
+
+
 
     const observerGroup =
     new THREE.Group();
 
-    scene.add(worldGroup);
-    scene.add(observerGroup);
 
-    observerGroup.visible = false;
+
+    scene.add(
+        worldGroup
+    );
+
+
+    scene.add(
+        observerGroup
+    );
+
+
+
+    observerGroup.visible =
+    false;
+
+
+
 
 
 
@@ -57,6 +77,7 @@ export function createApp(){
 
     const time =
     createTimeController();
+
 
 
 
@@ -71,8 +92,10 @@ export function createApp(){
 
 
 
+
     const observer =
     createObserver();
+
 
 
 
@@ -88,6 +111,8 @@ export function createApp(){
 
 
 
+
+
     const {camera, controls} =
     createCamera();
 
@@ -95,11 +120,31 @@ export function createApp(){
 
 
 
+
+
     const observerCamera =
-createObserverCamera(
-    camera,
-    controls
-);
+    createObserverCamera(
+        camera,
+        controls
+    );
+
+
+
+
+
+
+    // کره سماوی مخصوص Observer
+
+    const observerSphere =
+    createObserverSphere();
+
+
+
+    observerGroup.add(
+        observerSphere.group
+    );
+
+
 
 
 
@@ -193,13 +238,15 @@ createObserverCamera(
 
     createAxes(worldGroup);
 
+
     createEarth(worldGroup);
 
-    // createEarthEquator(worldGroup);
 
     createCelestialSphere(worldGroup);
 
+
     createCelestialPlanes(worldGroup);
+
 
     createSeasonPoints(worldGroup);
 
@@ -211,6 +258,8 @@ createObserverCamera(
 
     const sun =
     createSun(worldGroup);
+
+
 
 
 
@@ -236,7 +285,6 @@ createObserverCamera(
     worldGroup.add(
         sunTrail.line
     );
-
 
 
 
