@@ -75,7 +75,7 @@ export function createHorizontalRenderer(
 
         ctx.arc(
 
-            canvas.width/2,
+            canvas.width / 2,
 
             center.y,
 
@@ -83,7 +83,7 @@ export function createHorizontalRenderer(
 
             0,
 
-            Math.PI*2
+            Math.PI * 2
 
         );
 
@@ -127,7 +127,7 @@ export function createHorizontalRenderer(
                 0.35 *
                 (
                     1 -
-                    altitude/100
+                    altitude / 100
                 );
 
 
@@ -145,7 +145,7 @@ export function createHorizontalRenderer(
 
                 ctx.arc(
 
-                    canvas.width/2,
+                    canvas.width / 2,
 
                     center.y,
 
@@ -153,7 +153,7 @@ export function createHorizontalRenderer(
 
                     0,
 
-                    Math.PI*2
+                    Math.PI * 2
 
                 );
 
@@ -163,6 +163,69 @@ export function createHorizontalRenderer(
 
             }
         );
+
+
+    }
+
+
+
+
+
+
+
+    function drawAzimuthLines(){
+
+
+        ctx.strokeStyle =
+        "rgba(255,255,255,0.15)";
+
+
+        ctx.lineWidth = 1;
+
+
+
+        for(
+            let azimuth = 0;
+            azimuth < 360;
+            azimuth += 30
+        ){
+
+
+            const start =
+            projection.project(
+                0,
+                azimuth
+            );
+
+
+            const end =
+            projection.project(
+                90,
+                azimuth
+            );
+
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                start.x,
+                start.y
+            );
+
+
+            ctx.lineTo(
+                end.x,
+                end.y
+            );
+
+
+            ctx.stroke();
+
+
+
+        }
 
 
     }
@@ -229,9 +292,9 @@ export function createHorizontalRenderer(
 
                     point.name,
 
-                    pos.x-20,
+                    pos.x - 20,
 
-                    pos.y+35
+                    pos.y + 35
 
                 );
 
@@ -283,7 +346,7 @@ export function createHorizontalRenderer(
 
             0,
 
-            Math.PI*2
+            Math.PI * 2
 
         );
 
@@ -339,7 +402,7 @@ export function createHorizontalRenderer(
 
 
 
-                if(index===0){
+                if(index === 0){
 
                     ctx.moveTo(
                         pos.x,
@@ -393,6 +456,9 @@ export function createHorizontalRenderer(
 
 
         drawAltitudeLines();
+
+
+        drawAzimuthLines();
 
 
         drawDirections();
