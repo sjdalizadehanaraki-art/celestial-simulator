@@ -12,6 +12,7 @@ export function createHorizontalRenderer(
 
 
 
+
     function clear(){
 
         ctx.clearRect(
@@ -27,7 +28,10 @@ export function createHorizontalRenderer(
 
 
 
+
+
     function drawBackground(){
+
 
         ctx.fillStyle =
         "black";
@@ -40,245 +44,169 @@ export function createHorizontalRenderer(
             canvas.height
         );
 
+
     }
 
 
 
 
 
-    function drawHorizon(){
 
 
-        const center =
+
+    function drawFrame(){
+
+
+        const minAz =
+        projection.minAzimuth;
+
+
+        const maxAz =
+        projection.maxAzimuth;
+
+
+        const minAlt =
+        projection.minAltitude;
+
+
+        const maxAlt =
+        projection.maxAltitude;
+
+
+
+        const p1 =
         projection.project(
-            0,
-            180
+            minAlt,
+            minAz
         );
 
 
-        const radius =
-        canvas.width * 0.35;
+        const p2 =
+        projection.project(
+            maxAlt,
+            maxAz
+        );
 
 
 
         ctx.strokeStyle =
-        "rgba(255,255,255,0.8)";
+        "white";
 
 
         ctx.lineWidth = 2;
 
 
 
+        ctx.strokeRect(
+
+            p1.x,
+
+            p2.y,
+
+            p2.x-p1.x,
+
+            p1.y-p2.y
+
+        );
+
+
+    }
+
+
+
+
+
+
+
+
+    function drawAxes(){
+
+
+
+        // محور آزیموت
+
+        const left =
+        projection.project(
+            projection.minAltitude,
+            projection.minAzimuth
+        );
+
+
+        const right =
+        projection.project(
+            projection.minAltitude,
+            projection.maxAzimuth
+        );
+
+
+
+        ctx.strokeStyle =
+        "red";
+
+
+        ctx.lineWidth = 2;
+
+
         ctx.beginPath();
 
 
-        ctx.arc(
-            canvas.width/2,
-            center.y,
-            radius,
-            0,
-            Math.PI*2
+        ctx.moveTo(
+            left.x,
+            left.y
+        );
+
+
+        ctx.lineTo(
+            right.x,
+            right.y
         );
 
 
         ctx.stroke();
 
 
-    }
 
 
 
+        // محور ارتفاع
 
 
-
-
-    function drawAltitudeLines(){
-
-
-        const levels =
-        [
-            30,
-            60
-        ];
-
-
-
-        levels.forEach(
-            altitude=>{
-
-
-                const center =
-                projection.project(
-                    altitude,
-                    180
-                );
-
-
-
-                const radius =
-                canvas.width *
-                0.35 *
-                (
-                    1 -
-                    altitude/100
-                );
-
-
-
-                ctx.strokeStyle =
-                "rgba(255,255,255,0.25)";
-
-
-                ctx.beginPath();
-
-
-                ctx.arc(
-                    canvas.width/2,
-                    center.y,
-                    radius,
-                    0,
-                    Math.PI*2
-                );
-
-
-                ctx.stroke();
-
-
-
-                // برچسب ارتفاع
-
-                ctx.fillStyle =
-                "rgba(255,255,255,0.7)";
-
-
-                ctx.font =
-                "14px Arial";
-
-
-                ctx.fillText(
-
-                    altitude+"°",
-
-                    canvas.width/2 + radius,
-
-                    center.y
-
-                );
-
-
-            }
-        );
-
-
-
-
-        // سمت الرأس
-
-        const zenith =
+        const bottom =
         projection.project(
-            90,
-            180
+            projection.minAltitude,
+            0
         );
 
 
-        ctx.fillStyle =
-        "white";
-
-
-        ctx.font =
-        "16px Arial";
-
-
-        ctx.fillText(
-            "90° Zenith",
-            zenith.x-35,
-            zenith.y-10
+        const top =
+        projection.project(
+            projection.maxAltitude,
+            0
         );
-
-
-    }
-
-
-
-
-
-
-
-    function drawAzimuthLines(){
 
 
 
         ctx.strokeStyle =
-        "rgba(255,255,255,0.15)";
+        "lime";
 
 
-        ctx.fillStyle =
-        "rgba(255,255,255,0.5)";
+        ctx.beginPath();
 
 
-        ctx.font =
-        "12px Arial";
+        ctx.moveTo(
+            bottom.x,
+            bottom.y
+        );
 
 
-
-        for(
-            let azimuth=0;
-            azimuth<360;
-            azimuth+=30
-        ){
+        ctx.lineTo(
+            top.x,
+            top.y
+        );
 
 
+        ctx.stroke();
 
-            const start =
-            projection.project(
-                0,
-                azimuth
-            );
-
-
-            const end =
-            projection.project(
-                90,
-                azimuth
-            );
-
-
-
-            ctx.beginPath();
-
-
-            ctx.moveTo(
-                start.x,
-                start.y
-            );
-
-
-            ctx.lineTo(
-                end.x,
-                end.y
-            );
-
-
-            ctx.stroke();
-
-
-
-
-            // درجه آزیموت
-
-            ctx.fillText(
-
-                azimuth+"°",
-
-                start.x-10,
-
-                start.y-10
-
-            );
-
-
-
-        }
 
 
     }
@@ -289,16 +217,8 @@ export function createHorizontalRenderer(
 
 
 
-    function drawDirections(){
 
-
-        const points =
-        [
-            ["شمال",0],
-            ["شرق",90],
-            ["جنوب",180],
-            ["غرب",270]
-        ];
+    function drawLabels(){
 
 
 
@@ -307,33 +227,84 @@ export function createHorizontalRenderer(
 
 
         ctx.font =
-        "20px Arial";
+        "14px Arial";
 
 
 
-        points.forEach(
-            p=>{
+        ctx.fillText(
+
+            "Azimuth",
+
+            canvas.width/2-30,
+
+            canvas.height-30
+
+        );
 
 
-                const pos =
-                projection.project(
-                    0,
-                    p[1]
-                );
+
+        ctx.fillText(
+
+            "Altitude",
+
+            20,
+
+            canvas.height/2
+
+        );
 
 
-                ctx.fillText(
-                    p[0],
-                    pos.x-20,
-                    pos.y+35
-                );
+
+        ctx.fillText(
+
+            projection.minAzimuth.toFixed(0)+"°",
+
+            30,
+
+            canvas.height/2+20
+
+        );
 
 
-            }
+
+        ctx.fillText(
+
+            projection.maxAzimuth.toFixed(0)+"°",
+
+            canvas.width-70,
+
+            canvas.height/2+20
+
+        );
+
+
+
+        ctx.fillText(
+
+            projection.minAltitude.toFixed(0)+"°",
+
+            canvas.width/2+10,
+
+            canvas.height-50
+
+        );
+
+
+
+        ctx.fillText(
+
+            projection.maxAltitude.toFixed(0)+"°",
+
+            canvas.width/2+10,
+
+            50
+
         );
 
 
     }
+
+
 
 
 
@@ -348,9 +319,13 @@ export function createHorizontalRenderer(
 
         const pos =
         projection.project(
+
             sun.altitude,
+
             sun.azimuth
+
         );
+
 
 
         ctx.fillStyle =
@@ -361,11 +336,17 @@ export function createHorizontalRenderer(
 
 
         ctx.arc(
+
             pos.x,
+
             pos.y,
-            6,
+
+            7,
+
             0,
+
             Math.PI*2
+
         );
 
 
@@ -381,18 +362,21 @@ export function createHorizontalRenderer(
 
 
 
+
+
     function drawPath(
         path
     ){
 
 
-        if(path.length<2)
+
+        if(path.length < 2)
         return;
 
 
 
         ctx.strokeStyle =
-        "rgba(255,255,0,0.8)";
+        "yellow";
 
 
         ctx.lineWidth = 2;
@@ -404,14 +388,19 @@ export function createHorizontalRenderer(
 
 
         path.forEach(
+
             (point,index)=>{
 
 
                 const pos =
                 projection.project(
+
                     point.altitude,
+
                     point.azimuth
+
                 );
+
 
 
                 if(index===0){
@@ -431,7 +420,9 @@ export function createHorizontalRenderer(
 
                 }
 
+
             }
+
         );
 
 
@@ -439,7 +430,11 @@ export function createHorizontalRenderer(
         ctx.stroke();
 
 
+
     }
+
+
+
 
 
 
@@ -461,13 +456,14 @@ export function createHorizontalRenderer(
 
         drawBackground();
 
-        drawHorizon();
 
-        drawAltitudeLines();
+        drawFrame();
 
-        drawAzimuthLines();
 
-        drawDirections();
+        drawAxes();
+
+
+        drawLabels();
 
 
 
@@ -478,6 +474,7 @@ export function createHorizontalRenderer(
             );
 
         }
+
 
 
         drawPath(
@@ -493,11 +490,14 @@ export function createHorizontalRenderer(
 
 
 
-    return{
+    return {
+
 
         render,
 
+
         clear
+
 
     };
 
