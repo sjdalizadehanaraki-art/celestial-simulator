@@ -25,11 +25,11 @@ export function createObserverSphere(){
     const material =
     new THREE.MeshBasicMaterial({
 
-        color:0xffffff,
+        color:0x4444ff,
 
         transparent:true,
 
-        opacity:0.08,
+        opacity:0.35,
 
         side:THREE.BackSide,
 
