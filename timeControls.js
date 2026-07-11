@@ -1,7 +1,8 @@
 export function createTimeControls(
     time,
     trail,
-    localSky
+    localSky,
+    observerCamera
 ){
 
 
@@ -25,18 +26,14 @@ export function createTimeControls(
 
 
 
-
     const row1 =
     document.createElement("div");
-
 
     row1.style.display =
     "flex";
 
-
     row1.style.flexWrap =
     "wrap";
-
 
     row1.style.gap =
     "5px";
@@ -44,20 +41,17 @@ export function createTimeControls(
 
 
 
-
-
     const row2 =
     document.createElement("div");
-
 
     row2.style.display =
     "flex";
 
+    row2.style.flexWrap =
+    "wrap";
 
     row2.style.gap =
     "5px";
-
-
 
 
 
@@ -84,7 +78,6 @@ export function createTimeControls(
 
 
     row1.appendChild(play);
-
 
 
 
@@ -119,7 +112,7 @@ export function createTimeControls(
 
 
     // -------------------------
-    // سرعت
+    // Speed
     // -------------------------
 
 
@@ -143,8 +136,7 @@ export function createTimeControls(
 
 
         button.textContent =
-        "×" + value;
-
+        "×"+value;
 
 
         button.onclick = ()=>{
@@ -152,7 +144,6 @@ export function createTimeControls(
             time.setSpeed(value);
 
         };
-
 
 
         row1.appendChild(button);
@@ -169,7 +160,7 @@ export function createTimeControls(
 
 
     // -------------------------
-    // نمایش مسیر
+    // Sun Path
     // -------------------------
 
 
@@ -194,8 +185,6 @@ export function createTimeControls(
 
 
 
-        // مسیر سه بعدی
-
         if(pathVisible){
 
             trail.show();
@@ -209,13 +198,7 @@ export function createTimeControls(
 
 
 
-
-
-        // مسیر دو بعدی
-
         localSky.togglePath();
-
-
 
 
 
@@ -233,12 +216,13 @@ export function createTimeControls(
         }
 
 
-
     };
 
 
 
-    row2.appendChild(pathButton);
+    row2.appendChild(
+        pathButton
+    );
 
 
 
@@ -247,7 +231,7 @@ export function createTimeControls(
 
 
     // -------------------------
-    // پاک کردن مسیر
+    // Clear Path
     // -------------------------
 
 
@@ -269,12 +253,14 @@ export function createTimeControls(
         localSky.clearPath();
 
 
-
     };
 
 
+    row2.appendChild(
+        clearButton
+    );
 
-    row2.appendChild(clearButton);
+
 
 
 
@@ -283,25 +269,24 @@ export function createTimeControls(
 
 
     // -------------------------
-    // تغییر حالت نمایش
+    // Local Sky
     // -------------------------
 
 
-    const viewButton =
+    const localButton =
     document.createElement("button");
 
 
-
-    viewButton.textContent =
+    localButton.textContent =
     "☀ Local Sky";
 
 
+    let localVisible =
+    false;
 
-    let localVisible = false;
 
 
-
-    viewButton.onclick = ()=>{
+    localButton.onclick = ()=>{
 
 
         localVisible =
@@ -315,19 +300,88 @@ export function createTimeControls(
             localSky.show();
 
 
-            viewButton.textContent =
+            localButton.textContent =
             "🌍 3D View";
 
 
         }
+
         else{
 
 
             localSky.hide();
 
 
-            viewButton.textContent =
+            localButton.textContent =
             "☀ Local Sky";
+
+
+        }
+
+
+    };
+
+
+
+    row2.appendChild(
+        localButton
+    );
+
+
+
+
+
+
+
+
+    // -------------------------
+    // Observer View
+    // -------------------------
+
+
+    const observerButton =
+    document.createElement("button");
+
+
+    observerButton.textContent =
+    "👁 Observer View";
+
+
+    let observerActive =
+    false;
+
+
+
+    observerButton.onclick = ()=>{
+
+
+        observerActive =
+        !observerActive;
+
+
+
+        if(observerActive){
+
+
+            observerCamera.enter();
+
+
+
+            observerButton.textContent =
+            "🌍 Earth View";
+
+
+        }
+
+        else{
+
+
+            observerCamera.exit();
+
+
+
+            observerButton.textContent =
+            "👁 Observer View";
 
 
         }
@@ -338,17 +392,24 @@ export function createTimeControls(
 
 
 
-    row2.appendChild(viewButton);
+    row2.appendChild(
+        observerButton
+    );
 
 
 
 
 
 
-    panel.appendChild(row1);
+
+    panel.appendChild(
+        row1
+    );
 
 
-    panel.appendChild(row2);
+    panel.appendChild(
+        row2
+    );
 
 
 
