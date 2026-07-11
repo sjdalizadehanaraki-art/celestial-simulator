@@ -23,7 +23,6 @@ export function createObserverCamera(
 
 
 
-
     function enter(){
 
 
@@ -35,6 +34,10 @@ export function createObserverCamera(
         observerMode = true;
 
 
+
+
+
+        // ذخیره وضعیت قبلی
 
         normalPosition.copy(
             camera.position
@@ -49,6 +52,28 @@ export function createObserverCamera(
 
 
 
+
+        // انتقال گروه Observer
+
+        observerGroup.position.set(
+            0,
+            0,
+            -5
+        );
+
+
+
+        observerGroup.visible =
+        true;
+
+
+
+
+
+
+
+        // ورود دوربین به حالت ناظر
+
         camera.position.set(
 
             0,
@@ -60,10 +85,22 @@ export function createObserverCamera(
 
 
         camera.rotation.set(
-    0,
-    0,
-    0
-);
+
+            0,
+            0,
+            0
+
+        );
+
+
+
+        camera.lookAt(
+
+            0,
+            0,
+            -1
+
+        );
 
 
 
@@ -72,23 +109,6 @@ export function createObserverCamera(
         controls.enabled =
         false;
 
-
-
-
-
-        // فعال کردن نمای ناظر
-
-        observerGroup.visible =
-        true;
-
-
-        // مخفی کردن مدل اصلی
-
-        observerGroup.position.set(
-            0,
-            0,
-            0
-        );
 
 
     }
@@ -109,7 +129,8 @@ export function createObserverCamera(
 
 
 
-        observerMode=false;
+        observerMode =
+        false;
 
 
 
@@ -130,7 +151,10 @@ export function createObserverCamera(
         true;
 
 
+
         controls.update();
+
+
 
 
 
@@ -138,6 +162,14 @@ export function createObserverCamera(
 
         observerGroup.visible =
         false;
+
+
+        observerGroup.position.set(
+            0,
+            0,
+            0
+        );
+
 
 
     }
@@ -154,12 +186,16 @@ export function createObserverCamera(
 
         if(observerMode){
 
+
             exit();
+
 
         }
         else{
 
+
             enter();
+
 
         }
 
@@ -187,7 +223,9 @@ export function createObserverCamera(
 
         isActive(){
 
+
             return observerMode;
+
 
         }
 
