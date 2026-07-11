@@ -15,9 +15,18 @@ export function createTimeController(){
 
 
 
+
     const YEAR_MINUTES =
     365.2422 * 1440;
 
+
+
+
+    // ساعت شروع مدل
+    // 29 اسفند 1405 - 18:16
+
+    const START_HOUR =
+    18.266;
 
 
 
@@ -29,8 +38,10 @@ export function createTimeController(){
         performance.now();
 
 
+
         const delta =
         (now-lastTime)/1000;
+
 
 
         lastTime = now;
@@ -54,11 +65,13 @@ export function createTimeController(){
 
 
 
+
     function play(){
 
         playing = true;
 
     }
+
 
 
 
@@ -70,11 +83,14 @@ export function createTimeController(){
 
 
 
+
     function setSpeed(value){
 
-        speed=value;
+        speed = value;
 
     }
+
+
 
 
 
@@ -91,15 +107,45 @@ export function createTimeController(){
 
 
 
+
+    // زاویه روزانه نسبت به لحظه شروع
+
     function getDailyAngle(){
 
+
         return (
+
             totalMinutes *
             360 /
             1440
+
         );
 
+
     }
+
+
+
+
+
+
+    // زاویه روزانه مطلق شروع مدل
+
+    function getStartDailyAngle(){
+
+
+        return (
+
+            START_HOUR *
+            360 /
+            24
+
+        );
+
+
+    }
+
+
 
 
 
@@ -107,11 +153,15 @@ export function createTimeController(){
 
     function getEclipticAngle(){
 
+
         return (
+
             totalMinutes *
             360 /
             YEAR_MINUTES
+
         );
+
 
     }
 
@@ -119,9 +169,6 @@ export function createTimeController(){
 
 
 
-
-
-    // سازگاری با فایل های قبلی
 
     function getDay(){
 
@@ -134,15 +181,23 @@ export function createTimeController(){
 
 
 
+
+
     function getDayFraction(){
 
+
         return (
+
             totalMinutes % 1440
+
         )
         /
         1440;
 
+
     }
+
+
 
 
 
@@ -150,10 +205,14 @@ export function createTimeController(){
 
     function getYearFraction(){
 
+
         return (
+
             totalMinutes /
             YEAR_MINUTES
+
         );
+
 
     }
 
@@ -161,9 +220,13 @@ export function createTimeController(){
 
 
 
+
+
     function getSiderealAngle(){
 
+
         return getDailyAngle();
+
 
     }
 
@@ -186,7 +249,11 @@ export function createTimeController(){
 
         getTotalMinutes,
 
+
         getDailyAngle,
+
+        getStartDailyAngle,
+
 
         getEclipticAngle,
 
@@ -197,10 +264,10 @@ export function createTimeController(){
 
         getYearFraction,
 
+
         getSiderealAngle
 
 
     };
-
 
 }
