@@ -177,11 +177,13 @@ export function createLocalSky(
 
 
 
-        // مولفه شرق
+
+        // شرق
+        // اصلاح شده
 
         const east =
 
-        -Y;
+        Y;
 
 
 
@@ -190,13 +192,17 @@ export function createLocalSky(
 
 
 
-        // مولفه شمال
+
+        // شمال
+        // اصلاح شده
 
         const north =
 
-        -Math.sin(lat) * X
+        Math.sin(lat) * X
         +
         Math.cos(lat) * Z;
+
+
 
 
 
@@ -338,7 +344,7 @@ export function createLocalSky(
 
 
 
-        // خط افق
+        // افق
 
         ctx.strokeStyle =
         "red";
@@ -360,8 +366,7 @@ export function createLocalSky(
 
         ctx.lineTo(
 
-            left
-            +
+            left +
             projection.viewWidth,
 
             projection.bottomY
@@ -371,6 +376,7 @@ export function createLocalSky(
 
 
         ctx.stroke();
+
 
 
 
