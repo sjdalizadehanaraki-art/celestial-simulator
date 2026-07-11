@@ -139,10 +139,10 @@ export function createObserverCamera(
 
 
         camera.position.set(
-            0,
-            0,
-            0
-        );
+    0,
+    0,
+    0.01
+);
 
 
         camera.lookAt(
