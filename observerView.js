@@ -1,175 +1,169 @@
 import * as THREE from "three";
 
 
-export function createObserverView(
-    scene,
-    observer
+export function createObserverCamera(
+    camera,
+    controls
 ){
 
 
-    const group =
-    new THREE.Group();
+    let observerMode = false;
 
 
-    scene.add(
-        group
-    );
 
+    const normalPosition =
+    new THREE.Vector3();
 
 
+    const normalTarget =
+    new THREE.Vector3();
 
 
+    const normalQuaternion =
+    new THREE.Quaternion();
 
 
-    // -------------------------
-    // آسمان نیم‌کره بالا
-    // -------------------------
 
-    const skyGeometry =
-    new THREE.SphereGeometry(
-        5,
-        64,
-        32,
-        0,
-        Math.PI * 2,
-        0,
-        Math.PI / 2
-    );
 
 
 
-    const skyMaterial =
-    new THREE.MeshBasicMaterial({
 
-        color:0x003366,
+    function enter(){
 
-        transparent:true,
 
-        opacity:0.25,
+        if(observerMode)
+        return;
 
-        side:THREE.BackSide,
 
-        depthWrite:false
 
-    });
+        observerMode = true;
 
 
 
-    const sky =
-    new THREE.Mesh(
-        skyGeometry,
-        skyMaterial
-    );
+        normalPosition.copy(
+            camera.position
+        );
 
 
-    group.add(
-        sky
-    );
+        normalTarget.copy(
+            controls.target
+        );
 
 
+        normalQuaternion.copy(
+            camera.quaternion
+        );
 
 
 
 
 
 
+        // مرکز کره سماوی
 
-    // -------------------------
-    // زمین نیم‌کره پایین
-    // -------------------------
+        camera.position.set(
+            0,
+            0,
+            0
+        );
 
-    const groundGeometry =
-    new THREE.SphereGeometry(
-        5,
-        64,
-        32,
-        0,
-        Math.PI * 2,
-        Math.PI / 2,
-        Math.PI / 2
-    );
 
 
+        // نگاه به سمت +Z
 
-    const groundMaterial =
-    new THREE.MeshBasicMaterial({
+        camera.lookAt(
+            0,
+            0,
+            5
+        );
 
-        color:0x5a3a1a,
 
-        transparent:true,
 
-        opacity:0.8,
+        controls.enabled =
+        false;
 
-        side:THREE.BackSide,
 
-        depthWrite:false
+    }
 
-    });
 
 
 
-    const ground =
-    new THREE.Mesh(
-        groundGeometry,
-        groundMaterial
-    );
 
 
-    group.add(
-        ground
-    );
 
 
 
+    function exit(){
 
 
+        if(!observerMode)
+        return;
 
 
 
+        observerMode = false;
 
-    // -------------------------
-    // خط افق
-    // -------------------------
 
-    const horizonGeometry =
-    new THREE.RingGeometry(
-        4.98,
-        5.02,
-        128
-    );
 
+        camera.position.copy(
+            normalPosition
+        );
 
 
-    const horizonMaterial =
-    new THREE.MeshBasicMaterial({
+        camera.quaternion.copy(
+            normalQuaternion
+        );
 
-        color:0xffffff,
 
-        transparent:true,
+        controls.target.copy(
+            normalTarget
+        );
 
-        opacity:0.4,
 
-        side:THREE.DoubleSide
+        controls.enabled =
+        true;
 
-    });
 
+        controls.update();
 
 
-    const horizon =
-    new THREE.Mesh(
-        horizonGeometry,
-        horizonMaterial
-    );
+    }
 
 
-    horizon.rotation.x =
-    Math.PI / 2;
 
 
-    group.add(
-        horizon
-    );
 
+
+
+
+    function toggle(){
+
+
+        if(observerMode){
+
+            exit();
+
+        }
+        else{
+
+            enter();
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+    function isActive(){
+
+        return observerMode;
+
+    }
 
 
 
@@ -180,9 +174,13 @@ export function createObserverView(
 
     return {
 
+        enter,
 
-        group
+        exit,
 
+        toggle,
+
+        isActive
 
     };
 
