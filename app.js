@@ -10,7 +10,7 @@ import { createCelestialPlanes } from "./celestialPlanes.js";
 
 import { createObserverCamera } from "./observerCamera.js";
 import { createObserverSphere } from "./observerSphere.js";
-import { createObserverHorizon } from "./observerHorizon.js";
+//import { createObserverHorizon } from "./observerHorizon.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -151,14 +151,14 @@ export function createApp(){
 
 
 
-    const observerHorizon =
-    createObserverHorizon();
+    //const observerHorizon =
+    //createObserverHorizon();
 
 
 
-    observerGroup.add(
-        observerHorizon.group
-    );
+    //observerGroup.add(
+       // observerHorizon.group
+    //);
 
 
 
