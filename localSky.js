@@ -19,31 +19,23 @@ export function createLocalSky(
     window.innerHeight;
 
 
-
     canvas.style.position =
     "absolute";
-
 
     canvas.style.top =
     "0";
 
-
     canvas.style.left =
     "0";
 
-
     canvas.style.display =
     "none";
-
 
     canvas.style.zIndex =
     "5";
 
 
-
-    document.body.appendChild(
-        canvas
-    );
+    document.body.appendChild(canvas);
 
 
 
@@ -55,41 +47,19 @@ export function createLocalSky(
     let visible = false;
 
 
+    let altitude = 0;
+
+    let azimuth = 180;
+
+
 
     const pathPoints = [];
-
 
 
     let showPath = true;
 
 
-
     let lastMinute = -1;
-
-
-
-
-
-    // نقطه شروع
-    // اعتدال بهاری ۱۴۰۵
-    // ۲۹ اسفند ۱۴۰۴ - ۱۸:۱۶
-
-    const START_ALTITUDE = -6.4;
-
-    const START_AZIMUTH = 274;
-
-
-
-
-
-    let altitude =
-    START_ALTITUDE;
-
-
-    let azimuth =
-    START_AZIMUTH;
-
-
 
 
 
@@ -101,10 +71,8 @@ export function createLocalSky(
         width:
         canvas.width,
 
-
         height:
         canvas.height,
-
 
         latitude:
         observer.getLatitude()
@@ -118,48 +86,33 @@ export function createLocalSky(
 
 
 
-
-    function updatePosition(){
-
-
-        const minutes =
-
-        time.getElapsedMinutes();
+    function setSunPosition(
+        position,
+        minute
+    ){
 
 
-
-
-
-        const dayAngle =
-
-        minutes *
-        360 /
-        1440;
+        const r =
+        position.length();
 
 
 
+        const x =
+        position.x / r;
 
+        const y =
+        position.y / r;
 
-
-
-        azimuth =
-
-        (
-            START_AZIMUTH +
-            dayAngle
-        )
-        % 360;
+        const z =
+        position.z / r;
 
 
 
 
 
-
-
-
-        const phase =
-
-        dayAngle *
+        const lat =
+        observer.getLatitude()
+        *
         Math.PI /
         180;
 
@@ -169,14 +122,20 @@ export function createLocalSky(
 
 
 
+        // ارتفاع
+
+        const up =
+        Math.cos(lat)*x
+        +
+        Math.sin(lat)*z;
+
+
 
         altitude =
-
-        57 *
-        Math.sin(
-            phase
-        );
-
+        Math.asin(up)
+        *
+        180 /
+        Math.PI;
 
 
 
@@ -184,23 +143,52 @@ export function createLocalSky(
 
 
 
+        // شرق
 
-        const currentMinute =
-
-        Math.floor(
-            minutes
-        );
+        const east =
+        -y;
 
 
 
-        if(
-            currentMinute !== lastMinute
-        ){
 
 
-            lastMinute =
-            currentMinute;
+        // شمال
 
+        const north =
+        -Math.sin(lat)*x
+        +
+        Math.cos(lat)*z;
+
+
+
+
+
+
+        azimuth =
+        Math.atan2(
+            east,
+            north
+        )
+        *
+        180 /
+        Math.PI;
+
+
+
+        if(azimuth < 0)
+            azimuth += 360;
+
+
+
+
+
+
+
+
+        if(minute !== lastMinute){
+
+
+            lastMinute = minute;
 
 
             pathPoints.push({
@@ -213,6 +201,7 @@ export function createLocalSky(
 
 
         }
+
 
 
     }
@@ -233,21 +222,11 @@ export function createLocalSky(
 
 
 
-        updatePosition();
-
-
-
-
         ctx.clearRect(
-
             0,
-
             0,
-
             canvas.width,
-
             canvas.height
-
         );
 
 
@@ -257,25 +236,17 @@ export function createLocalSky(
 
 
         ctx.fillRect(
-
             0,
-
             0,
-
             canvas.width,
-
             canvas.height
-
         );
 
 
 
 
 
-
-
         const left =
-
         projection.centerX -
         projection.viewWidth/2;
 
@@ -283,11 +254,8 @@ export function createLocalSky(
 
 
 
-
-
         ctx.strokeStyle =
         "white";
-
 
         ctx.lineWidth = 2;
 
@@ -310,14 +278,13 @@ export function createLocalSky(
 
 
 
-        // خط افق
+        // افق
 
         ctx.strokeStyle =
         "red";
 
 
         ctx.beginPath();
-
 
 
         ctx.moveTo(
@@ -329,16 +296,13 @@ export function createLocalSky(
         );
 
 
-
         ctx.lineTo(
 
-            left +
-            projection.viewWidth,
+            left + projection.viewWidth,
 
             projection.bottomY
 
         );
-
 
 
         ctx.stroke();
@@ -349,7 +313,8 @@ export function createLocalSky(
 
 
 
-        // مسیر خورشید
+
+        // مسیر
 
         if(showPath){
 
@@ -363,11 +328,10 @@ export function createLocalSky(
 
 
             pathPoints.forEach(
-                (p,index)=>{
+                (p,i)=>{
 
 
                     const point =
-
                     projection.project(
 
                         p.altitude,
@@ -378,33 +342,22 @@ export function createLocalSky(
 
 
 
-                    if(index === 0){
+                    if(i===0)
 
                         ctx.moveTo(
-
                             point.x,
-
                             point.y
-
                         );
 
-                    }
-                    else{
+                    else
 
                         ctx.lineTo(
-
                             point.x,
-
                             point.y
-
                         );
-
-                    }
-
 
                 }
             );
-
 
 
             ctx.stroke();
@@ -418,11 +371,11 @@ export function createLocalSky(
 
 
 
+
         // خورشید فعلی
 
 
         const sun =
-
         projection.project(
 
             altitude,
@@ -437,9 +390,7 @@ export function createLocalSky(
         "yellow";
 
 
-
         ctx.beginPath();
-
 
 
         ctx.arc(
@@ -448,14 +399,13 @@ export function createLocalSky(
 
             sun.y,
 
-            6,
+            7,
 
             0,
 
-            Math.PI * 2
+            Math.PI*2
 
         );
-
 
 
         ctx.fill();
@@ -476,7 +426,6 @@ export function createLocalSky(
 
 
         pathPoints.length = 0;
-
 
         lastMinute = -1;
 
@@ -511,13 +460,11 @@ export function createLocalSky(
 
         visible = true;
 
-
         canvas.style.display =
         "block";
 
 
         draw();
-
 
     }
 
@@ -547,6 +494,7 @@ export function createLocalSky(
 
 
 
+
     return {
 
 
@@ -555,6 +503,8 @@ export function createLocalSky(
         hide,
 
         draw,
+
+        setSunPosition,
 
         clearPath,
 
