@@ -11,9 +11,10 @@ export function createObserverHorizon(){
 
     const groundGeometry =
     new THREE.PlaneGeometry(
-        50,
-        50
+        100,
+        100
     );
+
 
 
     const groundMaterial =
@@ -41,10 +42,14 @@ export function createObserverHorizon(){
 
 
 
+    // تبدیل صفحه XY به صفحه XZ
+
     ground.rotation.x =
     -Math.PI / 2;
 
 
+
+    // سطح زمین
 
     ground.position.set(
         0,
@@ -65,5 +70,6 @@ export function createObserverHorizon(){
         group
 
     };
+
 
 }
