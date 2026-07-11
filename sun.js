@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 
-export function createSun(scene){
+export function createSun(parent){
 
 
     const sun =
@@ -12,7 +12,6 @@ export function createSun(scene){
             32,
             32
         ),
-
 
         new THREE.MeshBasicMaterial({
 
@@ -25,14 +24,16 @@ export function createSun(scene){
 
 
     sun.position.set(
+
         5,
         0,
         0
+
     );
 
 
 
-    scene.add(
+    parent.add(
         sun
     );
 
