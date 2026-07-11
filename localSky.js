@@ -131,7 +131,9 @@ export function createLocalSky(
 
 
 
+
         const lat =
+
         observer.getLatitude()
         *
         Math.PI /
@@ -141,51 +143,11 @@ export function createLocalSky(
 
 
 
-        const lon =
-        observer.getLongitude()
-        *
-        Math.PI /
-        180;
 
 
 
 
-
-
-
-
-        // اصلاح موقعیت نسبت به طول جغرافیایی
-
-        const rotatedX =
-
-        X * Math.cos(lon)
-        -
-        Y * Math.sin(lon);
-
-
-
-
-        const rotatedY =
-
-        X * Math.sin(lon)
-        +
-        Y * Math.cos(lon);
-
-
-
-
-        X = rotatedX;
-
-        Y = rotatedY;
-
-
-
-
-
-
-
-
-        // محور بالا (ارتفاع)
+        // ارتفاع خورشید
 
         const up =
 
@@ -215,7 +177,7 @@ export function createLocalSky(
 
 
 
-        // شرق
+        // مولفه شرق
 
         const east =
 
@@ -228,7 +190,7 @@ export function createLocalSky(
 
 
 
-        // شمال
+        // مولفه شمال
 
         const north =
 
@@ -256,7 +218,9 @@ export function createLocalSky(
 
 
 
-        if(azimuth < 0){
+        if(
+            azimuth < 0
+        ){
 
             azimuth += 360;
 
@@ -338,7 +302,9 @@ export function createLocalSky(
 
 
         const left =
-        projection.centerX -
+
+        projection.centerX
+        -
         projection.viewWidth/2;
 
 
@@ -394,7 +360,9 @@ export function createLocalSky(
 
         ctx.lineTo(
 
-            left + projection.viewWidth,
+            left
+            +
+            projection.viewWidth,
 
             projection.bottomY
 
@@ -521,6 +489,7 @@ export function createLocalSky(
         // خورشید فعلی
 
         const sun =
+
         projection.project(
 
             altitude,
