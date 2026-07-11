@@ -20,11 +20,14 @@ import { createEarthEquator } from "./earthEquator.js";
 import { createCelestialSphere } from "./celestialSphere.js";
 
 
+
 export function createApp() {
+
 
 
     const scene =
     new THREE.Scene();
+
 
 
     scene.background =
@@ -32,8 +35,12 @@ export function createApp() {
 
 
 
+
+
     const time =
     createTimeController();
+
+
 
 
 
@@ -44,15 +51,21 @@ export function createApp() {
 
 
 
-    const localSky =
-createLocalSky(
-    observer
-);
-
 
 
     const observer =
     createObserver();
+
+
+
+
+
+    const localSky =
+    createLocalSky(
+        observer
+    );
+
+
 
 
 
@@ -64,8 +77,12 @@ createLocalSky(
 
 
 
+
+
     const { camera, controls } =
     createCamera();
+
+
 
 
 
@@ -78,15 +95,19 @@ createLocalSky(
 
 
 
+
+
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
 
+
     renderer.setPixelRatio(
         window.devicePixelRatio
     );
+
 
 
     document.body.appendChild(
@@ -95,8 +116,12 @@ createLocalSky(
 
 
 
+
+
     const labelRenderer =
     new CSS2DRenderer();
+
+
 
 
 
@@ -106,25 +131,32 @@ createLocalSky(
     );
 
 
+
     labelRenderer.domElement.style.position =
     "absolute";
+
 
 
     labelRenderer.domElement.style.top =
     "0";
 
 
+
     labelRenderer.domElement.style.left =
     "0";
+
 
 
     labelRenderer.domElement.style.pointerEvents =
     "none";
 
 
+
     document.body.appendChild(
         labelRenderer.domElement
     );
+
+
 
 
 
@@ -137,22 +169,33 @@ createLocalSky(
 
 
 
+
+
     createAxes(scene);
+
 
     createEarth(scene);
 
+
     createEarthEquator(scene);
+
 
     createCelestialSphere(scene);
 
+
     createCelestialPlanes(scene);
+
 
     createSeasonPoints(scene);
 
 
 
+
+
     const sun =
     createSun(scene);
+
+
 
 
 
@@ -164,14 +207,20 @@ createLocalSky(
 
 
 
+
+
     const sunTrail =
     createSunTrail();
+
+
 
 
 
     scene.add(
         sunTrail.line
     );
+
+
 
 
 
@@ -184,7 +233,12 @@ createLocalSky(
 
 
 
+
+
+
+
     function animate(){
+
 
 
         requestAnimationFrame(
@@ -193,11 +247,17 @@ createLocalSky(
 
 
 
+
+
         time.update();
 
 
 
+
+
         timeDisplay.update();
+
+
 
 
 
@@ -206,21 +266,28 @@ createLocalSky(
 
 
 
-        // محاسبه موقعیت واقعی خورشید در آسمان ناظر
 
         const sunData =
         solarPosition.update();
 
 
 
+
+
         localSky.setSunPosition(
+
             sunData.altitude,
+
             sunData.azimuth
+
         );
 
 
 
+
+
         localSky.draw();
+
 
 
 
@@ -231,7 +298,11 @@ createLocalSky(
 
 
 
+
+
         controls.update();
+
+
 
 
 
@@ -242,13 +313,20 @@ createLocalSky(
 
 
 
+
+
         labelRenderer.render(
             scene,
             camera
         );
 
 
+
     }
+
+
+
+
 
 
 
@@ -258,9 +336,15 @@ createLocalSky(
 
 
 
+
+
+
     window.addEventListener(
+
         "resize",
+
         ()=>{
+
 
 
             camera.aspect =
@@ -273,20 +357,34 @@ createLocalSky(
 
 
 
+
+
             renderer.setSize(
+
                 window.innerWidth,
+
                 window.innerHeight
+
             );
+
+
 
 
 
             labelRenderer.setSize(
+
                 window.innerWidth,
+
                 window.innerHeight
+
             );
 
 
+
         }
+
     );
+
+
 
 }
