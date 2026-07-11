@@ -14,6 +14,9 @@ export function createSunMotion(
     function update(){
 
 
+        // روز سال بر اساس سیستم خود پروژه
+        // day = 0 یعنی اعتدال بهاری
+
         const day =
         time.getYearFraction()
         *
@@ -30,15 +33,20 @@ export function createSunMotion(
 
 
 
+        // =========================
         // میل خورشید
+        // مبدأ: اعتدال بهاری
+        // =========================
+
 
         const declination =
         23.44 *
         Math.sin(
 
             THREE.MathUtils.degToRad(
-                (360 / 365) *
-                (day - 81)
+                day *
+                360 /
+                365
             )
 
         );
@@ -54,12 +62,34 @@ export function createSunMotion(
 
 
 
-        // زاویه روزانه
-        // لحظه شروع: اعتدال بهاری روی +X
 
-        const angle =
+
+        // =========================
+        // حرکت روزانه
+        // شروع اجرا:
+        // 18:16 اعتدال بهاری
+        // روی محور +X
+        // =========================
+
+
+        const startHour =
+        18.266;
+
+
+
+        const hourAngle =
+        (
+            hours -
+            startHour
+        )
+        *
+        15;
+
+
+
+        const H =
         THREE.MathUtils.degToRad(
-            (hours / 24) * 360
+            hourAngle
         );
 
 
@@ -67,23 +97,35 @@ export function createSunMotion(
 
 
 
+
+        // =========================
+        // مختصات کره سماوی
+        //
+        // +X = اعتدال بهاری
+        // +Z = قطب شمال سماوی
+        // =========================
+
+
         const x =
         radius *
-        Math.cos(dec) *
-        Math.cos(angle);
+        Math.cos(dec)
+        *
+        Math.cos(H);
 
 
 
         const y =
         radius *
-        Math.cos(dec) *
-        Math.sin(angle);
+        Math.cos(dec)
+        *
+        Math.sin(H);
 
 
 
         const z =
         radius *
         Math.sin(dec);
+
 
 
 
@@ -97,7 +139,9 @@ export function createSunMotion(
         );
 
 
+
     }
+
 
 
 
@@ -105,7 +149,9 @@ export function createSunMotion(
 
     return {
 
+
         update
+
 
     };
 
