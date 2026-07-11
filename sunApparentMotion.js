@@ -1,9 +1,11 @@
 import * as THREE from "three";
 
+
 import {
-    getSolarCoordinates
+    getSolarVector
 }
 from "./astronomy.js";
+
 
 
 
@@ -13,7 +15,15 @@ export function createSunMotion(
 ){
 
 
+
     const radius = 5;
+
+
+
+
+
+    const solarPosition =
+    new THREE.Vector3();
 
 
 
@@ -29,8 +39,12 @@ export function createSunMotion(
 
 
 
+
+        // موقعیت سالانه خورشید
+        // روی دایره البروج
+
         const solar =
-        getSolarCoordinates(
+        getSolarVector(
             day
         );
 
@@ -38,38 +52,29 @@ export function createSunMotion(
 
 
 
+        solarPosition.set(
 
-        const ra =
-        THREE.MathUtils.degToRad(
-            solar.rightAscension
+            solar.x,
+
+            solar.y,
+
+            solar.z
+
         );
 
 
 
-        const dec =
+
+
+
+
+        // زاویه حرکت روزانه
+
+        const rotation =
         THREE.MathUtils.degToRad(
-            solar.declination
-        );
 
-
-
-
-
-        const sidereal =
-        THREE.MathUtils.degToRad(
             time.getSiderealAngle()
-        );
 
-
-
-
-
-
-        // زاویه ساعتی
-
-        const hourAngle =
-        normalizeAngle(
-            sidereal - ra
         );
 
 
@@ -78,34 +83,19 @@ export function createSunMotion(
 
 
 
+        // چرخش حول محور Z
 
-        // تبدیل مختصات استوایی
-        // قرارداد پروژه:
-        //
-        // X = اعتدال بهاری
-        // Z = قطب شمال سماوی
-        //
-        // حرکت روزانه حول Z
+        solarPosition.applyAxisAngle(
 
+            new THREE.Vector3(
+                0,
+                0,
+                1
+            ),
 
+            rotation
 
-        const x =
-        radius *
-        Math.cos(dec) *
-        Math.cos(hourAngle);
-
-
-
-        const y =
-        radius *
-        Math.cos(dec) *
-        Math.sin(hourAngle);
-
-
-
-        const z =
-        radius *
-        Math.sin(dec);
+        );
 
 
 
@@ -113,19 +103,28 @@ export function createSunMotion(
 
 
 
-        sun.position.set(
+        solarPosition.normalize();
 
-            x,
+        solarPosition.multiplyScalar(
+            radius
+        );
 
-            y,
 
-            z
+
+
+
+
+
+        sun.position.copy(
+
+            solarPosition
 
         );
 
 
 
     }
+
 
 
 
@@ -140,44 +139,6 @@ export function createSunMotion(
 
 
     };
-
-
-}
-
-
-
-
-
-
-
-function normalizeAngle(angle){
-
-
-
-    while(
-        angle > Math.PI
-    ){
-
-        angle -=
-        Math.PI * 2;
-
-    }
-
-
-
-
-    while(
-        angle < -Math.PI
-    ){
-
-        angle +=
-        Math.PI * 2;
-
-    }
-
-
-
-    return angle;
 
 
 }
