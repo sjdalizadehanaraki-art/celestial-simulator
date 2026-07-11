@@ -10,7 +10,6 @@ export function createSunMotion(
     const radius = 5;
 
 
-
     function update(){
 
 
@@ -22,13 +21,10 @@ export function createSunMotion(
 
 
 
-
-
         const hours =
         time.getDayFraction()
         *
         24;
-
 
 
 
@@ -51,7 +47,6 @@ export function createSunMotion(
 
 
 
-
         // زاویه ساعتی
 
         const hourAngle =
@@ -61,14 +56,10 @@ export function createSunMotion(
 
 
 
-
-
-
         const H =
         THREE.MathUtils.degToRad(
             hourAngle
         );
-
 
 
         const dec =
@@ -81,26 +72,58 @@ export function createSunMotion(
 
 
 
+        // مختصات روی کره سماوی
 
-        const x =
+        let x =
         radius *
-        Math.cos(dec) *
+        Math.cos(dec)
+        *
         Math.cos(H);
 
 
 
-        const y =
+        let y =
+        radius *
+        Math.cos(dec)
+        *
+        Math.sin(H);
+
+
+
+        let z =
         radius *
         Math.sin(dec);
 
 
 
-        const z =
-        radius *
-        Math.cos(dec) *
-        Math.sin(H);
 
 
+
+        // چرخش صفحه دایره البروج
+        // حول محور X به اندازه 23.44 درجه
+
+        const obliquity =
+        THREE.MathUtils.degToRad(
+            23.44
+        );
+
+
+
+        const y2 =
+        y *
+        Math.cos(obliquity)
+        -
+        z *
+        Math.sin(obliquity);
+
+
+
+        const z2 =
+        y *
+        Math.sin(obliquity)
+        +
+        z *
+        Math.cos(obliquity);
 
 
 
@@ -108,14 +131,13 @@ export function createSunMotion(
 
         sun.position.set(
             x,
-            y,
-            z
+            y2,
+            z2
         );
 
 
 
     }
-
 
 
 
