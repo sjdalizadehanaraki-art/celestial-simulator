@@ -83,7 +83,6 @@ export function createApp(){
 
 
 
-
     const {camera, controls} =
     createCamera();
 
@@ -131,6 +130,7 @@ export function createApp(){
 
 
 
+
     const labelRenderer =
     new CSS2DRenderer();
 
@@ -169,22 +169,17 @@ export function createApp(){
 
 
 
-
     scene.add(
-
         new THREE.AmbientLight(
             0xffffff,
             0.8
         )
-
     );
 
 
 
 
 
-
-    // زمین
 
     createAxes(scene);
 
@@ -196,8 +191,6 @@ export function createApp(){
 
 
 
-
-    // آسمان داخل فریم ناظر
 
     createCelestialSphere(
         observerFrame.group
@@ -219,10 +212,12 @@ export function createApp(){
 
 
 
+
     const sun =
     createSun(
         observerFrame.group
     );
+
 
 
 
@@ -265,7 +260,17 @@ export function createApp(){
 
 
 
+    const sunWorldPosition =
+    new THREE.Vector3();
+
+
+
+
+
+
+
     function animate(){
+
 
 
         requestAnimationFrame(
@@ -274,11 +279,15 @@ export function createApp(){
 
 
 
+
+
         time.update();
 
 
 
+
         timeDisplay.update();
+
 
 
 
@@ -287,8 +296,10 @@ export function createApp(){
 
 
 
+
         const sunData =
         solarPosition.update();
+
 
 
 
@@ -301,7 +312,9 @@ export function createApp(){
 
 
 
+
         localSky.draw();
+
 
 
 
@@ -311,7 +324,24 @@ export function createApp(){
 
 
 
+
+        // ثبت مسیر واقعی خورشید در جهان
+
+        sun.getWorldPosition(
+            sunWorldPosition
+        );
+
+
+        sunTrail.addPoint(
+            sunWorldPosition
+        );
+
+
+
+
+
         controls.update();
+
 
 
 
@@ -323,13 +353,18 @@ export function createApp(){
 
 
 
+
         labelRenderer.render(
             scene,
             camera
         );
 
 
+
     }
+
+
+
 
 
 
@@ -372,9 +407,9 @@ export function createApp(){
             );
 
 
+
         }
     );
-
 
 
 }
