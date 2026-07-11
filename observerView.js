@@ -18,16 +18,13 @@ export function createObserverView(
 
 
 
-    // -------------------------
-    // کره سماوی
-    // -------------------------
-
+    // کره سماوی ناظر
 
     const sphere =
     new THREE.Mesh(
 
         new THREE.SphereGeometry(
-            20,
+            5,
             64,
             64
         ),
@@ -52,54 +49,6 @@ export function createObserverView(
     group.add(
         sphere
     );
-
-
-
-
-
-
-
-    // -------------------------
-    // افق ناظر
-    // -------------------------
-
-
-    const horizonGeometry =
-    new THREE.CircleGeometry(
-        20,
-        128
-    );
-
-
-    const horizonMaterial =
-    new THREE.MeshBasicMaterial({
-
-        color:0x4444ff,
-
-        transparent:true,
-
-        opacity:0.15,
-
-        side:THREE.DoubleSide
-
-    });
-
-
-
-    const horizon =
-    new THREE.Mesh(
-
-        horizonGeometry,
-
-        horizonMaterial
-
-    );
-
-
-    group.add(
-        horizon
-    );
-
 
 
 
