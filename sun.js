@@ -1,8 +1,7 @@
 import * as THREE from "three";
 
 
-export function createSun(parent){
-
+export function createSun(scene){
 
 
     const sun =
@@ -25,11 +24,6 @@ export function createSun(parent){
 
 
 
-
-
-    // موقعیت اولیه:
-    // اعتدال بهاری روی +X
-
     sun.position.set(
         5,
         0,
@@ -38,13 +32,9 @@ export function createSun(parent){
 
 
 
-
-
-    parent.add(
+    scene.add(
         sun
     );
-
-
 
 
 
