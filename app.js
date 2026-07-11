@@ -120,10 +120,11 @@ export function createApp(){
 
     const observerCamera =
     createObserverCamera(
-        camera,
-        controls,
-        observerGroup
-    );
+    camera,
+    controls,
+    worldGroup,
+    observerGroup
+);
 
 
 
