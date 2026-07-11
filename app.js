@@ -98,8 +98,7 @@ export function createApp(){
     const observerCamera =
 createObserverCamera(
     camera,
-    controls,
-    scene
+    controls
 );
 
 
