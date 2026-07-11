@@ -1,9 +1,7 @@
 // horizontalProjection.js
 //
-// تبدیل مختصات افقی آسمان به مختصات پیکسلی
-//
-// azimuth : درجه
-// altitude: درجه
+// تبدیل altitude / azimuth به مختصات پیکسلی
+// مقیاس هر دو محور برابر است
 
 
 export function createHorizontalProjection({
@@ -44,11 +42,6 @@ export function createHorizontalProjection({
 
 
 
-    // -------------------------
-    // مقیاس برابر
-    // -------------------------
-
-
     const azimuthRange =
     maxAzimuth -
     minAzimuth;
@@ -61,7 +54,31 @@ export function createHorizontalProjection({
 
 
 
-    const range =
+
+
+    // -------------------------
+    // میدان دید مربع
+    // -------------------------
+
+
+    const squareSize =
+    Math.min(
+        width,
+        height
+    )
+    *
+    0.8;
+
+
+
+
+
+    // درجه به پیکسل
+    // هر دو محور یکسان
+
+
+    const scale =
+    squareSize /
     Math.max(
         azimuthRange,
         altitudeRange
@@ -69,19 +86,8 @@ export function createHorizontalProjection({
 
 
 
-    const scale =
-    Math.min(
-        width,
-        height
-    )
-    /
-    range;
 
 
-
-
-
-    // اندازه واقعی میدان دید
 
     const viewWidth =
     azimuthRange *
@@ -96,15 +102,16 @@ export function createHorizontalProjection({
 
 
 
-    // مرکز کادر
 
-    const offsetX =
-    (width - viewWidth) / 2;
+    // مرکز صفحه
 
 
-    const offsetY =
-    (height - viewHeight) / 2;
+    const centerX =
+    width / 2;
 
+
+    const centerY =
+    height / 2;
 
 
 
@@ -123,30 +130,44 @@ export function createHorizontalProjection({
 
 
         const x =
-        offsetX
+        centerX
         +
         (
             azimuth -
-            minAzimuth
+            (
+                (
+                    minAzimuth +
+                    maxAzimuth
+                )
+                /
+                2
+            )
         )
         *
         scale;
 
 
 
+
+
         const y =
-        height
+        centerY
         -
         (
-            offsetY
-            +
+            altitude -
             (
-                altitude -
-                minAltitude
+                (
+                    minAltitude +
+                    maxAltitude
+                )
+                /
+                2
             )
-            *
-            scale
-        );
+        )
+        *
+        scale;
+
+
 
 
 
@@ -160,6 +181,7 @@ export function createHorizontalProjection({
 
 
     }
+
 
 
 
@@ -183,7 +205,17 @@ export function createHorizontalProjection({
         maxAltitude,
 
 
-        scale
+        scale,
+
+
+        centerX,
+
+        centerY,
+
+
+        viewWidth,
+
+        viewHeight
 
 
     };
