@@ -175,7 +175,7 @@ export function createApp(){
 
 
 
-    createAxes(scene);
+    //createAxes(scene);
 
     createEarth(scene);
 
