@@ -17,21 +17,31 @@ export function createObserverCamera(
         enabled = true;
 
 
+        controls.enabled = false;
+
+
+
         camera.position.set(
+            0,
+            0,
+            0.01
+        );
+
+
+
+        camera.rotation.set(
             0,
             0,
             0
         );
 
 
+
         camera.lookAt(
             0,
-            0,
-            -1
+            -1,
+            0
         );
-
-
-        controls.enabled = false;
 
 
     }
@@ -46,6 +56,10 @@ export function createObserverCamera(
         enabled = false;
 
 
+        controls.enabled = true;
+
+
+
         camera.position.set(
             15,
             15,
@@ -53,14 +67,12 @@ export function createObserverCamera(
         );
 
 
+
         camera.lookAt(
             0,
             0,
             0
         );
-
-
-        controls.enabled = true;
 
 
     }
@@ -81,11 +93,13 @@ export function createObserverCamera(
 
     return {
 
+
         enter,
 
         exit,
 
         isActive
+
 
     };
 
