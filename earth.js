@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 
-export function createEarth(scene){
+export function createEarth(parent){
 
 
     const textureLoader =
@@ -23,7 +23,6 @@ export function createEarth(scene){
             64
         ),
 
-
         new THREE.MeshBasicMaterial({
 
             map: earthTexture
@@ -32,18 +31,20 @@ export function createEarth(scene){
 
     );
 
-    earth.rotation.x = THREE.MathUtils.degToRad(90);
 
-    scene.add(earth);
+    earth.rotation.x =
+    THREE.MathUtils.degToRad(90);
+
+
+    parent.add(earth);
 
 
 
     // نقاط مرجع
 
-
     // +X اعتدال بهاری
     createPoint(
-        scene,
+        parent,
         new THREE.Vector3(1.2,0,0),
         0xff0000
     );
@@ -51,7 +52,7 @@ export function createEarth(scene){
 
     // +Y طول 90 شرقی
     createPoint(
-        scene,
+        parent,
         new THREE.Vector3(0,1.2,0),
         0x00ff00
     );
@@ -59,7 +60,7 @@ export function createEarth(scene){
 
     // +Z قطب شمال
     createPoint(
-        scene,
+        parent,
         new THREE.Vector3(0,0,1.2),
         0x0088ff
     );
@@ -69,8 +70,9 @@ export function createEarth(scene){
 
 
 
+
 function createPoint(
-    scene,
+    parent,
     position,
     color
 ){
@@ -85,7 +87,9 @@ function createPoint(
         ),
 
         new THREE.MeshBasicMaterial({
+
             color:color
+
         })
 
     );
@@ -94,6 +98,6 @@ function createPoint(
     point.position.copy(position);
 
 
-    scene.add(point);
+    parent.add(point);
 
 }
