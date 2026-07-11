@@ -49,7 +49,13 @@ export function createHorizontalGrid(){
 
 
 
-    function draw(observer){
+    function draw(
+
+    observer,
+
+    objects = []
+
+){
 
 
         if(!visible)
