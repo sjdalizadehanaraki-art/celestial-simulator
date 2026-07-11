@@ -191,7 +191,7 @@ export function createApp(){
 
 
 
-    // createAxes(worldGroup);
+    createAxes(worldGroup);
 
     createEarth(worldGroup);
 
