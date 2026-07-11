@@ -1,11 +1,17 @@
 import * as THREE from "three";
 
+
 export function createSunTrail(){
+
 
     const points = [];
 
+
+
     const geometry =
     new THREE.BufferGeometry();
+
+
 
     const material =
     new THREE.LineBasicMaterial({
@@ -18,6 +24,9 @@ export function createSunTrail(){
 
     });
 
+
+
+
     const line =
     new THREE.Line(
         geometry,
@@ -25,99 +34,186 @@ export function createSunTrail(){
     );
 
 
-    const lastPoint =
-    new THREE.Vector3(
-        Infinity,
-        Infinity,
-        Infinity
-    );
 
 
-    const minDistance = 0.02;
+
+    let lastMinute = -1;
+
 
 
     function rebuild(){
+
 
         geometry.setFromPoints(
             points
         );
 
+
     }
 
 
-    return{
+
+
+
+
+    function addPoint(
+        position,
+        minute
+    ){
+
+
+
+        // فقط یک نقطه برای هر دقیقه
+
+        if(
+            minute === lastMinute
+        ){
+
+            return;
+
+        }
+
+
+
+        lastMinute =
+        minute;
+
+
+
+
+        points.push(
+
+            position.clone()
+
+        );
+
+
+
+
+        rebuild();
+
+
+    }
+
+
+
+
+
+
+
+
+
+    function clear(){
+
+
+
+        points.length = 0;
+
+
+        lastMinute = -1;
+
+
+
+        rebuild();
+
+
+    }
+
+
+
+
+
+
+
+
+    function show(){
+
+
+        line.visible =
+        true;
+
+
+    }
+
+
+
+
+
+
+
+
+    function hide(){
+
+
+        line.visible =
+        false;
+
+
+    }
+
+
+
+
+
+
+
+
+    function toggle(){
+
+
+        line.visible =
+        !line.visible;
+
+
+    }
+
+
+
+
+
+
+
+
+    function isVisible(){
+
+
+        return line.visible;
+
+
+    }
+
+
+
+
+
+
+
+
+    return {
+
 
         line,
 
 
-        addPoint(position){
-
-            if(
-                lastPoint.distanceTo(position)
-                < minDistance
-            ){
-
-                return;
-
-            }
+        addPoint,
 
 
-            lastPoint.copy(position);
+        clear,
 
 
-            points.push(
-                position.clone()
-            );
+        show,
 
 
-            rebuild();
-
-        },
+        hide,
 
 
-        show(){
-
-            line.visible = true;
-
-        },
+        toggle,
 
 
-        hide(){
+        isVisible
 
-            line.visible = false;
-
-        },
-
-
-        toggle(){
-
-            line.visible =
-            !line.visible;
-
-        },
-
-
-        isVisible(){
-
-            return line.visible;
-
-        },
-
-
-        clear(){
-
-            points.length = 0;
-
-            lastPoint.set(
-                Infinity,
-                Infinity,
-                Infinity
-            );
-
-            rebuild();
-
-        }
 
     };
+
 
 }
