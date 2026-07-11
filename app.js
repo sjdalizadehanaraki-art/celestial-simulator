@@ -26,6 +26,7 @@ import { createSeasonPoints } from "./seasonPoints.js";
 export function createApp(){
 
 
+
     const scene =
     new THREE.Scene();
 
@@ -40,7 +41,7 @@ export function createApp(){
 
 
     // =========================
-    // گروه‌ها
+    // Groups
     // =========================
 
 
@@ -80,8 +81,6 @@ export function createApp(){
 
 
 
-
-
     const timeDisplay =
     createTimeDisplay(
         time
@@ -91,10 +90,8 @@ export function createApp(){
 
 
 
-
     const observer =
     createObserver();
-
 
 
 
@@ -122,11 +119,11 @@ export function createApp(){
 
 
     const observerCamera =
-createObserverCamera(
-    camera,
-    controls,
-    observerGroup
-);
+    createObserverCamera(
+        camera,
+        controls,
+        observerGroup
+    );
 
 
 
@@ -136,7 +133,7 @@ createObserverCamera(
 
 
     // =========================
-    // Observer View Objects
+    // Observer View
     // =========================
 
 
@@ -168,6 +165,11 @@ createObserverCamera(
 
 
 
+
+
+    // =========================
+    // Renderers
+    // =========================
 
 
     const renderer =
@@ -241,6 +243,7 @@ createObserverCamera(
 
 
 
+
     scene.add(
         new THREE.AmbientLight(
             0xffffff,
@@ -255,8 +258,9 @@ createObserverCamera(
 
 
 
+
     // =========================
-    // World Model
+    // 3D Space Model
     // =========================
 
 
@@ -309,6 +313,7 @@ createObserverCamera(
     worldGroup.add(
         sunTrail.line
     );
+
 
 
 
@@ -418,6 +423,45 @@ createObserverCamera(
 
 
 
+
+
+        // =========================
+        // Observer State
+        // =========================
+
+
+        if(
+            observerCamera.isActive()
+        ){
+
+            observerGroup.visible =
+            true;
+
+
+            controls.enabled =
+            false;
+
+
+        }
+        else{
+
+
+            observerGroup.visible =
+            false;
+
+
+            controls.enabled =
+            true;
+
+
+        }
+
+
+
+
+
+
+
         controls.update();
 
 
@@ -489,6 +533,7 @@ createObserverCamera(
 
         }
     );
+
 
 
 }
