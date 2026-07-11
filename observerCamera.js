@@ -58,7 +58,7 @@ export function createObserverCamera(
         observerGroup.position.set(
             0,
             0,
-            -5
+            -2
         );
 
 
