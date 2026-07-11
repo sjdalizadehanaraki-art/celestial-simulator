@@ -4,7 +4,11 @@ import { createHorizontalProjection } from "./horizontalProjection.js";
 import { createHorizontalRenderer } from "./horizontalRenderer.js";
 
 
-export function createLocalSky(){
+
+export function createLocalSky(
+    observer
+){
+
 
 
     const canvas =
@@ -25,11 +29,11 @@ export function createLocalSky(){
     "absolute";
 
 
-    canvas.style.top =
+    canvas.style.left =
     "0";
 
 
-    canvas.style.left =
+    canvas.style.top =
     "0";
 
 
@@ -50,27 +54,68 @@ export function createLocalSky(){
 
 
 
-    const projection =
-    createHorizontalProjection(
-        canvas.width,
-        canvas.height
-    );
+    let projection;
 
 
-
-
-    const renderer =
-    createHorizontalRenderer(
-        canvas,
-        projection
-    );
+    let renderer;
 
 
 
 
 
+    function rebuild(){
 
-    let visible = false;
+
+
+        projection =
+        createHorizontalProjection({
+
+            width:
+            canvas.width,
+
+            height:
+            canvas.height,
+
+            latitude:
+            observer.getLatitude(),
+
+            longitude:
+            observer.getLongitude()
+
+        });
+
+
+
+
+        renderer =
+        createHorizontalRenderer(
+
+            canvas,
+
+            projection
+
+        );
+
+
+
+    }
+
+
+
+
+
+    rebuild();
+
+
+
+
+
+
+
+    let visible =
+    false;
+
+
 
 
 
@@ -78,13 +123,17 @@ export function createLocalSky(){
 
         altitude:0,
 
-        azimuth:180
+        azimuth:0
 
     };
 
 
 
-    const pathPoints = [];
+
+
+    const path = [];
+
+
 
 
 
@@ -92,9 +141,13 @@ export function createLocalSky(){
 
 
     function setSunPosition(
+
         altitude,
+
         azimuth
+
     ){
+
 
 
         sun.altitude =
@@ -106,8 +159,7 @@ export function createLocalSky(){
 
 
 
-
-        pathPoints.push({
+        path.push({
 
             altitude,
 
@@ -117,6 +169,7 @@ export function createLocalSky(){
 
 
     }
+
 
 
 
@@ -136,7 +189,7 @@ export function createLocalSky(){
 
             sun,
 
-            path:pathPoints
+            path
 
         });
 
@@ -153,7 +206,7 @@ export function createLocalSky(){
     function clearPath(){
 
 
-        pathPoints.length = 0;
+        path.length = 0;
 
 
     }
@@ -172,6 +225,9 @@ export function createLocalSky(){
 
         canvas.style.display =
         "block";
+
+
+        rebuild();
 
 
         draw();
@@ -202,21 +258,54 @@ export function createLocalSky(){
 
 
 
-    return {
+    window.addEventListener(
+
+        "resize",
+
+        ()=>{
+
+
+            canvas.width =
+            window.innerWidth;
+
+
+            canvas.height =
+            window.innerHeight;
+
+
+            rebuild();
+
+
+            draw();
+
+
+        }
+
+    );
+
+
+
+
+
+
+    return{
 
 
         show,
 
+
         hide,
+
 
         draw,
 
+
         setSunPosition,
+
 
         clearPath
 
 
     };
-
 
 }
