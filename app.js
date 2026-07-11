@@ -45,7 +45,9 @@ export function createApp() {
 
 
     const localSky =
-    createLocalSky();
+createLocalSky(
+    observer
+);
 
 
 
