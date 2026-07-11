@@ -1,13 +1,6 @@
 import * as THREE from "three";
 
 
-import {
-    getSolarVector
-}
-from "./astronomy.js";
-
-
-
 
 export function createSunMotion(
     sun,
@@ -20,10 +13,11 @@ export function createSunMotion(
 
 
 
+    const obliquity =
+    THREE.MathUtils.degToRad(
+        23.44
+    );
 
-
-    const solarPosition =
-    new THREE.Vector3();
 
 
 
@@ -33,47 +27,13 @@ export function createSunMotion(
 
 
 
-        const day =
-        time.getDay();
+        // زاویه سالانه خورشید
+        // 0 درجه = اعتدال بهاری
 
-
-
-
-
-        // موقعیت سالانه خورشید
-        // روی دایره البروج
-
-        const solar =
-        getSolarVector(
-            day
-        );
-
-
-
-
-
-        solarPosition.set(
-
-            solar.x,
-
-            solar.y,
-
-            solar.z
-
-        );
-
-
-
-
-
-
-
-        // زاویه حرکت روزانه
-
-        const rotation =
+        const lambda =
         THREE.MathUtils.degToRad(
 
-            time.getSiderealAngle()
+            time.getEclipticAngle()
 
         );
 
@@ -82,18 +42,38 @@ export function createSunMotion(
 
 
 
+        // مختصات روی دایره البروج
 
+        let x =
+        Math.cos(lambda);
+
+
+
+        let y =
+        Math.cos(obliquity)
+        *
+        Math.sin(lambda);
+
+
+
+        let z =
+        Math.sin(obliquity)
+        *
+        Math.sin(lambda);
+
+
+
+
+
+
+
+        // حرکت روزانه زمین
         // چرخش حول محور Z
 
-        solarPosition.applyAxisAngle(
+        const theta =
+        THREE.MathUtils.degToRad(
 
-            new THREE.Vector3(
-                0,
-                0,
-                1
-            ),
-
-            rotation
+            time.getDailyAngle()
 
         );
 
@@ -101,30 +81,41 @@ export function createSunMotion(
 
 
 
-
-
-        solarPosition.normalize();
-
-        solarPosition.multiplyScalar(
-            radius
-        );
-
-
+        const rotatedX =
+        x *
+        Math.cos(theta)
+        -
+        y *
+        Math.sin(theta);
 
 
 
 
+        const rotatedY =
+        x *
+        Math.sin(theta)
+        +
+        y *
+        Math.cos(theta);
 
-        sun.position.copy(
 
-            solarPosition
+
+
+
+
+        sun.position.set(
+
+            rotatedX * radius,
+
+            rotatedY * radius,
+
+            z * radius
 
         );
 
 
 
     }
-
 
 
 
