@@ -11,7 +11,7 @@ export function createObserverHorizon(){
 
 
 
-    // نیمه آسمان (بالا)
+    // آسمان بالایی
 
     const skyGeometry =
     new THREE.CircleGeometry(
@@ -26,11 +26,11 @@ export function createObserverHorizon(){
     const skyMaterial =
     new THREE.MeshBasicMaterial({
 
-        color:0x4488ff,
+        color:0x3399ff,
 
         transparent:true,
 
-        opacity:0.25,
+        opacity:0.35,
 
         side:THREE.DoubleSide,
 
@@ -56,6 +56,11 @@ export function createObserverHorizon(){
 
 
 
+    sky.position.y =
+    0;
+
+
+
     group.add(
         sky
     );
@@ -66,9 +71,7 @@ export function createObserverHorizon(){
 
 
 
-
-
-    // نیمه زمین (پایین)
+    // زمین پایین
 
     const groundGeometry =
     new THREE.CircleGeometry(
@@ -87,7 +90,7 @@ export function createObserverHorizon(){
 
         transparent:true,
 
-        opacity:0.45,
+        opacity:0.6,
 
         side:THREE.DoubleSide,
 
