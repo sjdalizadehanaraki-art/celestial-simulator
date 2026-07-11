@@ -41,7 +41,7 @@ export function createObserverHorizon(){
 
 
 
-    ground.rotation.x =
+    ground.rotation.z =
     -Math.PI / 2;
 
 
