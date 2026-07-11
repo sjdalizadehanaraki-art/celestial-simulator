@@ -1,30 +1,45 @@
-import * as THREE from "three";
-
-
 export function createObserverCamera(
     camera,
     controls
 ){
 
 
-    let enabled = false;
+    let observerMode = false;
+
+
+
+    const normalPosition =
+    camera.position.clone();
+
+
+    const normalTarget =
+    controls.target.clone();
+
+
 
 
 
     function enter(){
 
 
-        enabled = true;
+        if(observerMode)
+        return;
 
 
-        controls.enabled = false;
+
+        observerMode = true;
+
+
+
+        controls.enabled =
+        false;
 
 
 
         camera.position.set(
             0,
             0,
-            0.01
+            0
         );
 
 
@@ -39,9 +54,10 @@ export function createObserverCamera(
 
         camera.lookAt(
             0,
-            -1,
-            0
+            0,
+            -1
         );
+
 
 
     }
@@ -53,26 +69,55 @@ export function createObserverCamera(
     function exit(){
 
 
-        enabled = false;
-
-
-        controls.enabled = true;
+        if(!observerMode)
+        return;
 
 
 
-        camera.position.set(
-            15,
-            15,
-            15
+        observerMode = false;
+
+
+
+        controls.enabled =
+        true;
+
+
+
+        camera.position.copy(
+            normalPosition
         );
 
 
 
-        camera.lookAt(
-            0,
-            0,
-            0
+        controls.target.copy(
+            normalTarget
         );
+
+
+
+        controls.update();
+
+
+
+    }
+
+
+
+
+
+    function toggle(){
+
+
+        if(observerMode){
+
+            exit();
+
+        }
+        else{
+
+            enter();
+
+        }
 
 
     }
@@ -83,7 +128,9 @@ export function createObserverCamera(
 
     function isActive(){
 
-        return enabled;
+
+        return observerMode;
+
 
     }
 
@@ -97,6 +144,8 @@ export function createObserverCamera(
         enter,
 
         exit,
+
+        toggle,
 
         isActive
 
