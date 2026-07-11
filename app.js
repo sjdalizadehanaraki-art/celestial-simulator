@@ -1,8 +1,6 @@
 import { createObserver } from "./observer.js";
-import { createSolarPosition } from "./solarPosition.js";
 import { createLocalSky } from "./localSky.js";
 import { createTimeDisplay } from "./timeDisplay.js";
-import { createSeasonPoints } from "./seasonPoints.js";
 import { createSunTrail } from "./sunTrail.js";
 import { createTimeControls } from "./timeControls.js";
 import { createTimeController } from "./timeController.js";
@@ -12,6 +10,7 @@ import { createCelestialPlanes } from "./celestialPlanes.js";
 
 import { createObserverCamera } from "./observerCamera.js";
 import { createObserverSphere } from "./observerSphere.js";
+import { createObserverHorizon } from "./observerHorizon.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -19,8 +18,8 @@ import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import { createCamera } from "./camera.js";
 import { createAxes } from "./axes.js";
 import { createEarth } from "./earth.js";
-import { createEarthEquator } from "./earthEquator.js";
 import { createCelestialSphere } from "./celestialSphere.js";
+import { createSeasonPoints } from "./seasonPoints.js";
 
 
 
@@ -34,6 +33,7 @@ export function createApp(){
 
     scene.background =
     new THREE.Color(0x000000);
+
 
 
 
@@ -67,7 +67,6 @@ export function createApp(){
 
     observerGroup.visible =
     false;
-
 
 
 
@@ -133,7 +132,12 @@ export function createApp(){
 
 
 
-    // کره سماوی مخصوص Observer
+
+
+    // =========================
+    // Observer View Objects
+    // =========================
+
 
     const observerSphere =
     createObserverSphere();
@@ -142,6 +146,19 @@ export function createApp(){
 
     observerGroup.add(
         observerSphere.group
+    );
+
+
+
+
+
+    const observerHorizon =
+    createObserverHorizon();
+
+
+
+    observerGroup.add(
+        observerHorizon.group
     );
 
 
@@ -234,6 +251,12 @@ export function createApp(){
 
 
 
+
+
+
+    // =========================
+    // World Model
+    // =========================
 
 
     createAxes(worldGroup);
