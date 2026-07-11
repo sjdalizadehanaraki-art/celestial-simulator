@@ -44,6 +44,8 @@ export function createApp(){
 
 
 
+
+
     const timeDisplay =
     createTimeDisplay(
         time
@@ -299,9 +301,60 @@ export function createApp(){
 
 
 
+
+        // تبدیل مختصات خورشید
+        // از XYZ به ارتفاع و آزیموت
+        
+
+        const altitude =
+        Math.asin(
+            sunData.z
+        )
+        *
+        180 /
+        Math.PI;
+
+
+
+
+
+        let azimuth =
+        Math.atan2(
+            sunData.x,
+            sunData.y
+        )
+        *
+        180 /
+        Math.PI;
+
+
+
+        azimuth += 180;
+
+
+
+
+        if(azimuth < 0){
+
+            azimuth += 360;
+
+        }
+
+
+
+        if(azimuth >= 360){
+
+            azimuth -= 360;
+
+        }
+
+
+
+
+
         localSky.setSunPosition(
-            sunData.altitude,
-            sunData.azimuth
+            altitude,
+            azimuth
         );
 
 
