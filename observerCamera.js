@@ -10,7 +10,6 @@ export function createObserverCamera(
     let observerMode = false;
 
 
-
     const normalPosition =
     new THREE.Vector3();
 
@@ -18,6 +17,9 @@ export function createObserverCamera(
     const normalTarget =
     new THREE.Vector3();
 
+
+    const normalRotation =
+    new THREE.Euler();
 
 
 
@@ -47,26 +49,38 @@ export function createObserverCamera(
         );
 
 
+        normalRotation.copy(
+            camera.rotation
+        );
 
-        // رفتن به مرکز ناظر
 
+
+
+
+        // ورود به مرکز کره سماوی
 
         camera.position.set(
-
             0,
             0,
-            0.1
+            0
+        );
 
+
+
+        // نگاه به سمت جنوب
+
+        camera.rotation.set(
+            0,
+            0,
+            0
         );
 
 
 
         camera.lookAt(
-
             0,
-            5,
+            -5,
             0
-
         );
 
 
@@ -98,6 +112,11 @@ export function createObserverCamera(
 
         camera.position.copy(
             normalPosition
+        );
+
+
+        camera.rotation.copy(
+            normalRotation
         );
 
 
@@ -135,6 +154,7 @@ export function createObserverCamera(
             enter();
 
         }
+
 
     }
 
