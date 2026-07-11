@@ -1,22 +1,12 @@
-// astronomy.js
-
 const OBLIQUITY = 23.43928;
 
 
 
-export function getSolarLongitude(day){
-
-    return (day / 365) * 360;
-
-}
-
-
-
-export function getSolarDeclination(day){
+export function getSolarCoordinates(day){
 
     const lambda =
     degToRad(
-        getSolarLongitude(day)
+        (day / 365) * 360
     );
 
 
@@ -28,16 +18,42 @@ export function getSolarDeclination(day){
 
 
 
-    return radToDeg(
+    const rightAscension =
+    Math.atan2(
 
-        Math.asin(
+        Math.cos(epsilon) *
+        Math.sin(lambda),
 
-            Math.sin(epsilon) *
-            Math.sin(lambda)
-
-        )
+        Math.cos(lambda)
 
     );
+
+
+
+    const declination =
+    Math.asin(
+
+        Math.sin(epsilon) *
+        Math.sin(lambda)
+
+    );
+
+
+
+    return{
+
+        longitude:
+        radToDeg(lambda),
+
+        rightAscension:
+        normalize360(
+            radToDeg(rightAscension)
+        ),
+
+        declination:
+        radToDeg(declination)
+
+    };
 
 }
 
@@ -54,5 +70,19 @@ function degToRad(value){
 function radToDeg(value){
 
     return value * 180 / Math.PI;
+
+}
+
+
+
+function normalize360(value){
+
+    while(value < 0)
+        value += 360;
+
+    while(value >= 360)
+        value -= 360;
+
+    return value;
 
 }
