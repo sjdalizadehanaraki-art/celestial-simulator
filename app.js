@@ -12,10 +12,8 @@ import { createCelestialPlanes } from "./celestialPlanes.js";
 
 import { createObserverFrame } from "./observerFrame.js";
 import { createObserverCamera } from "./observerCamera.js";
-import { createObserverControls } from "./observerControls.js";
 
 import * as THREE from "three";
-
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { createCamera } from "./camera.js";
@@ -29,6 +27,7 @@ import { createCelestialSphere } from "./celestialSphere.js";
 export function createApp(){
 
 
+
     const scene =
     new THREE.Scene();
 
@@ -36,7 +35,6 @@ export function createApp(){
 
     scene.background =
     new THREE.Color(0x000000);
-
 
 
 
@@ -78,13 +76,19 @@ export function createApp(){
 
 
 
-
-    const {
-        camera,
-        controls
-    } =
+    const {camera, controls} =
     createCamera();
 
+
+
+
+
+
+    const observerCamera =
+    createObserverCamera(
+        camera,
+        controls
+    );
 
 
 
@@ -103,63 +107,21 @@ export function createApp(){
 
 
     renderer.setSize(
-
         window.innerWidth,
-
         window.innerHeight
-
     );
 
 
 
     renderer.setPixelRatio(
-
         window.devicePixelRatio
-
     );
 
 
 
     document.body.appendChild(
-
         renderer.domElement
-
     );
-
-
-
-
-
-
-
-
-    const observerControls =
-    createObserverControls(
-
-        camera,
-
-        renderer.domElement
-
-    );
-
-
-
-
-
-
-
-
-
-    const observerCamera =
-    createObserverCamera(
-
-        camera,
-
-        controls
-
-    );
-
-
 
 
 
@@ -172,13 +134,9 @@ export function createApp(){
 
 
 
-
     labelRenderer.setSize(
-
         window.innerWidth,
-
         window.innerHeight
-
     );
 
 
@@ -201,12 +159,8 @@ export function createApp(){
 
 
     document.body.appendChild(
-
         labelRenderer.domElement
-
     );
-
-
 
 
 
@@ -215,17 +169,11 @@ export function createApp(){
 
 
     scene.add(
-
         new THREE.AmbientLight(
-
             0xffffff,
-
             0.8
-
         )
-
     );
-
 
 
 
@@ -235,21 +183,15 @@ export function createApp(){
 
     createAxes(scene);
 
-
     createEarth(scene);
-
 
     createEarthEquator(scene);
 
-
     createCelestialSphere(scene);
-
 
     createCelestialPlanes(scene);
 
-
     createSeasonPoints(scene);
-
 
 
 
@@ -264,13 +206,11 @@ export function createApp(){
 
 
 
+
     const sunMotion =
     createSunMotion(
-
         sun,
-
         time
-
     );
 
 
@@ -284,13 +224,9 @@ export function createApp(){
 
 
 
-
     scene.add(
-
         sunTrail.line
-
     );
-
 
 
 
@@ -301,13 +237,9 @@ export function createApp(){
 
     const observerFrame =
     createObserverFrame(
-
         scene,
-
         observer
-
     );
-
 
 
 
@@ -317,19 +249,11 @@ export function createApp(){
 
 
     createTimeControls(
-
         time,
-
         sunTrail,
-
         localSky,
-
-        observerCamera,
-
-        observerControls
-
+        observerCamera
     );
-
 
 
 
@@ -354,9 +278,7 @@ export function createApp(){
 
 
         requestAnimationFrame(
-
             animate
-
         );
 
 
@@ -364,7 +286,6 @@ export function createApp(){
 
 
         time.update();
-
 
 
 
@@ -380,10 +301,9 @@ export function createApp(){
 
 
 
+
         sun.getWorldPosition(
-
             sunWorldPosition
-
         );
 
 
@@ -397,9 +317,7 @@ export function createApp(){
             sunWorldPosition,
 
             Math.floor(
-
                 time.getTotalMinutes()
-
             )
 
         );
@@ -429,9 +347,7 @@ export function createApp(){
             sunWorldPosition,
 
             Math.floor(
-
                 time.getTotalMinutes()
-
             )
 
         );
@@ -445,33 +361,20 @@ export function createApp(){
 
 
 
-        observerControls.update();
-
-
-
-
 
 
 
 
         renderer.render(
-
             scene,
-
             camera
-
         );
 
 
 
-
-
         labelRenderer.render(
-
             scene,
-
             camera
-
         );
 
 
@@ -493,18 +396,13 @@ export function createApp(){
 
 
 
-
     window.addEventListener(
-
         "resize",
-
         ()=>{
 
 
             camera.aspect =
-
             window.innerWidth /
-
             window.innerHeight;
 
 
@@ -515,28 +413,20 @@ export function createApp(){
 
 
             renderer.setSize(
-
                 window.innerWidth,
-
                 window.innerHeight
-
             );
 
 
 
 
             labelRenderer.setSize(
-
                 window.innerWidth,
-
                 window.innerHeight
-
             );
 
 
-
         }
-
     );
 
 
