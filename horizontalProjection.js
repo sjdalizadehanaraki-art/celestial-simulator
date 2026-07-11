@@ -2,10 +2,11 @@
 //
 // تبدیل مختصات افقی خورشید به پیکسل
 //
-// سیستم دید ناظر:
-// سمت چپ  = شرق (Azimuth 90)
-// وسط     = جنوب (Azimuth 180)
-// سمت راست= غرب (Azimuth 270)
+// ناظر رو به جنوب است:
+//
+// چپ صفحه  = شرق (Azimuth 90)
+// وسط صفحه = جنوب (Azimuth 180)
+// راست صفحه = غرب (Azimuth 270)
 
 
 export function createHorizontalProjection({
@@ -62,7 +63,7 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // مقیاس یکسان
+    // مقیاس برابر دو محور
     // -------------------------
 
     const squareSize =
@@ -100,6 +101,7 @@ export function createHorizontalProjection({
 
 
 
+
     // -------------------------
     // محل کادر
     // -------------------------
@@ -128,6 +130,9 @@ export function createHorizontalProjection({
 
 
 
+
+
+
     function project(
 
         altitude,
@@ -139,11 +144,11 @@ export function createHorizontalProjection({
 
 
         // -------------------------
-        // آزیموت
+        // محور آزیموت
         //
-        // شرق = چپ
-        // جنوب = وسط
-        // غرب = راست
+        // شرق -> چپ
+        // جنوب -> وسط
+        // غرب -> راست
         // -------------------------
 
 
@@ -171,7 +176,7 @@ export function createHorizontalProjection({
 
         const x =
         centerX
-        -
+        +
         relativeAzimuth *
         scale;
 
@@ -181,8 +186,9 @@ export function createHorizontalProjection({
 
 
 
+
         // -------------------------
-        // ارتفاع
+        // محور ارتفاع
         // -------------------------
 
 
