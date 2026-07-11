@@ -420,49 +420,6 @@ export function createApp(){
         );
 
 
-
-
-
-
-
-
-        // =========================
-        // Observer State
-        // =========================
-
-
-        if(
-            observerCamera.isActive()
-        ){
-
-            observerGroup.visible =
-            true;
-
-
-            controls.enabled =
-            false;
-
-
-        }
-        else{
-
-
-            observerGroup.visible =
-            false;
-
-
-            controls.enabled =
-            true;
-
-
-        }
-
-
-
-
-
-
-
         controls.update();
 
 
