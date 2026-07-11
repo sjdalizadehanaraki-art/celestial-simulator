@@ -10,29 +10,25 @@ export function createObserverHorizon(){
 
 
 
-    const groundGeometry =
-    new THREE.PlaneGeometry(
-        40,
-        40
-    );
 
-
-
-    const groundMaterial =
-    new THREE.MeshBasicMaterial({
-
-        color:0x8b4513,
-
-        side:THREE.DoubleSide
-
-    });
-
-
+    // زمین زیر پای ناظر
 
     const ground =
     new THREE.Mesh(
-        groundGeometry,
-        groundMaterial
+
+        new THREE.PlaneGeometry(
+            40,
+            40
+        ),
+
+        new THREE.MeshBasicMaterial({
+
+            color:0x8b4513,
+
+            side:THREE.DoubleSide
+
+        })
+
     );
 
 
@@ -43,7 +39,7 @@ export function createObserverHorizon(){
 
 
     ground.position.y =
-    -1;
+    -5;
 
 
 
@@ -54,10 +50,52 @@ export function createObserverHorizon(){
 
 
 
+
+
+    // نیمه آسمان برای تست
+
+    const sky =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            19,
+            64,
+            64
+        ),
+
+        new THREE.MeshBasicMaterial({
+
+            color:0x3366ff,
+
+            transparent:true,
+
+            opacity:0.15,
+
+            side:THREE.BackSide,
+
+            depthWrite:false
+
+        })
+
+    );
+
+
+
+    group.add(
+        sky
+    );
+
+
+
+
+
+
+
     return {
 
         group
 
     };
+
 
 }
