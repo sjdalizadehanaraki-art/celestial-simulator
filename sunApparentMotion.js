@@ -10,12 +10,13 @@ export function createSunMotion(
     const radius = 5;
 
 
+    let startHour = null;
+
+
 
     function update(){
 
 
-        // روز سال پروژه
-        // day = 0  => اعتدال بهاری
 
         const day =
         time.getDay();
@@ -32,11 +33,20 @@ export function createSunMotion(
 
 
 
+        // اولین لحظه اجرا = محور X
 
-        // =========================
+        if(startHour === null){
+
+            startHour = hours;
+
+        }
+
+
+
+
+
         // میل خورشید
-        // =========================
-
+        // day=0 یعنی اعتدال بهاری
 
         const declination =
         23.44 *
@@ -62,35 +72,16 @@ export function createSunMotion(
 
 
 
-
-
-        // =========================
         // زاویه روزانه
-        //
-        // شروع:
-        // 18:16 اعتدال بهاری
-        // روی +X
-        // =========================
-
-
-        const startHour =
-        18.266;
-
-
-
-        const hourAngle =
-        (
-            hours -
-            startHour
-        )
-        *
-        15;
-
-
+        // چرخش حول محور Z
 
         const H =
         THREE.MathUtils.degToRad(
-            hourAngle
+
+            (hours - startHour)
+            *
+            15
+
         );
 
 
@@ -99,13 +90,10 @@ export function createSunMotion(
 
 
 
-
-        // =========================
-        // مختصات کره سماوی
+        // دستگاه مختصات پروژه:
         //
         // X = اعتدال بهاری
-        // Y = قطب شمال سماوی
-        // =========================
+        // Z = قطب شمال سماوی
 
 
         const x =
@@ -118,16 +106,15 @@ export function createSunMotion(
 
         const y =
         radius *
-        Math.sin(dec);
+        Math.cos(dec)
+        *
+        Math.sin(H);
 
 
 
         const z =
         radius *
-        Math.cos(dec)
-        *
-        Math.sin(H);
-
+        Math.sin(dec);
 
 
 
@@ -142,10 +129,8 @@ export function createSunMotion(
         );
 
 
+
     }
-
-
-
 
 
 
