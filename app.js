@@ -11,7 +11,6 @@ import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 
 import { createObserverFrame } from "./observerFrame.js";
-import { createObserverCamera } from "./observerCamera.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -29,7 +28,6 @@ export function createApp(){
 
     const scene =
     new THREE.Scene();
-
 
 
     scene.background =
@@ -89,12 +87,19 @@ export function createApp(){
 
 
 
-    const observerCamera =
-    createObserverCamera(
-        camera,
-        controls,
-        observer
-    );
+    // موقتاً غیرفعال برای تست
+    const observerCamera = {
+
+        enter(){},
+
+        exit(){},
+
+        enable(){},
+
+        disable(){}
+
+    };
+
 
 
 
