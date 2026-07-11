@@ -11,7 +11,6 @@ import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
 import { createObserverFrame } from "./observerFrame.js";
 import { createObserverCamera } from "./observerCamera.js";
-import { createObserverTransform } from "./observerTransform.js";
 
 import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
@@ -31,8 +30,10 @@ export function createApp(){
     new THREE.Scene();
 
 
+
     scene.background =
     new THREE.Color(0x000000);
+
 
 
 
@@ -53,8 +54,10 @@ export function createApp(){
 
 
 
+
     const observer =
     createObserver();
+
 
 
 
@@ -70,19 +73,13 @@ export function createApp(){
 
 
 
-    const observerTransform =
-    createObserverTransform(
-        observer
-    );
-
-
-
 
 
     const localSky =
     createLocalSky(
         observer
     );
+
 
 
 
@@ -98,8 +95,11 @@ export function createApp(){
 
 
 
+
+
     const {camera, controls} =
     createCamera();
+
 
 
 
@@ -111,6 +111,7 @@ export function createApp(){
         controls,
         observer
     );
+
 
 
 
@@ -147,6 +148,8 @@ export function createApp(){
 
 
 
+
+
     const labelRenderer =
     new CSS2DRenderer();
 
@@ -156,6 +159,7 @@ export function createApp(){
         window.innerWidth,
         window.innerHeight
     );
+
 
 
     labelRenderer.domElement.style.position =
@@ -186,10 +190,12 @@ export function createApp(){
 
 
     scene.add(
+
         new THREE.AmbientLight(
             0xffffff,
             0.8
         )
+
     );
 
 
@@ -200,12 +206,14 @@ export function createApp(){
 
     // جهان اصلی
 
+
     createAxes(scene);
+
 
     createEarth(scene);
 
-    createEarthEquator(scene);
 
+    createEarthEquator(scene);
 
 
 
@@ -231,10 +239,12 @@ export function createApp(){
 
 
 
+
     const sun =
     createSun(
         scene
     );
+
 
 
 
@@ -245,6 +255,7 @@ export function createApp(){
         sun,
         time
     );
+
 
 
 
@@ -278,8 +289,11 @@ export function createApp(){
 
 
 
+
     const sunWorldPosition =
     new THREE.Vector3();
+
+
 
 
 
@@ -316,8 +330,10 @@ export function createApp(){
 
 
 
+
         const sunData =
         solarPosition.update();
+
 
 
 
@@ -332,7 +348,9 @@ export function createApp(){
 
 
 
+
         localSky.draw();
+
 
 
 
@@ -341,10 +359,6 @@ export function createApp(){
         observerFrame.update();
 
 
-
-
-
-        observerTransform.update();
 
 
 
@@ -358,9 +372,12 @@ export function createApp(){
 
 
 
+
         sunTrail.addPoint(
             sunWorldPosition
         );
+
+
 
 
 
@@ -372,10 +389,14 @@ export function createApp(){
 
 
 
+
+
         renderer.render(
             scene,
             camera
         );
+
+
 
 
 
@@ -418,10 +439,12 @@ export function createApp(){
 
 
 
+
             renderer.setSize(
                 window.innerWidth,
                 window.innerHeight
             );
+
 
 
 
@@ -435,6 +458,7 @@ export function createApp(){
 
         }
     );
+
 
 
 }
