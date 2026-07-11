@@ -11,8 +11,8 @@ export function createHorizontalRenderer(
 
 
 
-    function clear(){
 
+    function clear(){
 
         ctx.clearRect(
             0,
@@ -20,7 +20,6 @@ export function createHorizontalRenderer(
             canvas.width,
             canvas.height
         );
-
 
     }
 
@@ -31,15 +30,6 @@ export function createHorizontalRenderer(
     function drawBackground(){
 
 
-        const w =
-        canvas.width;
-
-
-        const h =
-        canvas.height;
-
-
-
         ctx.fillStyle =
         "black";
 
@@ -47,11 +37,9 @@ export function createHorizontalRenderer(
         ctx.fillRect(
             0,
             0,
-            w,
-            h
+            canvas.width,
+            canvas.height
         );
-
-
 
     }
 
@@ -62,31 +50,41 @@ export function createHorizontalRenderer(
     function drawHorizon(){
 
 
-        const horizon =
-        canvas.height * 0.75;
+        const center =
+        projection.project(
+            0,
+            180
+        );
+
+
+        const radius =
+        canvas.width * 0.35;
 
 
 
         ctx.strokeStyle =
-        "white";
+        "rgba(255,255,255,0.8)";
 
 
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 2;
 
 
 
         ctx.beginPath();
 
 
-        ctx.moveTo(
+        ctx.arc(
+
+            canvas.width/2,
+
+            center.y,
+
+            radius,
+
             0,
-            horizon
-        );
 
+            Math.PI*2
 
-        ctx.lineTo(
-            canvas.width,
-            horizon
         );
 
 
@@ -99,20 +97,109 @@ export function createHorizontalRenderer(
 
 
 
+
+
+    function drawAltitudeLines(){
+
+
+        const levels =
+        [
+            30,
+            60
+        ];
+
+
+
+        levels.forEach(
+            altitude=>{
+
+
+                const center =
+                projection.project(
+                    altitude,
+                    180
+                );
+
+
+
+                const radius =
+                canvas.width *
+                0.35 *
+                (
+                    1 -
+                    altitude/100
+                );
+
+
+
+                ctx.strokeStyle =
+                "rgba(255,255,255,0.25)";
+
+
+                ctx.lineWidth = 1;
+
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+
+                    canvas.width/2,
+
+                    center.y,
+
+                    radius,
+
+                    0,
+
+                    Math.PI*2
+
+                );
+
+
+                ctx.stroke();
+
+
+            }
+        );
+
+
+    }
+
+
+
+
+
+
+
     function drawDirections(){
 
 
-        const w =
-        canvas.width;
+        const points = [
 
+            {
+                name:"شمال",
+                azimuth:0
+            },
 
-        const h =
-        canvas.height;
+            {
+                name:"شرق",
+                azimuth:90
+            },
 
+            {
+                name:"جنوب",
+                azimuth:180
+            },
 
+            {
+                name:"غرب",
+                azimuth:270
+            }
 
-        const horizon =
-        h * 0.75;
+        ];
+
 
 
 
@@ -125,26 +212,31 @@ export function createHorizontalRenderer(
 
 
 
-        ctx.fillText(
-            "شرق",
-            50,
-            horizon + 40
-        );
+
+        points.forEach(
+            point=>{
+
+
+                const pos =
+                projection.project(
+                    0,
+                    point.azimuth
+                );
 
 
 
-        ctx.fillText(
-            "جنوب",
-            w/2 - 30,
-            horizon + 40
-        );
+                ctx.fillText(
+
+                    point.name,
+
+                    pos.x-20,
+
+                    pos.y+35
+
+                );
 
 
-
-        ctx.fillText(
-            "غرب",
-            w - 80,
-            horizon + 40
+            }
         );
 
 
@@ -155,17 +247,20 @@ export function createHorizontalRenderer(
 
 
 
+
+
     function drawSun(
-        altitude,
-        azimuth
+        sun
     ){
 
 
-
-        const position =
+        const pos =
         projection.project(
-            altitude,
-            azimuth
+
+            sun.altitude,
+
+            sun.azimuth
+
         );
 
 
@@ -174,15 +269,22 @@ export function createHorizontalRenderer(
         "yellow";
 
 
+
         ctx.beginPath();
 
 
         ctx.arc(
-            position.x,
-            position.y,
+
+            pos.x,
+
+            pos.y,
+
             6,
+
             0,
-            Math.PI * 2
+
+            Math.PI*2
+
         );
 
 
@@ -196,13 +298,16 @@ export function createHorizontalRenderer(
 
 
 
+
+
     function drawPath(
-        points
+        path
     ){
 
 
-
-        if(points.length === 0)
+        if(
+            path.length < 2
+        )
         return;
 
 
@@ -219,31 +324,34 @@ export function createHorizontalRenderer(
 
 
 
-        points.forEach(
+        path.forEach(
             (point,index)=>{
 
 
-                const position =
+                const pos =
                 projection.project(
+
                     point.altitude,
+
                     point.azimuth
+
                 );
 
 
 
-                if(index === 0){
+                if(index===0){
 
                     ctx.moveTo(
-                        position.x,
-                        position.y
+                        pos.x,
+                        pos.y
                     );
 
                 }
                 else{
 
                     ctx.lineTo(
-                        position.x,
-                        position.y
+                        pos.x,
+                        pos.y
                     );
 
                 }
@@ -264,11 +372,13 @@ export function createHorizontalRenderer(
 
 
 
+
+
     function render({
 
         sun,
 
-        path = []
+        path=[]
 
     }){
 
@@ -282,14 +392,17 @@ export function createHorizontalRenderer(
         drawHorizon();
 
 
+        drawAltitudeLines();
+
+
         drawDirections();
+
 
 
         if(sun){
 
             drawSun(
-                sun.altitude,
-                sun.azimuth
+                sun
             );
 
         }
@@ -302,6 +415,7 @@ export function createHorizontalRenderer(
 
 
     }
+
 
 
 
