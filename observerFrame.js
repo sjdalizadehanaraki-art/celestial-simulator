@@ -11,6 +11,7 @@ export function createObserverFrame(
     new THREE.Group();
 
 
+
     scene.add(
         group
     );
@@ -18,9 +19,8 @@ export function createObserverFrame(
 
 
 
-
     // -------------------------
-    // افق ناظر
+    // صفحه افق
     // -------------------------
 
 
@@ -57,7 +57,6 @@ export function createObserverFrame(
 
 
 
-    // صفحه افق عمود بر Zenith
     horizon.rotation.x =
     Math.PI / 2;
 
@@ -72,13 +71,12 @@ export function createObserverFrame(
 
 
 
-
     // -------------------------
-    // محور Zenith
+    // Zenith
     // -------------------------
 
 
-    const zenithLine =
+    const zenith =
     new THREE.ArrowHelper(
 
         new THREE.Vector3(
@@ -100,8 +98,9 @@ export function createObserverFrame(
     );
 
 
+
     group.add(
-        zenithLine
+        zenith
     );
 
 
@@ -148,85 +147,15 @@ export function createObserverFrame(
 
 
 
-    // -------------------------
-    // شرق
-    // -------------------------
-
-
-    const east =
-    new THREE.ArrowHelper(
-
-        new THREE.Vector3(
-            1,
-            0,
-            0
-        ),
-
-        new THREE.Vector3(
-            0,
-            0,
-            0
-        ),
-
-        3,
-
-        0x00ff00
-
-    );
-
-
-
-    group.add(
-        east
-    );
-
-
-
-
-
-
-
-    // -------------------------
-    // بروزرسانی بر اساس عرض
-    // -------------------------
-
-
     function update(){
 
 
-        const latitude =
-        observer.getLatitude();
+        // فعلاً اینجا هیچ چرخشی نداریم
+        // فقط فریم هندسی ناظر است
 
-
-
-        const latRad =
-        THREE.MathUtils.degToRad(
-            latitude
-        );
-
-
-
-        /*
-        
-        در این مرحله فقط شیب سیستم افقی
-        نسبت به محور سماوی را تنظیم می‌کنیم
-        
-        */
-
-
-        group.rotation.x =
-        -latRad;
 
 
     }
-
-
-
-
-
-
-
-    update();
 
 
 
