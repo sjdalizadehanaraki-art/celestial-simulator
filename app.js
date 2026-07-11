@@ -44,8 +44,6 @@ export function createApp(){
 
 
 
-
-
     const timeDisplay =
     createTimeDisplay(
         time
@@ -66,17 +64,6 @@ export function createApp(){
     createLocalSky(
         observer
     );
-
-
-
-
-
-    const solarPosition =
-    createSolarPosition(
-        time,
-        observer
-    );
-
 
 
 
@@ -127,6 +114,7 @@ export function createApp(){
     document.body.appendChild(
         renderer.domElement
     );
+
 
 
 
@@ -289,81 +277,8 @@ export function createApp(){
 
 
 
+
         sunMotion.update();
-
-
-
-
-        const sunData =
-        solarPosition.update();
-
-
-
-
-
-
-        const altitude =
-        Math.asin(
-            sunData.z
-        )
-        *
-        180 /
-        Math.PI;
-
-
-
-
-
-        let azimuth =
-        Math.atan2(
-            sunData.x,
-            sunData.y
-        )
-        *
-        180 /
-        Math.PI;
-
-
-
-        azimuth += 180;
-
-
-
-
-        if(azimuth < 0){
-
-            azimuth += 360;
-
-        }
-
-
-
-        if(azimuth >= 360){
-
-            azimuth -= 360;
-
-        }
-
-
-
-
-
-        localSky.setSunPosition(
-            altitude,
-            azimuth
-        );
-
-
-
-
-
-        localSky.draw();
-
-
-
-
-
-        observerFrame.update();
 
 
 
@@ -377,7 +292,37 @@ export function createApp(){
 
 
 
-        // ثبت مسیر هر دقیقه
+
+
+        localSky.setSunPosition(
+
+            sunWorldPosition,
+
+            Math.floor(
+                time.getTotalMinutes()
+            )
+
+        );
+
+
+
+
+
+
+        localSky.draw();
+
+
+
+
+
+
+        observerFrame.update();
+
+
+
+
+
+
 
         sunTrail.addPoint(
 
@@ -393,7 +338,9 @@ export function createApp(){
 
 
 
+
         controls.update();
+
 
 
 
