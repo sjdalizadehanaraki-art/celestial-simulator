@@ -10,7 +10,6 @@ export function createObserverSphere(){
 
 
 
-
     const geometry =
     new THREE.SphereGeometry(
         10,
@@ -20,16 +19,14 @@ export function createObserverSphere(){
 
 
 
-
-
     const material =
     new THREE.MeshBasicMaterial({
 
-        color:0x4444ff,
+        color:0xffffff,
 
         transparent:true,
 
-        opacity:0.35,
+        opacity:0.08,
 
         side:THREE.BackSide,
 
@@ -49,8 +46,6 @@ export function createObserverSphere(){
         material
 
     );
-
-
 
 
 
