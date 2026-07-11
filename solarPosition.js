@@ -1,4 +1,7 @@
-import * as THREE from "three";
+// solarPosition.js
+// خروجی:
+// altitude : ارتفاع خورشید از افق (degree)
+// azimuth  : سمت خورشید از شمال (degree)
 
 
 export function createSolarPosition(
@@ -8,99 +11,167 @@ export function createSolarPosition(
 
 
     const obliquity =
-    THREE.MathUtils.degToRad(23.44);
+    23.4393; // درجه میل دایره البروج
 
 
 
     function update(){
 
 
-        const year =
+        // -------------------------
+        // موقعیت سالانه خورشید
+        // -------------------------
+
+        const yearFraction =
         time.getYearFraction();
 
 
 
-        const day =
+        const declination =
+        Math.asin(
+
+            Math.sin(
+                obliquity * Math.PI / 180
+            )
+            *
+            Math.sin(
+                yearFraction *
+                Math.PI *
+                2
+            )
+
+        )
+        *
+        180 /
+        Math.PI;
+
+
+
+        // -------------------------
+        // زاویه ساعتی خورشید
+        // -------------------------
+
+        const dayFraction =
         time.getDayFraction();
 
 
 
-        // میل خورشید
-
-        const declination =
-        obliquity *
-        Math.sin(
-            year *
-            Math.PI *
-            2
+        const hourAngle =
+        (
+            dayFraction * 360
+            -
+            180
         );
 
 
 
-        // زاویه ساعتی
-        // ظهر = صفر
 
-        const hourAngle =
-        (
-            day * 360 - 180
-        )
-        *
-        Math.PI/180;
-
-
+        // -------------------------
+        // عرض جغرافیایی ناظر
+        // -------------------------
 
         const latitude =
-        observer.getLatitude()
+        observer.getLatitude();
+
+
+
+        const latRad =
+        latitude *
+        Math.PI /
+        180;
+
+
+
+        const decRad =
+        declination *
+        Math.PI /
+        180;
+
+
+
+        const haRad =
+        hourAngle *
+        Math.PI /
+        180;
+
+
+
+
+        // -------------------------
+        // ارتفاع خورشید
+        // -------------------------
+
+        const sinAltitude =
+        Math.sin(latRad)
         *
-        Math.PI/180;
-
-
-
-
-        // ارتفاع
-
-        const sinAlt =
-        Math.sin(latitude)
-        *
-        Math.sin(declination)
+        Math.sin(decRad)
 
         +
 
-        Math.cos(latitude)
+        Math.cos(latRad)
         *
-        Math.cos(declination)
+        Math.cos(decRad)
         *
-        Math.cos(hourAngle);
+        Math.cos(haRad);
 
 
 
         const altitude =
         Math.asin(
-            sinAlt
-        );
+            sinAltitude
+        )
+        *
+        180 /
+        Math.PI;
 
 
 
 
+        // -------------------------
+        // آزیموت خورشید
+        // -------------------------
 
-        // آزیموت واقعی
-
-        const azimuth =
+        let azimuth =
         Math.atan2(
 
-            Math.sin(hourAngle),
+            Math.sin(haRad),
 
-            Math.cos(hourAngle)
+            Math.cos(haRad)
             *
-            Math.sin(latitude)
+            Math.sin(latRad)
+
             -
-            Math.tan(declination)
+
+            Math.tan(decRad)
             *
-            Math.cos(latitude)
+            Math.cos(latRad)
 
         )
-        +
+        *
+        180 /
         Math.PI;
+
+
+
+        azimuth += 180;
+
+
+
+        // تبدیل به بازه 0 تا 360
+
+        if(azimuth < 0){
+
+            azimuth += 360;
+
+        }
+
+
+        if(azimuth >= 360){
+
+            azimuth -= 360;
+
+        }
+
 
 
 
@@ -114,6 +185,7 @@ export function createSolarPosition(
 
 
     }
+
 
 
 
