@@ -11,36 +11,50 @@ export function createTimeDisplay(time){
     "absolute";
 
 
-    div.style.top =
-    "20px";
+
+    div.style.bottom =
+    "10px";
 
 
-    div.style.right =
-    "20px";
+
+    div.style.left =
+    "50%";
+
+
+
+    div.style.transform =
+    "translateX(-50%)";
+
 
 
     div.style.zIndex =
     "20";
 
 
+
     div.style.color =
     "white";
+
 
 
     div.style.fontFamily =
     "Arial";
 
 
+
     div.style.fontSize =
-    "18px";
+    "14px";
+
 
 
     div.style.background =
-    "rgba(0,0,0,0.5)";
+    "rgba(0,0,0,0.6)";
+
 
 
     div.style.padding =
-    "10px";
+    "8px 20px";
+
 
 
     div.style.borderRadius =
@@ -48,9 +62,20 @@ export function createTimeDisplay(time){
 
 
 
+    div.style.whiteSpace =
+    "nowrap";
+
+
+
+    div.style.textAlign =
+    "center";
+
+
+
     document.body.appendChild(
         div
     );
+
 
 
 
@@ -107,19 +132,11 @@ export function createTimeDisplay(time){
 
         div.innerHTML =
 
+
         `
-        تاریخ:
-        ${date.year}/${date.month}/${date.day}
-        <br>
-
-        ساعت:
+        ${date.year}/${pad(date.month)}/${pad(date.day)}
+        &nbsp;&nbsp;
         ${pad(date.hour)}:${pad(date.minute)}
-
-        <br>
-
-        دقیقه شبیه سازی:
-        ${Math.floor(totalMinutes)}
-
         `;
 
 
@@ -133,10 +150,13 @@ export function createTimeDisplay(time){
 
 
 
+
     function pad(value){
+
 
         return String(value)
         .padStart(2,"0");
+
 
     }
 
@@ -152,41 +172,32 @@ export function createTimeDisplay(time){
 
 
 
-        let remaining =
-        minutes;
+        let total =
+        Math.floor(minutes);
+
+
+
+
+
+        let minute =
+        startMinute +
+        (total % 60);
 
 
 
 
 
         let hour =
-        startHour;
-
-
-        let minute =
-        startMinute;
-
-
-
-        minute +=
-        Math.floor(remaining % 60);
-
-
-
-        hour +=
-        Math.floor(
-            remaining / 60
-        );
-
+        startHour +
+        Math.floor(total / 60);
 
 
 
 
 
         let extraDays =
-        Math.floor(
-            hour / 24
-        );
+        Math.floor(hour / 24);
+
 
 
         hour =
@@ -202,18 +213,14 @@ export function createTimeDisplay(time){
         startYear;
 
 
+
         let month =
         startMonth;
 
 
+
         let day =
-        startDay;
-
-
-
-
-
-        day +=
+        startDay +
         extraDays;
 
 
@@ -221,9 +228,6 @@ export function createTimeDisplay(time){
 
 
 
-
-        // تقویم ساده 365 روزه
-        // برای مدل نجومی کافی است
 
         const monthDays =
         [
@@ -247,17 +251,22 @@ export function createTimeDisplay(time){
 
 
 
+
         while(
             day >
             monthDays[month-1]
         ){
 
 
+
             day -=
             monthDays[month-1];
 
 
+
             month++;
+
+
 
 
 
@@ -281,18 +290,24 @@ export function createTimeDisplay(time){
 
 
 
+
         return {
 
 
             year,
 
+
             month,
+
 
             day,
 
+
             hour,
 
+
             minute
+
 
 
         };
@@ -300,6 +315,7 @@ export function createTimeDisplay(time){
 
 
     }
+
 
 
 
