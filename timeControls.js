@@ -36,11 +36,14 @@ export function createTimeControls(
     row.style.display =
     "flex";
 
+
     row.style.flexWrap =
     "wrap";
 
+
     row.style.gap =
     "5px";
+
 
 
 
@@ -65,6 +68,7 @@ export function createTimeControls(
 
 
     row.appendChild(play);
+
 
 
 
@@ -96,7 +100,8 @@ export function createTimeControls(
 
 
 
-    // سرعت
+
+    // Speed
 
     const speeds =
     [
@@ -151,7 +156,10 @@ export function createTimeControls(
 
 
 
-    // نمایش مسیر خورشید
+    // =========================
+    // Show Sun Path
+    // =========================
+
 
     const pathButton =
     document.createElement("button");
@@ -161,14 +169,27 @@ export function createTimeControls(
     "☑ Show Sun Path";
 
 
+
     pathButton.onclick = ()=>{
 
 
-        trail.toggle();
+        if(trail){
 
+            trail.toggle();
+
+        }
+
+
+
+        if(localSky){
+
+            localSky.togglePath();
+
+        }
 
 
     };
+
 
 
     panel.appendChild(
@@ -182,7 +203,10 @@ export function createTimeControls(
 
 
 
-    // پاک کردن مسیر
+    // =========================
+    // Clear Path
+    // =========================
+
 
     const clearButton =
     document.createElement("button");
@@ -192,14 +216,27 @@ export function createTimeControls(
     "🗑 Clear Path";
 
 
+
     clearButton.onclick = ()=>{
 
 
-        trail.clear();
+        if(trail){
 
+            trail.clear();
+
+        }
+
+
+
+        if(localSky){
+
+            localSky.clearPath();
+
+        }
 
 
     };
+
 
 
     panel.appendChild(
@@ -214,7 +251,10 @@ export function createTimeControls(
 
 
 
+    // =========================
     // Local Sky
+    // =========================
+
 
     const localButton =
     document.createElement("button");
@@ -277,7 +317,10 @@ export function createTimeControls(
 
 
 
+    // =========================
     // Observer View
+    // =========================
+
 
     const observerButton =
     document.createElement("button");
