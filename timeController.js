@@ -15,14 +15,12 @@ export function createTimeController(){
 
 
 
-    // روز سال
-    // 0 = اعتدال بهاری
+    // روز 0 = اعتدال بهاری
+    // شروع: 29 اسفند ساعت 18:16
 
     let dayOfYear = 0;
 
 
-
-    // شروع از ساعت 18:16
 
     let timeOfDay =
     DAY_SECONDS *
@@ -65,6 +63,7 @@ export function createTimeController(){
 
 
 
+
         while(
             timeOfDay >= DAY_SECONDS
         ){
@@ -89,7 +88,6 @@ export function createTimeController(){
             dayOfYear--;
 
         }
-
 
 
 
@@ -179,10 +177,14 @@ export function createTimeController(){
 
     function getDayFraction(){
 
+
         return (
+
             timeOfDay /
             DAY_SECONDS
+
         );
+
 
     }
 
@@ -194,6 +196,7 @@ export function createTimeController(){
 
     function getYearFraction(){
 
+
         return (
 
             dayOfYear +
@@ -203,6 +206,7 @@ export function createTimeController(){
         /
         YEAR_DAYS;
 
+
     }
 
 
@@ -211,16 +215,16 @@ export function createTimeController(){
 
 
 
-    // ساعت خورشیدی
-    // 0 تا 24 ساعت
 
     function getSolarHour(){
 
 
         return (
+
             getDayFraction()
             *
             24
+
         );
 
 
@@ -233,19 +237,58 @@ export function createTimeController(){
 
 
 
-    // زاویه چرخش روزانه کره سماوی
-    // 0 تا 360 درجه
+
+    // زاویه حرکت روزانه کره سماوی
+    // لحظه شروع = اعتدال بهاری = صفر درجه
 
     function getSiderealAngle(){
 
 
-        return (
+
+        const startFraction =
+        18.2666666667 / 24;
+
+
+
+
+        let angle =
+
+        (
 
             getDayFraction()
-            *
-            360
+            -
+            startFraction
 
-        );
+        )
+        *
+        360;
+
+
+
+
+
+
+        while(angle < 0){
+
+            angle += 360;
+
+        }
+
+
+
+
+
+        while(angle >= 360){
+
+            angle -= 360;
+
+        }
+
+
+
+
+
+        return angle;
 
 
     }
