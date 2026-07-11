@@ -58,7 +58,7 @@ export function createLocalSky(
 
     let altitude = 0;
 
-    let azimuth = 180;
+    let azimuth = 0;
 
 
 
@@ -67,6 +67,11 @@ export function createLocalSky(
 
 
     let showPath = true;
+
+
+
+    let lastMinute = -1;
+
 
 
 
@@ -92,27 +97,109 @@ export function createLocalSky(
 
 
     function setSunPosition(
-        alt,
-        azi
+        position,
+        minute
     ){
 
 
-        altitude = alt;
 
-        azimuth = azi;
+        const r =
+        position.length();
 
 
 
-        pathPoints.push({
+        const x =
+        position.x / r;
 
-            altitude: alt,
 
-            azimuth: azi
 
-        });
+        const y =
+        position.y / r;
+
+
+
+        const z =
+        position.z / r;
+
+
+
+
+
+
+
+        // ارتفاع
+
+        altitude =
+        Math.asin(z)
+        *
+        180 /
+        Math.PI;
+
+
+
+
+
+
+
+        // آزیموت
+
+        azimuth =
+        Math.atan2(
+            x,
+            y
+        )
+        *
+        180 /
+        Math.PI;
+
+
+
+        azimuth += 180;
+
+
+
+
+
+
+        if(azimuth < 0)
+            azimuth += 360;
+
+
+
+        if(azimuth >= 360)
+            azimuth -= 360;
+
+
+
+
+
+
+
+        // ثبت مسیر هر دقیقه
+
+        if(
+            minute !== lastMinute
+        ){
+
+            lastMinute =
+            minute;
+
+
+
+            pathPoints.push({
+
+                altitude,
+
+                azimuth
+
+            });
+
+
+        }
 
 
     }
+
 
 
 
@@ -124,7 +211,7 @@ export function createLocalSky(
 
 
         if(!visible)
-        return;
+            return;
 
 
 
@@ -139,8 +226,10 @@ export function createLocalSky(
 
 
 
+
         ctx.fillStyle =
         "black";
+
 
 
         ctx.fillRect(
@@ -155,14 +244,13 @@ export function createLocalSky(
 
 
 
-        // -------------------------
-        // کادر دید
-        // -------------------------
-
 
         const left =
         projection.centerX -
         projection.viewWidth/2;
+
+
+
 
 
         ctx.strokeStyle =
@@ -170,6 +258,7 @@ export function createLocalSky(
 
 
         ctx.lineWidth = 2;
+
 
 
         ctx.strokeRect(
@@ -190,10 +279,8 @@ export function createLocalSky(
 
 
 
-        // -------------------------
-        // محور افق
-        // -------------------------
 
+        // خط افق
 
         ctx.strokeStyle =
         "red";
@@ -222,10 +309,7 @@ export function createLocalSky(
 
 
 
-        // -------------------------
         // محور ارتفاع
-        // -------------------------
-
 
         ctx.strokeStyle =
         "lime";
@@ -260,19 +344,18 @@ export function createLocalSky(
 
 
 
-        // -------------------------
-        // مسیر خورشید
-        // -------------------------
-
-
         if(showPath){
+
 
 
             ctx.strokeStyle =
             "yellow";
 
 
-            ctx.lineWidth = 2;
+
+            ctx.lineWidth =
+            2;
+
 
 
             ctx.beginPath();
@@ -327,11 +410,6 @@ export function createLocalSky(
 
 
 
-        // -------------------------
-        // خورشید فعلی
-        // -------------------------
-
-
         const sun =
         projection.project(
 
@@ -347,7 +425,9 @@ export function createLocalSky(
         "yellow";
 
 
+
         ctx.beginPath();
+
 
 
         ctx.arc(
@@ -365,11 +445,13 @@ export function createLocalSky(
         );
 
 
+
         ctx.fill();
 
 
 
     }
+
 
 
 
@@ -383,7 +465,11 @@ export function createLocalSky(
         pathPoints.length = 0;
 
 
+        lastMinute = -1;
+
+
     }
+
 
 
 
@@ -404,6 +490,7 @@ export function createLocalSky(
 
 
 
+
     function show(){
 
 
@@ -415,6 +502,7 @@ export function createLocalSky(
 
 
         draw();
+
 
     }
 
@@ -449,15 +537,11 @@ export function createLocalSky(
 
         hide,
 
-
         draw,
-
 
         setSunPosition,
 
-
         clearPath,
-
 
         togglePath
 
