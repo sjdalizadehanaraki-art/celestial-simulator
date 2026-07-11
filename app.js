@@ -4,6 +4,7 @@ import { createTimeController } from "./timeController.js";
 import { createTimeControls } from "./timeControls.js";
 
 import { createSun } from "./sun.js";
+import { createSunMotion } from "./sunApparentMotion.js";
 import { createSunTrail } from "./sunTrail.js";
 
 import * as THREE from "three";
@@ -23,10 +24,8 @@ import { createSeasonPoints } from "./seasonPoints.js";
 export function createApp(){
 
 
-
     const scene =
     new THREE.Scene();
-
 
 
     scene.background =
@@ -36,10 +35,8 @@ export function createApp(){
 
 
 
-
     const time =
     createTimeController();
-
 
 
 
@@ -58,7 +55,6 @@ export function createApp(){
 
 
 
-
     const {camera, controls} =
     createCamera();
 
@@ -69,11 +65,11 @@ export function createApp(){
 
     const observerCamera = {
 
+        toggle(){},
+
         enter(){},
 
         exit(){},
-
-        toggle(){},
 
         isActive(){
 
@@ -82,8 +78,6 @@ export function createApp(){
         }
 
     };
-
-
 
 
 
@@ -111,11 +105,9 @@ export function createApp(){
     );
 
 
-
     document.body.appendChild(
         renderer.domElement
     );
-
 
 
 
@@ -127,38 +119,31 @@ export function createApp(){
     new CSS2DRenderer();
 
 
-
     labelRenderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
 
-
     labelRenderer.domElement.style.position =
     "absolute";
-
 
 
     labelRenderer.domElement.style.top =
     "0";
 
 
-
     labelRenderer.domElement.style.left =
     "0";
-
 
 
     labelRenderer.domElement.style.pointerEvents =
     "none";
 
 
-
     document.body.appendChild(
         labelRenderer.domElement
     );
-
 
 
 
@@ -180,24 +165,15 @@ export function createApp(){
 
 
 
-
-
-    // ساخت جهان
-
     createAxes(scene);
-
 
     createEarth(scene);
 
-
     createEarthEquator(scene);
-
 
     createCelestialSphere(scene);
 
-
     createCelestialPlanes(scene);
-
 
     createSeasonPoints(scene);
 
@@ -206,12 +182,19 @@ export function createApp(){
 
 
 
-
-
-    // خورشید فقط برای تست
-
+    const sun =
     createSun(scene);
 
+
+
+
+
+
+    const sunMotion =
+    createSunMotion(
+        sun,
+        time
+    );
 
 
 
@@ -222,10 +205,10 @@ export function createApp(){
     createSunTrail();
 
 
+
     scene.add(
         sunTrail.line
     );
-
 
 
 
@@ -246,15 +229,87 @@ export function createApp(){
 
 
 
+    const sunWorldPosition =
+    new THREE.Vector3();
+
+
+
+
+
+
 
 
     function animate(){
 
 
-
         requestAnimationFrame(
             animate
         );
+
+
+
+
+        try{
+
+            time.update();
+
+        }
+        catch(e){
+
+            console.error(
+                "time",
+                e
+            );
+
+        }
+
+
+
+
+
+
+        try{
+
+            sunMotion.update();
+
+        }
+        catch(e){
+
+            console.error(
+                "sunMotion",
+                e
+            );
+
+        }
+
+
+
+
+
+
+
+        try{
+
+            sun.getWorldPosition(
+                sunWorldPosition
+            );
+
+
+            sunTrail.addPoint(
+                sunWorldPosition
+            );
+
+
+        }
+        catch(e){
+
+            console.error(
+                "trail",
+                e
+            );
+
+        }
+
 
 
 
@@ -273,16 +328,14 @@ export function createApp(){
 
 
 
-
-
         labelRenderer.render(
             scene,
             camera
         );
 
 
-    }
 
+    }
 
 
 
@@ -297,18 +350,14 @@ export function createApp(){
 
 
 
-
-
     window.addEventListener(
         "resize",
         ()=>{
 
 
-
             camera.aspect =
             window.innerWidth /
             window.innerHeight;
-
 
 
 
@@ -324,7 +373,6 @@ export function createApp(){
 
 
 
-
             labelRenderer.setSize(
                 window.innerWidth,
                 window.innerHeight
@@ -334,7 +382,6 @@ export function createApp(){
 
         }
     );
-
 
 
 }
