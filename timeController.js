@@ -1,21 +1,24 @@
 export function createTimeController(){
 
 
-    // شروع مدل:
-    // 29 اسفند 1404
-    // ساعت 18:16
-    // اعتدال بهاری 1405
-
+    // مبدأ مدل
+    // اعتدال بهاری ۱۴۰۵
+    // ۲۹ اسفند ۱۴۰۴ - ساعت ۱۸:۱۶
 
     const START_HOUR = 18;
 
     const START_MINUTE = 16;
 
 
+    const START_TOTAL_MINUTES =
 
-    let totalMinutes =
     START_HOUR * 60 +
     START_MINUTE;
+
+
+
+    let totalMinutes =
+    START_TOTAL_MINUTES;
 
 
 
@@ -31,9 +34,9 @@ export function createTimeController(){
 
 
 
-
     const YEAR_MINUTES =
     365.2422 * 1440;
+
 
 
 
@@ -120,11 +123,88 @@ export function createTimeController(){
 
     function reset(){
 
+
         totalMinutes =
-        START_HOUR * 60 +
-        START_MINUTE;
+        START_TOTAL_MINUTES;
+
 
     }
+
+
+
+
+
+
+
+
+
+    // زمان سپری شده از اعتدال
+
+    function getElapsedMinutes(){
+
+
+        return (
+
+            totalMinutes -
+            START_TOTAL_MINUTES
+
+        );
+
+
+    }
+
+
+
+
+
+
+
+
+
+    // حرکت روزانه خورشید
+    // هر ۲۴ ساعت یک دور
+
+    function getDailyAngle(){
+
+
+        return (
+
+            getElapsedMinutes()
+            *
+            360 /
+            1440
+
+        ) % 360;
+
+
+    }
+
+
+
+
+
+
+
+
+
+    // حرکت سالانه روی دایره البروج
+    // صفر = اعتدال بهاری
+
+    function getEclipticAngle(){
+
+
+        return (
+
+            getElapsedMinutes()
+            *
+            360 /
+            YEAR_MINUTES
+
+        ) % 360;
+
+
+    }
+
 
 
 
@@ -146,54 +226,14 @@ export function createTimeController(){
 
 
 
-    function getDailyAngle(){
-
-
-        return (
-
-            totalMinutes *
-            360 /
-            1440
-
-        ) % 360;
-
-
-    }
-
-
-
-
-
-
-
-
-    function getEclipticAngle(){
-
-
-        return (
-
-            totalMinutes *
-            360 /
-            YEAR_MINUTES
-
-        ) % 360;
-
-
-    }
-
-
-
-
-
-
-
 
     function getDay(){
 
 
         return Math.floor(
 
-            totalMinutes /
+            getElapsedMinutes()
+            /
             1440
 
         );
@@ -208,12 +248,14 @@ export function createTimeController(){
 
 
 
+
     function getDayFraction(){
 
 
         return (
 
-            totalMinutes %
+            getElapsedMinutes()
+            %
             1440
 
         )
@@ -230,12 +272,14 @@ export function createTimeController(){
 
 
 
+
     function getYearFraction(){
 
 
         return (
 
-            totalMinutes /
+            getElapsedMinutes()
+            /
             YEAR_MINUTES
 
         );
@@ -250,11 +294,15 @@ export function createTimeController(){
 
 
 
+
     function getSiderealAngle(){
+
 
         return getDailyAngle();
 
+
     }
+
 
 
 
@@ -278,6 +326,9 @@ export function createTimeController(){
 
 
         getTotalMinutes,
+
+        getElapsedMinutes,
+
 
         getDailyAngle,
 
