@@ -9,8 +9,6 @@ import { createTimeController } from "./timeController.js";
 import { createSun } from "./sun.js";
 import { createSunMotion } from "./sunApparentMotion.js";
 import { createCelestialPlanes } from "./celestialPlanes.js";
-import { createObserverView } from "./observerView.js";
-import { createObserverCamera } from "./observerCamera.js";
 import { createObserverFrame } from "./observerFrame.js";
 
 import * as THREE from "three";
@@ -25,6 +23,7 @@ import { createCelestialSphere } from "./celestialSphere.js";
 
 
 export function createApp(){
+
 
 
     const scene =
@@ -72,16 +71,6 @@ export function createApp(){
 
 
 
-    const observerView =
-    createObserverView(
-        scene,
-        observer
-    );
-
-
-
-
-
     const localSky =
     createLocalSky(
         observer
@@ -103,18 +92,6 @@ export function createApp(){
 
     const {camera, controls} =
     createCamera();
-
-
-
-
-
-    const observerCamera =
-    createObserverCamera(
-        camera,
-        controls
-    );
-
-
 
 
 
@@ -150,8 +127,6 @@ export function createApp(){
 
 
 
-
-
     const labelRenderer =
     new CSS2DRenderer();
 
@@ -180,11 +155,10 @@ export function createApp(){
     "none";
 
 
+
     document.body.appendChild(
         labelRenderer.domElement
     );
-
-
 
 
 
@@ -205,26 +179,50 @@ export function createApp(){
 
 
 
+    // -------------------------
+    // زمین و دستگاه مختصات
+    // -------------------------
+
+
     createAxes(scene);
 
     createEarth(scene);
 
     createEarthEquator(scene);
 
-    createCelestialSphere(scene);
-
-    createCelestialPlanes(scene);
-
-    createSeasonPoints(scene);
 
 
+
+
+
+
+    // -------------------------
+    // آسمان ناظر
+    // -------------------------
+
+
+    createCelestialSphere(
+        observerFrame.group
+    );
+
+
+    createCelestialPlanes(
+        observerFrame.group
+    );
+
+
+    createSeasonPoints(
+        observerFrame.group
+    );
 
 
 
 
 
     const sun =
-    createSun(scene);
+    createSun(
+        observerFrame.group
+    );
 
 
 
@@ -260,8 +258,7 @@ export function createApp(){
     createTimeControls(
         time,
         sunTrail,
-        localSky,
-        observerCamera
+        localSky
     );
 
 
@@ -281,12 +278,15 @@ export function createApp(){
 
 
 
+
         time.update();
 
 
 
 
+
         timeDisplay.update();
+
 
 
 
@@ -374,7 +374,6 @@ export function createApp(){
     window.addEventListener(
         "resize",
         ()=>{
-
 
 
             camera.aspect =
