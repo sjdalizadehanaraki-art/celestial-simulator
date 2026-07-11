@@ -1,5 +1,11 @@
 import * as THREE from "three";
 
+import {
+    getSolarCoordinates
+}
+from "./astronomy.js";
+
+
 
 export function createSunMotion(
     sun,
@@ -10,7 +16,6 @@ export function createSunMotion(
     const radius = 5;
 
 
-    let startHour = null;
 
 
 
@@ -24,63 +29,36 @@ export function createSunMotion(
 
 
 
-        const hours =
-        time.getDayFraction()
-        *
-        24;
+        const solar =
+        getSolarCoordinates(
+            day
+        );
 
 
 
 
 
-        // اولین لحظه اجرا = محور X
 
-        if(startHour === null){
-
-            startHour = hours;
-
-        }
-
-
-
-
-
-        // میل خورشید
-        // day=0 یعنی اعتدال بهاری
-
-        const declination =
-        23.44 *
-        Math.sin(
-
-            THREE.MathUtils.degToRad(
-                day *
-                360 /
-                365
-            )
-
+        const ra =
+        THREE.MathUtils.degToRad(
+            solar.rightAscension
         );
 
 
 
         const dec =
         THREE.MathUtils.degToRad(
-            declination
+            solar.declination
         );
 
 
 
 
 
-
-        // زاویه روزانه
-        // چرخش حول محور Z
-
-        const H =
+        const sidereal =
         THREE.MathUtils.degToRad(
 
-            (hours - startHour)
-            *
-            15
+            time.getSiderealAngle()
 
         );
 
@@ -88,33 +66,41 @@ export function createSunMotion(
 
 
 
+        // زاویه ساعت
+
+        const hourAngle =
+        sidereal -
+        ra;
 
 
-        // دستگاه مختصات پروژه:
-        //
-        // X = اعتدال بهاری
-        // Z = قطب شمال سماوی
+
+
+
+
+
+        // مختصات استوایی کره سماوی
 
 
         const x =
         radius *
-        Math.cos(dec)
-        *
-        Math.cos(H);
+        Math.cos(dec) *
+        Math.cos(hourAngle);
+
 
 
 
         const y =
         radius *
-        Math.cos(dec)
-        *
-        Math.sin(H);
+        Math.sin(dec);
+
 
 
 
         const z =
         radius *
-        Math.sin(dec);
+        Math.cos(dec) *
+        Math.sin(hourAngle);
+
 
 
 
@@ -123,9 +109,13 @@ export function createSunMotion(
 
 
         sun.position.set(
+
             x,
+
             y,
+
             z
+
         );
 
 
@@ -135,9 +125,14 @@ export function createSunMotion(
 
 
 
+
+
+
     return {
 
+
         update
+
 
     };
 
