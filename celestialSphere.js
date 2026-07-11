@@ -4,14 +4,12 @@ import * as THREE from "three";
 export function createCelestialSphere(parent){
 
 
-
     const geometry =
     new THREE.SphereGeometry(
         5,
         64,
         64
     );
-
 
 
     const material =
@@ -30,7 +28,6 @@ export function createCelestialSphere(parent){
     });
 
 
-
     const sphere =
     new THREE.Mesh(
         geometry,
@@ -38,11 +35,9 @@ export function createCelestialSphere(parent){
     );
 
 
-
     parent.add(
         sphere
     );
-
 
 
     return sphere;
