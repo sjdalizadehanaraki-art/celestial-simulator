@@ -1,76 +1,146 @@
 import * as THREE from "three";
 
+
 export function createSunMotion(
     sun,
-    time
+    time,
+    observerTransform,
+    observer
 ){
+
+
 
     const radius = 5;
 
-    const obliquity =
-    THREE.MathUtils.degToRad(
-        23.44
-    );
+
+
 
 
     function update(){
 
-        const yearAngle =
-        time.getYearFraction() *
-        Math.PI * 2;
 
 
-        const dayAngle =
-        time.getDayFraction() *
-        Math.PI * 2;
+        /*
+        
+        فعلاً از تاریخ و زمان کنترلر استفاده می‌کنیم
+        
+        ساعت خورشیدی تقریبی
+        
+        */
+
+        const date =
+        time.getDate();
+
+
+
+
+        const hours =
+        date.getHours()
+        +
+        date.getMinutes()/60;
+
+
+
+
+
+        // میل تقریبی خورشید
+
+        const day =
+        getDayOfYear(
+            date
+        );
+
 
 
         const declination =
-        Math.asin(
-            Math.sin(obliquity) *
-            Math.sin(yearAngle)
+        23.44 *
+        Math.sin(
+            THREE.MathUtils.degToRad(
+                (360/365)
+                *
+                (day-81)
+            )
         );
 
 
-        const rightAscension =
-        yearAngle;
 
+
+
+
+
+        // زاویه ساعتی
 
         const hourAngle =
-        rightAscension +
-        dayAngle;
+        (hours - 12) * 15;
 
 
-        const x =
-        radius *
-        Math.cos(declination) *
-        Math.cos(hourAngle);
 
 
-        const y =
-        radius *
-        Math.cos(declination) *
-        Math.sin(hourAngle);
 
 
-        const z =
-        radius *
-        Math.sin(declination);
 
+        const position =
+        observerTransform.equatorialToHorizontal(
 
-        sun.position.set(
-            x,
-            y,
-            z
+            0,
+
+            declination,
+
+            hourAngle
+
         );
+
+
+
+
+
+        sun.position.copy(
+            position
+        );
+
+
 
     }
 
 
-    return{
+
+
+
+    return {
+
 
         update
 
+
     };
+
+}
+
+
+
+
+
+
+function getDayOfYear(date){
+
+
+    const start =
+    new Date(
+        date.getFullYear(),
+        0,
+        0
+    );
+
+
+
+    const diff =
+    date-start;
+
+
+
+    return Math.floor(
+        diff /
+        (1000*60*60*24)
+    );
 
 }
