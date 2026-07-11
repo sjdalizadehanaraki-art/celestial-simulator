@@ -10,6 +10,7 @@ export function createSunMotion(
     const radius = 5;
 
 
+
     const obliquity =
     THREE.MathUtils.degToRad(
         23.44
@@ -23,7 +24,8 @@ export function createSunMotion(
 
 
 
-        // حرکت سالانه خورشید روی دایره البروج
+        // حرکت سالانه خورشید
+        // 0 درجه = اعتدال بهاری
 
         const lambda =
         THREE.MathUtils.degToRad(
@@ -36,7 +38,8 @@ export function createSunMotion(
 
 
 
-        // مختصات اولیه دایره البروج
+
+        // مختصات روی دایره البروج
 
         let x =
         Math.cos(lambda);
@@ -62,6 +65,7 @@ export function createSunMotion(
 
 
         // حرکت روزانه زمین
+        // چرخش حول محور Z
 
         const theta =
         THREE.MathUtils.degToRad(
@@ -75,7 +79,6 @@ export function createSunMotion(
 
 
 
-
         const rotatedX =
 
         x *
@@ -83,6 +86,7 @@ export function createSunMotion(
         -
         y *
         Math.sin(theta);
+
 
 
 
@@ -102,15 +106,15 @@ export function createSunMotion(
 
 
 
-        // اصلاح جهت محور برای هماهنگی با Local Sky
+
 
         sun.position.set(
 
             rotatedX * radius,
 
-            z * radius,
+            rotatedY * radius,
 
-            rotatedY * radius
+            z * radius
 
         );
 
