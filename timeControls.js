@@ -1,5 +1,3 @@
-alert("TIME CONTROLS OK");
-
 export function createTimeControls(
     time,
     trail,
@@ -26,27 +24,53 @@ export function createTimeControls(
 
 
 
+
+
     const row1 =
     document.createElement("div");
 
-    row1.style.display = "flex";
-    row1.style.flexWrap = "wrap";
-    row1.style.gap = "5px";
+
+    row1.style.display =
+    "flex";
+
+
+    row1.style.flexWrap =
+    "wrap";
+
+
+    row1.style.gap =
+    "5px";
+
+
+
 
 
 
     const row2 =
     document.createElement("div");
 
-    row2.style.display = "flex";
-    row2.style.gap = "5px";
+
+    row2.style.display =
+    "flex";
+
+
+    row2.style.gap =
+    "5px";
 
 
 
+
+
+
+
+    // -------------------------
     // Play
+    // -------------------------
+
 
     const play =
     document.createElement("button");
+
 
     play.textContent =
     "▶ Play";
@@ -63,10 +87,17 @@ export function createTimeControls(
 
 
 
+
+
+
+    // -------------------------
     // Pause
+    // -------------------------
+
 
     const pause =
     document.createElement("button");
+
 
     pause.textContent =
     "⏸ Pause";
@@ -84,19 +115,12 @@ export function createTimeControls(
 
 
 
-    // Speed
-
-    const label =
-    document.createElement("span");
-
-    label.textContent =
-    "Speed:";
-
-    label.style.alignSelf = "center";
 
 
-    row1.appendChild(label);
 
+    // -------------------------
+    // سرعت
+    // -------------------------
 
 
     const speeds =
@@ -110,6 +134,7 @@ export function createTimeControls(
     ];
 
 
+
     speeds.forEach(value=>{
 
 
@@ -121,11 +146,13 @@ export function createTimeControls(
         "×" + value;
 
 
+
         button.onclick = ()=>{
 
             time.setSpeed(value);
 
         };
+
 
 
         row1.appendChild(button);
@@ -136,29 +163,68 @@ export function createTimeControls(
 
 
 
-    // Show / Hide Path
+
+
+
+
+
+    // -------------------------
+    // نمایش مسیر
+    // -------------------------
+
 
     const pathButton =
     document.createElement("button");
+
+
+    let pathVisible = true;
+
 
 
     pathButton.textContent =
     "☑ Show Sun Path";
 
 
+
     pathButton.onclick = ()=>{
 
 
-        trail.toggle();
+        pathVisible =
+        !pathVisible;
 
 
-        if(trail.isVisible()){
+
+        // مسیر سه بعدی
+
+        if(pathVisible){
+
+            trail.show();
+
+        }
+        else{
+
+            trail.hide();
+
+        }
+
+
+
+
+
+        // مسیر دو بعدی
+
+        localSky.togglePath();
+
+
+
+
+
+        if(pathVisible){
 
             pathButton.textContent =
             "☑ Show Sun Path";
 
         }
-
         else{
 
             pathButton.textContent =
@@ -167,7 +233,9 @@ export function createTimeControls(
         }
 
 
+
     };
+
 
 
     row2.appendChild(pathButton);
@@ -175,7 +243,13 @@ export function createTimeControls(
 
 
 
-    // Clear Path
+
+
+
+    // -------------------------
+    // پاک کردن مسیر
+    // -------------------------
+
 
     const clearButton =
     document.createElement("button");
@@ -185,64 +259,99 @@ export function createTimeControls(
     "🗑 Clear Path";
 
 
+
     clearButton.onclick = ()=>{
+
 
         trail.clear();
 
+
+        localSky.clearPath();
+
+
+
     };
+
 
 
     row2.appendChild(clearButton);
 
 
 
+
+
+
+
+    // -------------------------
+    // تغییر حالت نمایش
+    // -------------------------
+
+
+    const viewButton =
+    document.createElement("button");
+
+
+
+    viewButton.textContent =
+    "☀ Local Sky";
+
+
+
+    let localVisible = false;
+
+
+
+    viewButton.onclick = ()=>{
+
+
+        localVisible =
+        !localVisible;
+
+
+
+        if(localVisible){
+
+
+            localSky.show();
+
+
+            viewButton.textContent =
+            "🌍 3D View";
+
+
+        }
+        else{
+
+
+            localSky.hide();
+
+
+            viewButton.textContent =
+            "☀ Local Sky";
+
+
+        }
+
+
+
+    };
+
+
+
+    row2.appendChild(viewButton);
+
+
+
+
+
+
     panel.appendChild(row1);
+
 
     panel.appendChild(row2);
 
-    const viewButton =
-document.createElement("button");
 
 
-viewButton.textContent =
-"☀ Local Sky";
-
-
-let localVisible = false;
-
-
-viewButton.onclick = ()=>{
-
-
-    localVisible =
-    !localVisible;
-
-
-    if(localVisible){
-
-        localSky.show();
-
-        viewButton.textContent =
-        "🌍 3D View";
-
-    }
-    else{
-
-        localSky.hide();
-
-        viewButton.textContent =
-        "☀ Local Sky";
-
-    }
-
-
-};
-
-
-panel.appendChild(
-    viewButton
-);
-    
     document.body.appendChild(
         panel
     );
