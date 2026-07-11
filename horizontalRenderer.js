@@ -1,112 +1,118 @@
-export function createHorizontalRenderer(scene){
+// horizontalRenderer.js
+
+export function createHorizontalRenderer(
+    canvas,
+    projection
+){
 
 
-    function render(observer){
-
-
-        if(!scene.visible)
-        return;
-
-
-
-        scene.clear();
-
-
-
-        const ctx =
-        scene.ctx;
+    const ctx =
+    canvas.getContext("2d");
 
 
 
-        const size =
-        Math.min(
-
-            scene.canvas.width,
-
-            scene.canvas.height
-
-        )*0.8;
+    function clear(){
 
 
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
 
-        const left =
-        (scene.canvas.width-size)/2;
 
-
-
-        const top =
-        (scene.canvas.height-size)/2;
+    }
 
 
 
-        // مربع
+
+
+    function drawBackground(){
+
+
+        const w =
+        canvas.width;
+
+
+        const h =
+        canvas.height;
+
+
+
+        ctx.fillStyle =
+        "black";
+
+
+        ctx.fillRect(
+            0,
+            0,
+            w,
+            h
+        );
+
+
+
+    }
+
+
+
+
+
+    function drawHorizon(){
+
+
+        const horizon =
+        canvas.height * 0.75;
+
+
 
         ctx.strokeStyle =
         "white";
 
 
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
 
 
-        ctx.strokeRect(
-
-            left,
-
-            top,
-
-            size,
-
-            size
-
-        );
-
-
-
-        // محور افقی
 
         ctx.beginPath();
 
+
         ctx.moveTo(
-
-            left,
-
-            top+size/2
-
+            0,
+            horizon
         );
+
 
         ctx.lineTo(
-
-            left+size,
-
-            top+size/2
-
+            canvas.width,
+            horizon
         );
+
 
         ctx.stroke();
 
 
+    }
 
-        // محور عمودی
 
-        ctx.beginPath();
 
-        ctx.moveTo(
 
-            left+size/2,
 
-            top
+    function drawDirections(){
 
-        );
 
-        ctx.lineTo(
+        const w =
+        canvas.width;
 
-            left+size/2,
 
-            top+size
+        const h =
+        canvas.height;
 
-        );
 
-        ctx.stroke();
+
+        const horizon =
+        h * 0.75;
 
 
 
@@ -115,81 +121,183 @@ export function createHorizontalRenderer(scene){
 
 
         ctx.font =
-        "22px Arial";
+        "20px Arial";
 
 
 
         ctx.fillText(
-
-            "E",
-
-            left-30,
-
-            top+size/2+8
-
+            "شرق",
+            50,
+            horizon + 40
         );
 
 
 
         ctx.fillText(
-
-            "W",
-
-            left+size+10,
-
-            top+size/2+8
-
+            "جنوب",
+            w/2 - 30,
+            horizon + 40
         );
 
 
 
         ctx.fillText(
-
-            "H",
-
-            left+size/2-8,
-
-            top-15
-
+            "غرب",
+            w - 80,
+            horizon + 40
         );
 
 
 
-        ctx.font =
-        "18px Arial";
+    }
 
 
 
-        ctx.fillText(
 
-            "Lat : "
-            +
-            observer.getLatitude()
-            .toFixed(2)
-            +
-            "°",
 
-            left,
+    function drawSun(
+        altitude,
+        azimuth
+    ){
 
-            top+size+40
 
+
+        const position =
+        projection.project(
+            altitude,
+            azimuth
         );
 
 
 
-        ctx.fillText(
+        ctx.fillStyle =
+        "yellow";
 
-            "Lon : "
-            +
-            observer.getLongitude()
-            .toFixed(2)
-            +
-            "°",
 
-            left,
+        ctx.beginPath();
 
-            top+size+65
 
+        ctx.arc(
+            position.x,
+            position.y,
+            6,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+    }
+
+
+
+
+
+
+    function drawPath(
+        points
+    ){
+
+
+
+        if(points.length === 0)
+        return;
+
+
+
+        ctx.strokeStyle =
+        "rgba(255,255,0,0.8)";
+
+
+        ctx.lineWidth = 2;
+
+
+
+        ctx.beginPath();
+
+
+
+        points.forEach(
+            (point,index)=>{
+
+
+                const position =
+                projection.project(
+                    point.altitude,
+                    point.azimuth
+                );
+
+
+
+                if(index === 0){
+
+                    ctx.moveTo(
+                        position.x,
+                        position.y
+                    );
+
+                }
+                else{
+
+                    ctx.lineTo(
+                        position.x,
+                        position.y
+                    );
+
+                }
+
+
+            }
+        );
+
+
+
+        ctx.stroke();
+
+
+    }
+
+
+
+
+
+
+    function render({
+
+        sun,
+
+        path = []
+
+    }){
+
+
+        clear();
+
+
+        drawBackground();
+
+
+        drawHorizon();
+
+
+        drawDirections();
+
+
+        if(sun){
+
+            drawSun(
+                sun.altitude,
+                sun.azimuth
+            );
+
+        }
+
+
+
+        drawPath(
+            path
         );
 
 
@@ -197,10 +305,16 @@ export function createHorizontalRenderer(scene){
 
 
 
-    return{
 
-        render
+
+
+    return {
+
+        render,
+
+        clear
 
     };
+
 
 }
