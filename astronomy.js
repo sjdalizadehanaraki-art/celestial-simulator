@@ -1,14 +1,45 @@
-const OBLIQUITY = 23.43928;
+// astronomy.js
+
+
+const OBLIQUITY =
+23.43928;
 
 
 
-export function getSolarCoordinates(day){
+// طول دایره البروج خورشید
+// 0 درجه = اعتدال بهاری (+X)
+
+export function getSolarLongitude(day){
+
+
+    return (
+        day /
+        365
+    )
+    *
+    360;
+
+
+}
+
+
+
+
+
+
+
+// تبدیل طول دایره البروج
+// به مختصات استوایی
+
+export function eclipticToEquatorial(
+    longitude
+){
+
 
     const lambda =
     degToRad(
-        (day / 365) * 360
+        longitude
     );
-
 
 
     const epsilon =
@@ -18,71 +49,77 @@ export function getSolarCoordinates(day){
 
 
 
-    const rightAscension =
-    Math.atan2(
-
-        Math.cos(epsilon) *
-        Math.sin(lambda),
-
-        Math.cos(lambda)
-
-    );
+    const x =
+    Math.cos(lambda);
 
 
 
-    const declination =
-    Math.asin(
-
-        Math.sin(epsilon) *
-        Math.sin(lambda)
-
-    );
+    const y =
+    Math.cos(epsilon)
+    *
+    Math.sin(lambda);
 
 
 
-    return{
+    const z =
+    Math.sin(epsilon)
+    *
+    Math.sin(lambda);
 
-        longitude:
-        radToDeg(lambda),
 
-        rightAscension:
-        normalize360(
-            radToDeg(rightAscension)
-        ),
 
-        declination:
-        radToDeg(declination)
+
+
+    return {
+
+        x,
+
+        y,
+
+        z
 
     };
 
+
 }
+
+
+
+
+
+
+
+// خروجی کامل خورشید
+
+export function getSolarVector(day){
+
+
+    const longitude =
+    getSolarLongitude(
+        day
+    );
+
+
+
+    return eclipticToEquatorial(
+        longitude
+    );
+
+
+}
+
+
+
+
 
 
 
 function degToRad(value){
 
-    return value * Math.PI / 180;
 
-}
+    return value *
+    Math.PI /
+    180;
 
-
-
-function radToDeg(value){
-
-    return value * 180 / Math.PI;
-
-}
-
-
-
-function normalize360(value){
-
-    while(value < 0)
-        value += 360;
-
-    while(value >= 360)
-        value -= 360;
-
-    return value;
 
 }
