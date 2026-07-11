@@ -7,10 +7,7 @@ export function createSunMotion(
 ){
 
 
-
     const radius = 5;
-
-
 
 
 
@@ -18,24 +15,20 @@ export function createSunMotion(
 
 
 
-        const date =
-        time.getDate();
+        const day =
+        time.getYearFraction()
+        *
+        365;
+
+
 
 
 
         const hours =
-        date.getHours()
-        +
-        date.getMinutes() / 60;
+        time.getDayFraction()
+        *
+        24;
 
-
-
-
-
-        const day =
-        getDayOfYear(
-            date
-        );
 
 
 
@@ -58,10 +51,12 @@ export function createSunMotion(
 
 
 
+
         // زاویه ساعتی
 
         const hourAngle =
-        (hours - 12) *
+        (hours - 12)
+        *
         15;
 
 
@@ -85,13 +80,12 @@ export function createSunMotion(
 
 
 
-        // مسیر ساده در کره سماوی
+
 
         const x =
         radius *
         Math.cos(dec) *
         Math.cos(H);
-
 
 
 
@@ -101,11 +95,11 @@ export function createSunMotion(
 
 
 
-
         const z =
         radius *
         Math.cos(dec) *
         Math.sin(H);
+
 
 
 
@@ -127,45 +121,11 @@ export function createSunMotion(
 
 
 
-
     return {
-
 
         update
 
-
     };
-
-
-}
-
-
-
-
-
-
-
-function getDayOfYear(date){
-
-
-    const start =
-    new Date(
-        date.getFullYear(),
-        0,
-        0
-    );
-
-
-
-    const diff =
-    date - start;
-
-
-
-    return Math.floor(
-        diff /
-        (1000 * 60 * 60 * 24)
-    );
 
 
 }
