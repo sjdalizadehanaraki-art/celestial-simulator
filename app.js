@@ -302,10 +302,6 @@ export function createApp(){
 
 
 
-        // تبدیل مختصات خورشید
-        // از XYZ به ارتفاع و آزیموت
-        
-
         const altitude =
         Math.asin(
             sunData.z
@@ -381,8 +377,16 @@ export function createApp(){
 
 
 
+        // ثبت مسیر هر دقیقه
+
         sunTrail.addPoint(
-            sunWorldPosition
+
+            sunWorldPosition,
+
+            Math.floor(
+                time.getTotalMinutes()
+            )
+
         );
 
 
