@@ -4,11 +4,13 @@ import * as THREE from "three";
 export function createObserverCamera(
     camera,
     controls,
+    worldGroup,
     observerGroup
 ){
 
 
     let observerMode = false;
+
 
 
     const normalPosition =
@@ -20,6 +22,8 @@ export function createObserverCamera(
 
 
 
+
+
     function enter(){
 
 
@@ -28,9 +32,12 @@ export function createObserverCamera(
 
 
 
-        observerMode=true;
+        observerMode = true;
 
 
+
+
+        // ذخیره حالت قبلی دوربین
 
         normalPosition.copy(
             camera.position
@@ -44,12 +51,34 @@ export function createObserverCamera(
 
 
 
-        observerGroup.visible=true;
+
+        // خاموش کردن مدل اصلی
+
+        if(worldGroup){
+
+            worldGroup.visible = false;
+
+        }
 
 
 
 
 
+        // روشن کردن محیط ناظر
+
+        if(observerGroup){
+
+            observerGroup.visible = true;
+
+        }
+
+
+
+
+
+
+
+        // قرار گرفتن چشم ناظر
 
         camera.position.set(
             0,
@@ -69,13 +98,20 @@ export function createObserverCamera(
 
         camera.lookAt(
             0,
-            0,
-            -10
+            1.7,
+            -1
         );
 
 
 
-        controls.enabled=false;
+        camera.updateMatrixWorld(true);
+
+
+
+
+
+        controls.enabled =
+        false;
 
 
     }
@@ -86,12 +122,23 @@ export function createObserverCamera(
 
 
 
+
     function exit(){
 
 
-        observerMode=false;
+        if(!observerMode)
+        return;
 
 
+
+        observerMode = false;
+
+
+
+
+
+
+        // برگرداندن دوربین
 
         camera.position.copy(
             normalPosition
@@ -103,17 +150,48 @@ export function createObserverCamera(
         );
 
 
-        controls.enabled=true;
+
+
+
+        camera.updateMatrixWorld(true);
+
+
+
+
+
+        // روشن کردن مدل اصلی
+
+        if(worldGroup){
+
+            worldGroup.visible = true;
+
+        }
+
+
+
+
+
+        // خاموش کردن محیط ناظر
+
+        if(observerGroup){
+
+            observerGroup.visible = false;
+
+        }
+
+
+
+
+
+        controls.enabled =
+        true;
 
 
         controls.update();
 
 
-
-        observerGroup.visible=false;
-
-
     }
+
 
 
 
@@ -123,11 +201,18 @@ export function createObserverCamera(
 
     function toggle(){
 
-        if(observerMode)
+
+        if(observerMode){
+
             exit();
 
-        else
+        }
+        else{
+
             enter();
+
+        }
+
 
     }
 
@@ -135,7 +220,11 @@ export function createObserverCamera(
 
 
 
+
+
+
     return {
+
 
         enter,
 
@@ -143,11 +232,13 @@ export function createObserverCamera(
 
         toggle,
 
+
         isActive(){
 
             return observerMode;
 
         }
+
 
     };
 
