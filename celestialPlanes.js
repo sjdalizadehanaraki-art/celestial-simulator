@@ -4,18 +4,15 @@ import * as THREE from "three";
 export function createCelestialPlanes(parent){
 
 
-
     // -------------------------
     // صفحه استوای سماوی
     // -------------------------
-
 
     const equatorGeometry =
     new THREE.CircleGeometry(
         4.8,
         128
     );
-
 
 
     const equatorMaterial =
@@ -27,12 +24,11 @@ export function createCelestialPlanes(parent){
 
         opacity:0.1,
 
-        side:THREE.DoubleSide,
+        side:THREE.FrontSide,
 
         depthWrite:false
 
     });
-
 
 
     const celestialEquator =
@@ -40,7 +36,6 @@ export function createCelestialPlanes(parent){
         equatorGeometry,
         equatorMaterial
     );
-
 
 
     parent.add(
@@ -51,19 +46,15 @@ export function createCelestialPlanes(parent){
 
 
 
-
-
     // -------------------------
     // صفحه دایره البروج
     // -------------------------
-
 
     const eclipticGeometry =
     new THREE.CircleGeometry(
         4.8,
         128
     );
-
 
 
     const eclipticMaterial =
@@ -75,12 +66,11 @@ export function createCelestialPlanes(parent){
 
         opacity:0.1,
 
-        side:THREE.DoubleSide,
+        side:THREE.FrontSide,
 
         depthWrite:false
 
     });
-
 
 
     const ecliptic =
@@ -90,10 +80,7 @@ export function createCelestialPlanes(parent){
     );
 
 
-
-
-
-    // شیب دایره البروج نسبت به استوا
+    // شیب دایره البروج
 
     ecliptic.rotation.x =
     THREE.MathUtils.degToRad(
@@ -101,12 +88,9 @@ export function createCelestialPlanes(parent){
     );
 
 
-
     parent.add(
         ecliptic
     );
-
-
 
 
     return {
