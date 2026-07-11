@@ -11,6 +11,13 @@ export function createObserverFrame(
     new THREE.Group();
 
 
+
+    // خیلی مهم:
+    // فعلاً خاموش باشد
+    group.visible = false;
+
+
+
     scene.add(
         group
     );
@@ -21,28 +28,12 @@ export function createObserverFrame(
 
 
 
-    // -------------------------
-    // زمین زیر پای ناظر
-    // -------------------------
-
+    // زمین ناظر
 
     const groundGeometry =
-    new THREE.SphereGeometry(
-
+    new THREE.CircleGeometry(
         5,
-
-        64,
-
-        32,
-
-        0,
-
-        Math.PI * 2,
-
-        Math.PI / 2,
-
-        Math.PI / 2
-
+        128
     );
 
 
@@ -69,10 +60,8 @@ export function createObserverFrame(
 
 
 
-    // نیمکره پایین
-
     ground.rotation.x =
-    Math.PI;
+    -Math.PI / 2;
 
 
 
@@ -86,11 +75,7 @@ export function createObserverFrame(
 
 
 
-
-    // -------------------------
     // خط افق
-    // -------------------------
-
 
     const horizonGeometry =
     new THREE.RingGeometry(
@@ -128,7 +113,7 @@ export function createObserverFrame(
 
 
     horizon.rotation.x =
-    Math.PI / 2;
+    -Math.PI / 2;
 
 
 
@@ -142,132 +127,38 @@ export function createObserverFrame(
 
 
 
-
-
-    // -------------------------
-    // Zenith
-    // -------------------------
-
-
-    const zenith =
-    new THREE.ArrowHelper(
-
-        new THREE.Vector3(
-            0,
-            1,
-            0
-        ),
-
-        new THREE.Vector3(
-            0,
-            0,
-            0
-        ),
-
-        3,
-
-        0xffff00
-
-    );
-
-
-
-    group.add(
-        zenith
-    );
-
-
-
-
-
-
-
-
-
-    // -------------------------
-    // شمال
-    // -------------------------
-
-
-    const north =
-    new THREE.ArrowHelper(
-
-        new THREE.Vector3(
-            0,
-            0,
-            -1
-        ),
-
-        new THREE.Vector3(
-            0,
-            0,
-            0
-        ),
-
-        3,
-
-        0x0088ff
-
-    );
-
-
-
-    group.add(
-        north
-    );
-
-
-
-
-
-
-
-
-
-    // -------------------------
-    // شرق
-    // -------------------------
-
-
-    const east =
-    new THREE.ArrowHelper(
-
-        new THREE.Vector3(
-            1,
-            0,
-            0
-        ),
-
-        new THREE.Vector3(
-            0,
-            0,
-            0
-        ),
-
-        3,
-
-        0x00ff00
-
-    );
-
-
-
-    group.add(
-        east
-    );
-
-
-
-
-
-
-
-
-
     function update(){
 
 
+
     }
+
+
+
+
+
+
+
+    function show(){
+
+
+        group.visible = true;
+
+
+    }
+
+
+
+
+
+    function hide(){
+
+
+        group.visible = false;
+
+
+    }
+
 
 
 
@@ -279,7 +170,11 @@ export function createObserverFrame(
 
         group,
 
-        update
+        update,
+
+        show,
+
+        hide
 
 
     };
