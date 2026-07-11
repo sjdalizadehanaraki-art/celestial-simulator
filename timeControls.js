@@ -2,9 +2,9 @@ export function createTimeControls(
     time,
     trail,
     localSky,
-    observerCamera
+    observerCamera,
+    observerControls
 ){
-
 
 
     const panel =
@@ -12,18 +12,43 @@ export function createTimeControls(
 
 
 
-    panel.style.position = "absolute";
-    panel.style.top = "20px";
-    panel.style.left = "20px";
-    panel.style.zIndex = "20";
-    panel.style.background = "rgba(0,0,0,0.5)";
-    panel.style.padding = "10px";
-    panel.style.borderRadius = "10px";
-    panel.style.color = "white";
-    panel.style.fontFamily = "Arial";
-    panel.style.display = "flex";
-    panel.style.flexDirection = "column";
-    panel.style.gap = "8px";
+    panel.style.position =
+    "absolute";
+
+    panel.style.top =
+    "20px";
+
+    panel.style.left =
+    "20px";
+
+    panel.style.zIndex =
+    "20";
+
+    panel.style.background =
+    "rgba(0,0,0,0.5)";
+
+    panel.style.padding =
+    "10px";
+
+    panel.style.borderRadius =
+    "10px";
+
+    panel.style.color =
+    "white";
+
+    panel.style.fontFamily =
+    "Arial";
+
+    panel.style.display =
+    "flex";
+
+    panel.style.flexDirection =
+    "column";
+
+    panel.style.gap =
+    "8px";
+
+
 
 
 
@@ -50,6 +75,7 @@ export function createTimeControls(
 
 
 
+
     // Play
 
     const play =
@@ -68,6 +94,7 @@ export function createTimeControls(
 
 
     row.appendChild(play);
+
 
 
 
@@ -101,7 +128,8 @@ export function createTimeControls(
 
 
 
-    // Speed
+
+    // سرعت
 
     const speeds =
     [
@@ -144,8 +172,6 @@ export function createTimeControls(
 
 
 
-
-
     panel.appendChild(row);
 
 
@@ -156,9 +182,7 @@ export function createTimeControls(
 
 
 
-    // =========================
-    // Show Sun Path
-    // =========================
+    // نمایش مسیر خورشید
 
 
     const pathButton =
@@ -203,9 +227,8 @@ export function createTimeControls(
 
 
 
-    // =========================
-    // Clear Path
-    // =========================
+
+    // پاک کردن مسیر
 
 
     const clearButton =
@@ -251,9 +274,7 @@ export function createTimeControls(
 
 
 
-    // =========================
     // Local Sky
-    // =========================
 
 
     const localButton =
@@ -317,9 +338,7 @@ export function createTimeControls(
 
 
 
-    // =========================
     // Observer View
-    // =========================
 
 
     const observerButton =
@@ -350,6 +369,14 @@ export function createTimeControls(
 
 
 
+            if(observerControls){
+
+                observerControls.enter();
+
+            }
+
+
+
             observerButton.textContent =
             "🌍 3D View";
 
@@ -359,6 +386,14 @@ export function createTimeControls(
 
 
             observerCamera.exit();
+
+
+
+            if(observerControls){
+
+                observerControls.exit();
+
+            }
 
 
 
@@ -376,6 +411,7 @@ export function createTimeControls(
     panel.appendChild(
         observerButton
     );
+
 
 
 
