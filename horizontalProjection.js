@@ -1,8 +1,15 @@
 // horizontalProjection.js
 //
-// تبدیل مختصات افقی آسمان به پیکسل
-// Azimuth : محور افقی
-// Altitude: محور عمودی
+// تبدیل altitude / azimuth به مختصات پیکسلی
+//
+// Azimuth:
+// 0 = شمال
+// 90 = شرق
+// 180 = جنوب
+// 270 = غرب
+//
+// Altitude:
+// درجه بالای افق
 
 
 export function createHorizontalProjection({
@@ -19,7 +26,7 @@ export function createHorizontalProjection({
 
 
     // -------------------------
-    // محدوده دید
+    // محدوده دید ناظر
     // -------------------------
 
 
@@ -57,6 +64,7 @@ export function createHorizontalProjection({
 
 
 
+
     // -------------------------
     // مقیاس یکسان
     // -------------------------
@@ -83,6 +91,7 @@ export function createHorizontalProjection({
 
 
 
+
     const viewWidth =
     azimuthRange *
     scale;
@@ -92,6 +101,8 @@ export function createHorizontalProjection({
     const viewHeight =
     altitudeRange *
     scale;
+
+
 
 
 
@@ -127,6 +138,23 @@ export function createHorizontalProjection({
 
 
 
+
+    // مرکز میدان دید آزیموت
+
+    const centerAzimuth =
+    (
+        minAzimuth +
+        maxAzimuth
+    )
+    /
+    2;
+
+
+
+
+
+
+
     function project(
 
         altitude,
@@ -137,25 +165,54 @@ export function createHorizontalProjection({
 
 
 
+        // -------------------------
+        // تبدیل آزیموت
+        // -------------------------
+
+
+        let relativeAzimuth =
+        azimuth -
+        centerAzimuth;
+
+
+
+
+        // جلوگیری از پرش 360 درجه
+
+
+        if(relativeAzimuth > 180){
+
+            relativeAzimuth -= 360;
+
+        }
+
+
+
+        if(relativeAzimuth < -180){
+
+            relativeAzimuth += 360;
+
+        }
+
+
+
+
+
         const x =
         centerX
         +
-        (
-            azimuth -
-            (
-                (
-                    minAzimuth +
-                    maxAzimuth
-                )
-                /
-                2
-            )
-        )
-        *
+        relativeAzimuth *
         scale;
 
 
 
+
+
+
+
+        // -------------------------
+        // ارتفاع
+        // -------------------------
 
 
         const y =
@@ -167,6 +224,8 @@ export function createHorizontalProjection({
         )
         *
         scale;
+
+
 
 
 
