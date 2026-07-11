@@ -1,14 +1,9 @@
-// localSky.js
-
 import { createHorizontalProjection } from "./horizontalProjection.js";
-import { createHorizontalRenderer } from "./horizontalRenderer.js";
-
 
 
 export function createLocalSky(
     observer
 ){
-
 
 
     const canvas =
@@ -29,11 +24,11 @@ export function createLocalSky(
     "absolute";
 
 
-    canvas.style.left =
+    canvas.style.top =
     "0";
 
 
-    canvas.style.top =
+    canvas.style.left =
     "0";
 
 
@@ -52,87 +47,43 @@ export function createLocalSky(
 
 
 
-
-
-    let projection;
-
-
-    let renderer;
+    const ctx =
+    canvas.getContext("2d");
 
 
 
-
-
-    function rebuild(){
+    let visible = false;
 
 
 
-        projection =
-        createHorizontalProjection({
+    let altitude = 0;
 
-            width:
-            canvas.width,
+    let azimuth = 180;
 
-            height:
-            canvas.height,
 
-            latitude:
-            observer.getLatitude(),
 
-            longitude:
-            observer.getLongitude()
+    const pathPoints = [];
 
-        });
+
+
+    let showPath = true;
 
 
 
 
-        renderer =
-        createHorizontalRenderer(
+    const projection =
+    createHorizontalProjection({
 
-            canvas,
+        width:
+        canvas.width,
 
-            projection
+        height:
+        canvas.height,
 
-        );
+        latitude:
+        observer.getLatitude()
 
-
-
-    }
-
-
-
-
-
-    rebuild();
-
-
-
-
-
-
-
-    let visible =
-    false;
-
-
-
-
-
-    let sun = {
-
-        altitude:0,
-
-        azimuth:0
-
-    };
-
-
-
-
-
-    const path = [];
-
+    });
 
 
 
@@ -141,35 +92,27 @@ export function createLocalSky(
 
 
     function setSunPosition(
-
-        altitude,
-
-        azimuth
-
+        alt,
+        azi
     ){
 
 
+        altitude = alt;
 
-        sun.altitude =
-        altitude;
-
-
-        sun.azimuth =
-        azimuth;
+        azimuth = azi;
 
 
 
-        path.push({
+        pathPoints.push({
 
-            altitude,
+            altitude: alt,
 
-            azimuth
+            azimuth: azi
 
         });
 
 
     }
-
 
 
 
@@ -185,17 +128,248 @@ export function createLocalSky(
 
 
 
-        renderer.render({
 
-            sun,
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
 
-            path
 
-        });
+
+
+        ctx.fillStyle =
+        "black";
+
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+
+
+
+
+        // -------------------------
+        // کادر دید
+        // -------------------------
+
+
+        const left =
+        projection.centerX -
+        projection.viewWidth/2;
+
+
+        ctx.strokeStyle =
+        "white";
+
+
+        ctx.lineWidth = 2;
+
+
+        ctx.strokeRect(
+
+            left,
+
+            projection.topY,
+
+            projection.viewWidth,
+
+            projection.viewHeight
+
+        );
+
+
+
+
+
+
+
+        // -------------------------
+        // محور افق
+        // -------------------------
+
+
+        ctx.strokeStyle =
+        "red";
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            left,
+            projection.bottomY
+        );
+
+
+        ctx.lineTo(
+            left + projection.viewWidth,
+            projection.bottomY
+        );
+
+
+        ctx.stroke();
+
+
+
+
+
+
+
+        // -------------------------
+        // محور ارتفاع
+        // -------------------------
+
+
+        ctx.strokeStyle =
+        "lime";
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+
+            projection.centerX,
+
+            projection.topY
+
+        );
+
+
+        ctx.lineTo(
+
+            projection.centerX,
+
+            projection.bottomY
+
+        );
+
+
+        ctx.stroke();
+
+
+
+
+
+
+
+        // -------------------------
+        // مسیر خورشید
+        // -------------------------
+
+
+        if(showPath){
+
+
+            ctx.strokeStyle =
+            "yellow";
+
+
+            ctx.lineWidth = 2;
+
+
+            ctx.beginPath();
+
+
+
+            pathPoints.forEach(
+                (p,index)=>{
+
+
+                    const point =
+                    projection.project(
+
+                        p.altitude,
+
+                        p.azimuth
+
+                    );
+
+
+
+                    if(index===0){
+
+                        ctx.moveTo(
+                            point.x,
+                            point.y
+                        );
+
+                    }
+                    else{
+
+                        ctx.lineTo(
+                            point.x,
+                            point.y
+                        );
+
+                    }
+
+
+                }
+            );
+
+
+            ctx.stroke();
+
+
+        }
+
+
+
+
+
+
+
+        // -------------------------
+        // خورشید فعلی
+        // -------------------------
+
+
+        const sun =
+        projection.project(
+
+            altitude,
+
+            azimuth
+
+        );
+
+
+
+        ctx.fillStyle =
+        "yellow";
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            sun.x,
+
+            sun.y,
+
+            6,
+
+            0,
+
+            Math.PI*2
+
+        );
+
+
+        ctx.fill();
+
 
 
     }
-
 
 
 
@@ -206,11 +380,24 @@ export function createLocalSky(
     function clearPath(){
 
 
-        path.length = 0;
+        pathPoints.length = 0;
 
 
     }
 
+
+
+
+
+
+    function togglePath(){
+
+
+        showPath =
+        !showPath;
+
+
+    }
 
 
 
@@ -227,11 +414,7 @@ export function createLocalSky(
         "block";
 
 
-        rebuild();
-
-
         draw();
-
 
     }
 
@@ -258,41 +441,11 @@ export function createLocalSky(
 
 
 
-    window.addEventListener(
 
-        "resize",
-
-        ()=>{
-
-
-            canvas.width =
-            window.innerWidth;
-
-
-            canvas.height =
-            window.innerHeight;
-
-
-            rebuild();
-
-
-            draw();
-
-
-        }
-
-    );
-
-
-
-
-
-
-    return{
+    return {
 
 
         show,
-
 
         hide,
 
@@ -303,9 +456,13 @@ export function createLocalSky(
         setSunPosition,
 
 
-        clearPath
+        clearPath,
+
+
+        togglePath
 
 
     };
+
 
 }
