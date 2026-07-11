@@ -11,8 +11,9 @@ export function createCamera() {
         window.innerWidth /
         window.innerHeight,
         0.1,
-        100
+        10000
     );
+
 
 
     camera.position.set(
@@ -22,11 +23,13 @@ export function createCamera() {
     );
 
 
+
     camera.up.set(
         0,
         0,
         1
     );
+
 
 
     camera.lookAt(
@@ -37,6 +40,8 @@ export function createCamera() {
 
 
 
+
+
     const controls =
     new OrbitControls(
         camera,
@@ -44,10 +49,15 @@ export function createCamera() {
     );
 
 
-    controls.enableDamping = true;
+
+    controls.enableDamping =
+    true;
 
 
-    controls.enablePan = false;
+
+    controls.enablePan =
+    false;
+
 
 
     controls.target.set(
@@ -57,7 +67,10 @@ export function createCamera() {
     );
 
 
+
     controls.update();
+
+
 
 
 
@@ -68,5 +81,6 @@ export function createCamera() {
         controls
 
     };
+
 
 }
