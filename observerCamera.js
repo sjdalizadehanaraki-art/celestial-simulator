@@ -1,3 +1,6 @@
+import * as THREE from "three";
+
+
 export function createObserverCamera(
     camera,
     controls
@@ -8,13 +11,74 @@ export function createObserverCamera(
 
 
 
+    const normalPosition =
+    new THREE.Vector3();
+
+
+    const normalTarget =
+    new THREE.Vector3();
+
+
+
+
+
+
     function enter(){
+
+
+        if(observerMode)
+        return;
+
 
 
         observerMode = true;
 
 
+
+        // ذخیره حالت قبلی
+
+        normalPosition.copy(
+            camera.position
+        );
+
+
+        normalTarget.copy(
+            controls.target
+        );
+
+
+
+        // رفتن به مرکز ناظر
+
+
+        camera.position.set(
+
+            0,
+            0,
+            0.1
+
+        );
+
+
+
+        camera.lookAt(
+
+            0,
+            5,
+            0
+
+        );
+
+
+
+        controls.enabled =
+        false;
+
+
     }
+
+
+
 
 
 
@@ -23,16 +87,36 @@ export function createObserverCamera(
     function exit(){
 
 
+        if(!observerMode)
+        return;
+
+
+
         observerMode = false;
 
 
-        controls.enabled = true;
+
+        camera.position.copy(
+            normalPosition
+        );
+
+
+        controls.target.copy(
+            normalTarget
+        );
+
+
+        controls.enabled =
+        true;
 
 
         controls.update();
 
 
     }
+
+
+
 
 
 
@@ -52,8 +136,10 @@ export function createObserverCamera(
 
         }
 
-
     }
+
+
+
 
 
 
@@ -61,11 +147,11 @@ export function createObserverCamera(
 
     function isActive(){
 
-
         return observerMode;
 
-
     }
+
+
 
 
 
