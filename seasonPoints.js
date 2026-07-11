@@ -1,10 +1,12 @@
 import * as THREE from "three";
 
 
-export function createSeasonPoints(scene){
+export function createSeasonPoints(parent){
+
 
 
     const radius = 5;
+
 
 
     const points = [
@@ -40,11 +42,15 @@ export function createSeasonPoints(scene){
 
 
 
-    points.forEach(p=>{
+
+
+    points.forEach(point=>{
 
 
         const obliquity =
-        THREE.MathUtils.degToRad(23.44);
+        THREE.MathUtils.degToRad(
+            23.44
+        );
 
 
 
@@ -52,8 +58,9 @@ export function createSeasonPoints(scene){
 
 
 
+
         if(
-            p.name === "Summer Solstice"
+            point.name === "Summer Solstice"
         ){
 
             declination =
@@ -63,8 +70,9 @@ export function createSeasonPoints(scene){
 
 
 
+
         if(
-            p.name === "Winter Solstice"
+            point.name === "Winter Solstice"
         ){
 
             declination =
@@ -74,17 +82,21 @@ export function createSeasonPoints(scene){
 
 
 
+
+
         const x =
         radius *
         Math.cos(declination) *
-        Math.cos(p.angle);
+        Math.cos(point.angle);
+
 
 
 
         const y =
         radius *
         Math.cos(declination) *
-        Math.sin(p.angle);
+        Math.sin(point.angle);
+
 
 
 
@@ -94,8 +106,11 @@ export function createSeasonPoints(scene){
 
 
 
+
+
         const marker =
         new THREE.Mesh(
+
 
             new THREE.SphereGeometry(
                 0.08,
@@ -104,13 +119,18 @@ export function createSeasonPoints(scene){
             ),
 
 
+
             new THREE.MeshBasicMaterial({
 
-                color:p.color
+                color:point.color
 
             })
 
+
         );
+
+
+
 
 
         marker.position.set(
@@ -120,11 +140,17 @@ export function createSeasonPoints(scene){
         );
 
 
-        scene.add(marker);
+
+
+
+        parent.add(
+            marker
+        );
 
 
 
     });
+
 
 
 }
