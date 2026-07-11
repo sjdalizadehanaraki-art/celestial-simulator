@@ -14,13 +14,11 @@ export function createSunMotion(
     function update(){
 
 
-
         // روز سال پروژه
-        // day = 0  ---> اعتدال بهاری
+        // day = 0  => اعتدال بهاری
 
         const day =
         time.getDay();
-
 
 
 
@@ -35,18 +33,8 @@ export function createSunMotion(
 
 
 
-
         // =========================
         // میل خورشید
-        //
-        // اعتدال بهاری:
-        // declination = 0
-        //
-        // انقلاب تابستانی:
-        // +23.44
-        //
-        // انقلاب زمستانی:
-        // -23.44
         // =========================
 
 
@@ -75,11 +63,12 @@ export function createSunMotion(
 
 
 
+
         // =========================
         // زاویه روزانه
         //
-        // شروع پروژه:
-        // ساعت 18:16
+        // شروع:
+        // 18:16 اعتدال بهاری
         // روی +X
         // =========================
 
@@ -110,11 +99,12 @@ export function createSunMotion(
 
 
 
+
         // =========================
         // مختصات کره سماوی
         //
-        // +X = اعتدال بهاری
-        // +Z = قطب شمال سماوی
+        // X = اعتدال بهاری
+        // Y = قطب شمال سماوی
         // =========================
 
 
@@ -128,15 +118,16 @@ export function createSunMotion(
 
         const y =
         radius *
-        Math.cos(dec)
-        *
-        Math.sin(H);
+        Math.sin(dec);
 
 
 
         const z =
         radius *
-        Math.sin(dec);
+        Math.cos(dec)
+        *
+        Math.sin(H);
+
 
 
 
@@ -149,7 +140,6 @@ export function createSunMotion(
             y,
             z
         );
-
 
 
     }
