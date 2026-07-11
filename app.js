@@ -61,9 +61,10 @@ export function createApp(){
 
 
     const localSky =
-    createLocalSky(
-        observer
-    );
+createLocalSky(
+    observer,
+    time
+);
 
 
 
