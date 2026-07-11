@@ -1,7 +1,8 @@
 import * as THREE from "three";
 
 
-export function createCelestialSphere(scene){
+export function createCelestialSphere(parent){
+
 
 
     const geometry =
@@ -12,18 +13,19 @@ export function createCelestialSphere(scene){
     );
 
 
+
     const material =
     new THREE.MeshBasicMaterial({
 
-        color: 0xffffff,
+        color:0xffffff,
 
-        transparent: true,
+        transparent:true,
 
-        opacity: 0.1,
+        opacity:0.1,
 
-        side: THREE.BackSide,
+        side:THREE.BackSide,
 
-        depthWrite: false
+        depthWrite:false
 
     });
 
@@ -36,7 +38,14 @@ export function createCelestialSphere(scene){
     );
 
 
-    scene.add(sphere);
+
+    parent.add(
+        sphere
+    );
+
+
+
+    return sphere;
 
 
 }
