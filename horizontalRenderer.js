@@ -1,5 +1,6 @@
 // horizontalRenderer.js
 
+
 export function createHorizontalRenderer(
     canvas,
     projection
@@ -8,7 +9,6 @@ export function createHorizontalRenderer(
 
     const ctx =
     canvas.getContext("2d");
-
 
 
 
@@ -32,7 +32,6 @@ export function createHorizontalRenderer(
 
     function drawBackground(){
 
-
         ctx.fillStyle =
         "black";
 
@@ -44,8 +43,8 @@ export function createHorizontalRenderer(
             canvas.height
         );
 
-
     }
+
 
 
 
@@ -57,34 +56,16 @@ export function createHorizontalRenderer(
     function drawFrame(){
 
 
-        const minAz =
-        projection.minAzimuth;
+        const size =
+        projection.scale *
+        Math.max(
 
+            projection.maxAzimuth -
+            projection.minAzimuth,
 
-        const maxAz =
-        projection.maxAzimuth;
+            projection.maxAltitude -
+            projection.minAltitude
 
-
-        const minAlt =
-        projection.minAltitude;
-
-
-        const maxAlt =
-        projection.maxAltitude;
-
-
-
-        const p1 =
-        projection.project(
-            minAlt,
-            minAz
-        );
-
-
-        const p2 =
-        projection.project(
-            maxAlt,
-            maxAz
         );
 
 
@@ -99,18 +80,19 @@ export function createHorizontalRenderer(
 
         ctx.strokeRect(
 
-            p1.x,
+            projection.centerX - size/2,
 
-            p2.y,
+            projection.centerY - size/2,
 
-            p2.x-p1.x,
+            size,
 
-            p1.y-p2.y
+            size
 
         );
 
 
     }
+
 
 
 
@@ -123,22 +105,7 @@ export function createHorizontalRenderer(
 
 
 
-        // محور آزیموت
-
-        const left =
-        projection.project(
-            projection.minAltitude,
-            projection.minAzimuth
-        );
-
-
-        const right =
-        projection.project(
-            projection.minAltitude,
-            projection.maxAzimuth
-        );
-
-
+        // محور Azimuth
 
         ctx.strokeStyle =
         "red";
@@ -147,19 +114,30 @@ export function createHorizontalRenderer(
         ctx.lineWidth = 2;
 
 
+
         ctx.beginPath();
 
 
         ctx.moveTo(
-            left.x,
-            left.y
+
+            projection.centerX -
+            projection.viewWidth/2,
+
+            projection.centerY
+
         );
+
 
 
         ctx.lineTo(
-            right.x,
-            right.y
+
+            projection.centerX +
+            projection.viewWidth/2,
+
+            projection.centerY
+
         );
+
 
 
         ctx.stroke();
@@ -168,41 +146,40 @@ export function createHorizontalRenderer(
 
 
 
-        // محور ارتفاع
 
 
-        const bottom =
-        projection.project(
-            projection.minAltitude,
-            0
-        );
-
-
-        const top =
-        projection.project(
-            projection.maxAltitude,
-            0
-        );
-
+        // محور Altitude
 
 
         ctx.strokeStyle =
         "lime";
 
 
+
         ctx.beginPath();
 
 
+
         ctx.moveTo(
-            bottom.x,
-            bottom.y
+
+            projection.centerX,
+
+            projection.centerY +
+            projection.viewHeight/2
+
         );
+
 
 
         ctx.lineTo(
-            top.x,
-            top.y
+
+            projection.centerX,
+
+            projection.centerY -
+            projection.viewHeight/2
+
         );
+
 
 
         ctx.stroke();
@@ -210,6 +187,7 @@ export function createHorizontalRenderer(
 
 
     }
+
 
 
 
@@ -227,7 +205,7 @@ export function createHorizontalRenderer(
 
 
         ctx.font =
-        "14px Arial";
+        "16px Arial";
 
 
 
@@ -235,9 +213,9 @@ export function createHorizontalRenderer(
 
             "Azimuth",
 
-            canvas.width/2-30,
+            projection.centerX-35,
 
-            canvas.height-30
+            projection.centerY+30
 
         );
 
@@ -247,11 +225,18 @@ export function createHorizontalRenderer(
 
             "Altitude",
 
-            20,
+            projection.centerX+10,
 
-            canvas.height/2
+            projection.centerY-20
 
         );
+
+
+
+
+
+        ctx.font =
+        "14px Arial";
 
 
 
@@ -259,9 +244,10 @@ export function createHorizontalRenderer(
 
             projection.minAzimuth.toFixed(0)+"°",
 
-            30,
+            projection.centerX -
+            projection.viewWidth/2,
 
-            canvas.height/2+20
+            projection.centerY+20
 
         );
 
@@ -271,9 +257,10 @@ export function createHorizontalRenderer(
 
             projection.maxAzimuth.toFixed(0)+"°",
 
-            canvas.width-70,
+            projection.centerX +
+            projection.viewWidth/2-30,
 
-            canvas.height/2+20
+            projection.centerY+20
 
         );
 
@@ -283,9 +270,10 @@ export function createHorizontalRenderer(
 
             projection.minAltitude.toFixed(0)+"°",
 
-            canvas.width/2+10,
+            projection.centerX+10,
 
-            canvas.height-50
+            projection.centerY+
+            projection.viewHeight/2
 
         );
 
@@ -295,9 +283,10 @@ export function createHorizontalRenderer(
 
             projection.maxAltitude.toFixed(0)+"°",
 
-            canvas.width/2+10,
+            projection.centerX+10,
 
-            50
+            projection.centerY-
+            projection.viewHeight/2+15
 
         );
 
@@ -317,7 +306,8 @@ export function createHorizontalRenderer(
     ){
 
 
-        const pos =
+
+        const p =
         projection.project(
 
             sun.altitude,
@@ -332,14 +322,15 @@ export function createHorizontalRenderer(
         "yellow";
 
 
+
         ctx.beginPath();
 
 
         ctx.arc(
 
-            pos.x,
+            p.x,
 
-            pos.y,
+            p.y,
 
             7,
 
@@ -353,8 +344,8 @@ export function createHorizontalRenderer(
         ctx.fill();
 
 
-    }
 
+    }
 
 
 
@@ -370,7 +361,9 @@ export function createHorizontalRenderer(
 
 
 
-        if(path.length < 2)
+        if(
+            path.length < 2
+        )
         return;
 
 
@@ -392,7 +385,7 @@ export function createHorizontalRenderer(
             (point,index)=>{
 
 
-                const pos =
+                const p =
                 projection.project(
 
                     point.altitude,
@@ -406,16 +399,16 @@ export function createHorizontalRenderer(
                 if(index===0){
 
                     ctx.moveTo(
-                        pos.x,
-                        pos.y
+                        p.x,
+                        p.y
                     );
 
                 }
                 else{
 
                     ctx.lineTo(
-                        pos.x,
-                        pos.y
+                        p.x,
+                        p.y
                     );
 
                 }
@@ -441,12 +434,11 @@ export function createHorizontalRenderer(
 
 
 
-
     function render({
 
         sun,
 
-        path=[]
+        path
 
     }){
 
@@ -483,7 +475,6 @@ export function createHorizontalRenderer(
 
 
     }
-
 
 
 
